@@ -1,0 +1,153 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao;
+
+import context.DBConnect;
+import entity.User;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+/**
+ *
+ * @author Nguyen Van Long
+ */
+public class UserDao {
+    Connection conn = null;
+
+    DBConnect dbConn = null;
+
+    public UserDao(DBConnect dbconn) {
+        conn = dbconn.con;
+        this.dbConn = dbconn;
+    }
+    public String getRandom() {
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        return String.format("%06d", number);
+    }
+    public static void send(String to, String sub, 
+                         String msg, final String user,final String pass)
+    { 
+     //create an instance of Properties Class   
+     Properties props = new Properties();
+     
+     /* Specifies the IP address of your default mail server
+     	   for e.g if you are using gmail server as an email sever
+           you will pass smtp.gmail.com as value of mail.smtp host. 
+           As shown here in the code. 
+           Change accordingly, if your email id is not a gmail id
+        */
+     props.put("mail.smtp.host", "smtp.gmail.com");
+     //below mentioned mail.smtp.port is optional
+     props.put("mail.smtp.port", "587");		
+     props.put("mail.smtp.auth", "true");
+     props.put("mail.smtp.starttls.enable", "true");
+     
+     /* Pass Properties object(props) and Authenticator object   
+           for authentication to Session instance 
+        */
+
+    Session session = Session.getInstance(props,new javax.mail.Authenticator()
+    {
+  	  protected PasswordAuthentication getPasswordAuthentication() 
+  	  {
+  	 	 return new PasswordAuthentication(user,pass);
+  	  }
+   });
+    
+   try
+   {
+ 
+ 	/* Create an instance of MimeMessage, 
+ 	      it accept MIME types and headers 
+ 	   */
+ 
+        MimeMessage message = new MimeMessage(session);
+       message.setFrom(new InternetAddress(user));
+       message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+       message.setSubject(sub);
+       message.setText(msg);
+
+       /* Transport class is used to deliver the message to the recipients */
+       
+       Transport.send(message);
+ 
+ 
+    }
+    catch(Exception e)
+    {
+    	 e.printStackTrace();
+    }
+  } 
+    public int addCustomer(String cname,String account, String password, String email,
+            String phone, String dob, int gender, String address, int role) {
+
+        int n = 0;
+        String sql = "insert into [user] values(?,?,?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, cname);
+            pre.setString(2, account);
+            pre.setString(3, password);
+            pre.setString(4, email);
+            pre.setString(5, phone);
+            pre.setString(6, dob);
+            pre.setInt(7, gender);
+            pre.setString(8, address);
+             pre.setInt(9, role);
+            
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+    public User checkUserExits(String user) {
+        try {
+            String sql = "select * from [User] where account=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, user);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                               
+                return new User(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), 
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8),rs.getString(9),rs.getInt(10));
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+    public User checkUser(String user, String pass) {
+        try {
+            String sql = "select * from [user] where account=? and password=?";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, user);
+            pre.setString(2, pass);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                User u = new User(rs.getString(3), rs.getString(4),rs.getInt(10));
+                return u;
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+}
