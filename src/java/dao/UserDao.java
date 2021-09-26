@@ -142,7 +142,7 @@ public class UserDao {
             pre.setString(2, pass);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                User u = new User(rs.getString(3), rs.getString(4),rs.getInt(10));
+                User u = new User(rs.getString(3), rs.getString(4),rs.getInt(10),rs.getString(11));
                 return u;
             }
         } catch (Exception e) {

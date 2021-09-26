@@ -9,110 +9,107 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <!-- <title>@ViewData["Title"] - Exercise</title> -->
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/classlayout.css" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
-            crossorigin="anonymous"
-            />
-        <script src="../Jquery/Jquery_core/jquery_min/jquery-3.6.0.min.js"></script>
-    </head>
-    <body>
+        <meta charset="utf-8">
+        <title>Happy Programming</title>
 
-        <style>
-      #sign{
-        clear: both;
-        display: flex;
-      }
-      #login {
-        
-      }
-      #signup{
-        background-color: chocolate;
-        color: white;
-      }
+    </head>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        #main{
+
+        }
+        #header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #5993a6;
+        }
+        #nav{
+
+        }
+        #nav li{
+            display: inline-block;
+        }
+        #nav li a{
+            color: #fff;
+            text-decoration: none;
+            line-height: 50px;
+            padding: 0 25px;
+            display: inline-block;
+
+        }
+        #nav li:hover a{
+            color: #000;
+            background-color: #ccc;
+        }
+        html{
+            font-family: Arial;
+        }
+        #slider{
+            position: relative;
+            margin-top: 50px;
+            padding-top: 65%;
+            background: url(images/1.jpg) top center / cover no-repeat;
+        }
+        #slider .text-content{
+            position: absolute;
+            bottom: 700px;
+            color: #fff;
+            left: 0;
+            right: 0;
+
+            text-align: center;
+        }
+        #slider .text-heading{
+            font-weight: 500;
+            font-size: 30px;
+        }
+        #slider .text-description{
+            font-size: 20px;
+        }
+        #footer{
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #5993a6;
+            color: #fff;
+        }
 
     </style>
-    <nav
-      style="border: 5px solid white;background-color: #c1c9d6 "
-      class="navbar navbar-expand-lg navbar-light"
-    >
-      <div class="container-fluid">
-        <div style="border-right: 5px solid white;">
-          <a class="navbar-brand m-5" href="#">Logo</a>
-        </div>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="#">Mentor</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Chia sẻ</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="userProfile.jsp">Trở thành mentor</a>
-            </li>
-            <div id="sign" class="bg-light">
-            <li id="login" class="nav-item">
-              <a class="nav-link" href="login.jsp">Đăng nhập</a>
-            </li>
-            <li id="signup" class="nav-item">
-              <a class="nav-link" href="signup.jsp">Đăng kí</a>
-            </li>
+    <body>
+
+        <div id="main">
+            <div id="header">
+                <ul id=nav>
+                    <li><a href="#">Happy Programming</a></li>
+                    <li><a href="login.jsp">Login</a></li>
+                    <li><a href="signup.jsp">Signup</a></li>
+                </ul>
             </div>
-            
-          </ul>
+
+            <div id=slider>
+                <div class="text-content">
+                    <h2 class="text-heading">C#</h2>
+                    <div class="text-description">C# (C-Sharp) is a programming language developed by Microsoft that runs on the .NET Framework.
+                        C# is used to develop web apps, desktop apps, mobile apps, games and much more.</div>
+                </div>
+
+            </div>
+
+            <div id="content">
+
+            </div>
+
+            <div id="footer">
+                <div>©2021 Web học lập trình uy tín hàng đầu Việt Nam - Được tài trợ bởi SWP291</div>
+
+            </div>
         </div>
-      </div>
-    </nav>
-    <div
-      style="height: 300px; border: 5px solid white; background-color: #c1c9d6"
-      class="slide col-lg-12"
-    >
-      slider
-    </div>
-
-    <div class="content d-flex">
-      <div
-        style="height: 300px;border: 5px solid white; background-color: #c1c9d6"
-        class="left col-lg-9"
-      >
-        featured post
-      </div>
-      <div
-        style="height: 300px;border: 5px solid white; background-color: #c1c9d6"
-        class="right col-lg-3"
-      >
-        slider
-      </div>
-    </div>
-
-    <div
-      style="height: 70px;border: 5px solid white; background-color: #c1c9d6"
-      class="footer col-lg-12"
-    >
-      Footer
-    </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <!-- @await RenderSectionAsync("Scripts", required: false) -->
 
     </body>
 </html>
