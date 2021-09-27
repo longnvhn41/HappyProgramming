@@ -37,6 +37,7 @@
         <%
             String mess = (String) request.getAttribute("mess");
             String alert = (String) request.getAttribute("alert");
+            String alert1 = (String) request.getAttribute("alert1");
         %>
         <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
             <div class="wrapper wrapper--w680">
@@ -51,7 +52,11 @@
                         <c:if test="${alert!=null}">
                             <h4 style="color: red; margin-bottom: 30px"><%=alert%></h4>
                         </c:if>
-
+                            
+                         <c:if test="${alert1!=null}">
+                            <h4 style="color: red; margin-bottom: 30px"><%=alert1%></h4>
+                        </c:if>
+                            
                         <form action="UserController?service=Signup" method="POST">
                             <div class="input-group">
                                 <label class="label">Full name</label>

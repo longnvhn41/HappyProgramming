@@ -95,10 +95,10 @@ public class UserDao {
     }
   } 
     public int addCustomer(String cname,String account, String password, String email,
-            String phone, String dob, int gender, String address, int role) {
+            String phone, String dob, int gender, String address, int role, String ava) {
 
         int n = 0;
-        String sql = "insert into [user] values(?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into [user] values(?,?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -110,7 +110,9 @@ public class UserDao {
             pre.setString(6, dob);
             pre.setInt(7, gender);
             pre.setString(8, address);
-             pre.setInt(9, role);
+            pre.setInt(9, role);
+            ava=null;
+            pre.setString(10, ava);
             
             n = pre.executeUpdate();
         } catch (SQLException ex) {
@@ -118,7 +120,7 @@ public class UserDao {
         }
         return n;
     }
-    public User checkUserExits(String user) {
+    public User checkUserExitsAccount(String user) {
         try {
             String sql = "select * from [User] where account=?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -144,6 +146,23 @@ public class UserDao {
             while (rs.next()) {
                 User u = new User(rs.getString(3), rs.getString(4),rs.getInt(10),rs.getString(11));
                 return u;
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    public User checkExitsEmail(String email) {
+        try {
+            String sql = "select * from [User] where email=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                               
+                return new User(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), 
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8),rs.getString(9),rs.getInt(10));
             }
         } catch (Exception e) {
 

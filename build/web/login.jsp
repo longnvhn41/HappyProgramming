@@ -69,8 +69,6 @@
                             </button>
                         </div>
                         <div class="text-center w-full p-t-1150">
-                            
-
                             <a class="txt1 bo1 hov1" href="signup.jsp">
                                 <i style="font-size:15px" class="fa">&#xf084;</i>
                                 Forgot your password							

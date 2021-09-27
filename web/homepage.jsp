@@ -79,7 +79,12 @@
             background-color: #5993a6;
             color: #fff;
         }
-
+        .avatar {
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
     </style>
     <body>
 
@@ -87,8 +92,35 @@
             <div id="header">
                 <ul id=nav>
                     <li><a href="#">Happy Programming</a></li>
-                    <li><a href="login.jsp">Login</a></li>
-                    <li><a href="signup.jsp">Signup</a></li>
+                        <c:if test="${sessionScope.user==null}">
+                        <li><a href="login.jsp">Login</a></li>
+                        <li><a href="signup.jsp">Signup</a></li>
+                        </c:if>
+
+                    <c:if test="${sessionScope.user!=null}">
+                        <li><a href="#" style="padding-right:0">Hello: ${sessionScope.user.account}                              
+                            </a></li>
+                        <li><a href="#" style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>
+                        <!-- Phân quyền cho mentee-->
+                        <c:if test="${sessionScope.user.role==1}">
+                            <li><a href="userProfile.jsp">Become Mentor</a></li>
+                        </c:if>
+                        <!-- Phân quyền cho mentor-->
+                        <c:if test="${sessionScope.user.role==0}">
+                            <li><a href="#">Request of student</a></li>
+                            <li><a href="#">Request</a></li>
+                        </c:if>
+                        <!-- Phân quyền cho admin--> 
+                        <c:if test="${sessionScope.user.role==2}">
+                            <li><a href="#">Manager User</a></li>
+                            <li><a href="#">Request</a></li>
+                            <li><a href="#">Contact</a></li>
+                            
+                        </c:if>
+
+                        <li><a href="UserController?service=logout">Logout</a></li>
+                        </c:if>
+
                 </ul>
             </div>
 
