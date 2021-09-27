@@ -60,26 +60,31 @@ public class UserController extends HttpServlet {
                 int role = 1;
                 User user = new User(name, account, pass, email, phone, dob, gender, address, role);
                 sc.setAttribute("newuser", user);
+                User u1 = d.checkExitsEmail(email);
+                if (u1 == null) {
+                    User u = d.checkUserExitsAccount(account);
+                    if (u == null) {
+                        if (!pass.equals(rpass)) {
+                            request.setAttribute("mess", "The Password you entered did not match, please try again!");
+                            request.getRequestDispatcher("signup.jsp").forward(request, response);
+                        } else {
+                            String userfrom = "longnvhn41@gmail.com";
+                            String passfrom = "nguyenvanlong98";
+                            String code = d.getRandom();
+                            String subject = "User Email Verification";
+                            String message = ("Registered successfully.Please verify your account using this code: " + code);
+                            HttpSession session = request.getSession();
+                            session.setAttribute("check", code);
+                            UserDao.send(email, subject, message, userfrom, passfrom);
+                            response.sendRedirect("verify.jsp");
+                        }
 
-                User u = d.checkUserExits(account);
-                if (u == null) {
-                    if (!pass.equals(rpass)) {
-                        request.setAttribute("mess", "The Password you entered did not match, please try again!");
-                        request.getRequestDispatcher("signup.jsp").forward(request, response);
                     } else {
-                        String userfrom = "longnvhn41@gmail.com";
-                        String passfrom = "nguyenvanlong98";
-                        String code = d.getRandom();
-                        String subject = "User Email Verification";
-                        String message = ("Registered successfully.Please verify your account using this code: " + code);
-                        HttpSession session = request.getSession();
-                        session.setAttribute("check", code);
-                        UserDao.send(email, subject, message, userfrom, passfrom);
-                        response.sendRedirect("verify.jsp");
+                        request.setAttribute("alert", "Account already exists!");
+                        request.getRequestDispatcher("signup.jsp").forward(request, response);
                     }
-
                 } else {
-                    request.setAttribute("alert", "Account already exists!");
+                    request.setAttribute("alert1", "Email already exists!");
                     request.getRequestDispatcher("signup.jsp").forward(request, response);
                 }
 
@@ -91,27 +96,27 @@ public class UserController extends HttpServlet {
                 String code = request.getParameter("authcode");
                 if (code.equals(codeAuth)) {
                     d.addCustomer(user.getName(), user.getAccount(), user.getPassword(), user.getEmail(),
-                            user.getPhone(), user.getDob(), user.getGender(), user.getAddress(), user.getRole());
-                    out.println("Correct");
+                            user.getPhone(), user.getDob(), user.getGender(), user.getAddress(), user.getRole(), user.getAva());
+                    response.sendRedirect("homepage.jsp");
                 } else {
                     out.println("Incorrect verification code");
                 }
             }
-            if(service.equals("login")){
+            if (service.equals("login")) {
                 String acc = request.getParameter("username");
                 String password = request.getParameter("password");
-                User u=d.checkUser(acc, password);
-                if(u==null){
-                    HttpSession session=request.getSession();
-                    session.removeAttribute("acc");
+                User u = d.checkUser(acc, password);
+                if (u == null) {
+                    HttpSession session = request.getSession();
+                    session.removeAttribute("user");
                     response.sendRedirect("login.jsp");
-                }else{
-                    HttpSession session=request.getSession();
+                } else {
+                    HttpSession session = request.getSession();
                     session.setAttribute("user", u);
                     request.getRequestDispatcher("homepage.jsp").forward(request, response);
                 }
             }
-            if(service.equals("logout")){
+            if (service.equals("logout")) {
                 HttpSession session = request.getSession();
                 session.invalidate();
                 response.sendRedirect("homepage.jsp");
