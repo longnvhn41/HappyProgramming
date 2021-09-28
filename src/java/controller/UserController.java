@@ -49,6 +49,9 @@ public class UserController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
             ServletContext sc = getServletContext();
+            if(service==null){
+                service="logout";
+            }
             if (service.equals("Signup")) {
                 String name = request.getParameter("fullname");
                 String email = request.getParameter("email");
