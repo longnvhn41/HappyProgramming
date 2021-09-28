@@ -100,7 +100,8 @@
                     <c:if test="${sessionScope.user!=null}">
                         <li><a href="#" style="padding-right:0">Hello: ${sessionScope.user.account}                              
                             </a></li>
-                        <li><a href="#" style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>
+                        <li><a href="UserController?service=userProfile&user=${sessionScope.user.account}"
+                               style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>
                         <!-- Phân quyền cho mentee-->
                         <c:if test="${sessionScope.user.role==1}">
                             <li><a href="userProfile.jsp">Become Mentor</a></li>

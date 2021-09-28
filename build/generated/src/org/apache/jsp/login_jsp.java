@@ -107,7 +107,12 @@ public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                Login\r\n");
       out.write("                            </button>\r\n");
       out.write("                        </div>\r\n");
-      out.write("\r\n");
+      out.write("                        <div class=\"text-center w-full p-t-1150\">\r\n");
+      out.write("                            <a class=\"txt1 bo1 hov1\" href=\"signup.jsp\">\r\n");
+      out.write("                                <i style=\"font-size:15px\" class=\"fa\">&#xf084;</i>\r\n");
+      out.write("                                Forgot your password\t\t\t\t\t\t\t\r\n");
+      out.write("                            </a>\r\n");
+      out.write("                        </div>\r\n");
       out.write("                        <div class=\"text-center w-full p-t-115\">\r\n");
       out.write("                            <span class=\"txt1\">\r\n");
       out.write("                                Not a member?\r\n");

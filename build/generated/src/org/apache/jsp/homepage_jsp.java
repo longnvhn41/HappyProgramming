@@ -234,7 +234,10 @@ public final class homepage_jsp extends org.apache.jasper.runtime.HttpJspBase
         out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${sessionScope.user.account}", java.lang.String.class, (PageContext)_jspx_page_context, null));
         out.write("                              \r\n");
         out.write("                            </a></li>\r\n");
-        out.write("                        <li><a href=\"#\" style=\"padding: 0 8px\"><img src=\"");
+        out.write("                        <li><a href=\"UserController?service=userProfile&user=");
+        out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${sessionScope.user.account}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+        out.write("\"\r\n");
+        out.write("                               style=\"padding: 0 8px\"><img src=\"");
         out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${sessionScope.user.ava}", java.lang.String.class, (PageContext)_jspx_page_context, null));
         out.write("\" alt=\"Avatar\" class=\"avatar\"></a></li>\r\n");
         out.write("                        <!-- Phân quyền cho mentee-->\r\n");
@@ -309,7 +312,8 @@ public final class homepage_jsp extends org.apache.jasper.runtime.HttpJspBase
     if (_jspx_eval_c_if_3 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
       do {
         out.write("\r\n");
-        out.write("                            <li><a href=\"userProfile.jsp\">Request of student</a></li>\r\n");
+        out.write("                            <li><a href=\"#\">Request of student</a></li>\r\n");
+        out.write("                            <li><a href=\"#\">Request</a></li>\r\n");
         out.write("                        ");
         int evalDoAfterBody = _jspx_th_c_if_3.doAfterBody();
         if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
@@ -337,8 +341,9 @@ public final class homepage_jsp extends org.apache.jasper.runtime.HttpJspBase
     if (_jspx_eval_c_if_4 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
       do {
         out.write("\r\n");
-        out.write("                            <li><a href=\"userProfile.jsp\">Manager User</a></li>\r\n");
-        out.write("                            <li><a href=\"userProfile.jsp\">Request</a></li>\r\n");
+        out.write("                            <li><a href=\"#\">Manager User</a></li>\r\n");
+        out.write("                            <li><a href=\"#\">Request</a></li>\r\n");
+        out.write("                            <li><a href=\"#\">Contact</a></li>\r\n");
         out.write("                            \r\n");
         out.write("                        ");
         int evalDoAfterBody = _jspx_th_c_if_4.doAfterBody();
