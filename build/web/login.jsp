@@ -4,6 +4,7 @@
     Author     : Tri
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +32,9 @@
         <!--===============================================================================================-->
     </head>
     <body>
-
+        <%
+            String thongbao=(String)request.getAttribute("thongbao");
+        %>
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
@@ -39,7 +42,9 @@
                         <span class="login100-form-title p-b-55">
                             Login
                         </span>
-
+                        <c:if test="${thongbao!=null}">
+                            <h4 style="color: #e0a800; margin-bottom: 30px"><%=thongbao%></h4>
+                        </c:if>
                         <div class="wrap-input100 validate-input m-b-16" >
                             <input class="input100" type="text" name="username" placeholder="Username">
                             <span class="focus-input100"></span>

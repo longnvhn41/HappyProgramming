@@ -10,9 +10,11 @@ import dao.UserDao;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,6 +49,9 @@ public class UserController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
             ServletContext sc = getServletContext();
+            if(service==null){
+                service="logout";
+            }
             if (service.equals("Signup")) {
                 String name = request.getParameter("fullname");
                 String email = request.getParameter("email");
@@ -120,6 +125,44 @@ public class UserController extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.invalidate();
                 response.sendRedirect("homepage.jsp");
+            }
+            if (service.equals("userProfile")) {
+                String account = request.getParameter("user");
+                User u = d.showUserProfile(account);
+                HttpSession session = request.getSession();
+                session.setAttribute("u", u);
+                response.sendRedirect("showUser.jsp");
+            }
+            if (service.equals("update")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String sql = "select * from [User] where id=" + id;
+                ResultSet rs = dBConnect.getData(sql);
+                try {
+                    if (rs.next()) {
+                        User us = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
+                                rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                                rs.getInt(8), rs.getString(9));
+                        request.setAttribute("us", us);
+                        request.setAttribute("title", "Update User");
+                        RequestDispatcher dis = request.getRequestDispatcher("/updateUser.jsp");
+                        dis.forward(request, response);
+                    }
+                } catch (Exception e) {
+                }
+            }
+            if (service.equals("updated")) {
+                String id = request.getParameter("id");
+                String name = request.getParameter("name");
+                String acc = request.getParameter("acc");
+                String password = request.getParameter("pass");
+                String email = request.getParameter("email");
+                String phone = request.getParameter("phone");
+                String dob = request.getParameter("dob");
+                String sex = request.getParameter("sex");
+                String address = request.getParameter("address");
+                d.updateUser(id, name, acc, password, email,phone, dob,sex,address);
+                request.setAttribute("thongbao", "Update successful. Please log in again!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
     }
