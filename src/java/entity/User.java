@@ -77,7 +77,7 @@ public class User {
         this.address = address;
         this.role = role;
     }
-    public User(String account, String password, int role, String ava) {
+    public User(int id,String account, String password, int role, String ava) {
        
         
         this.account = account;

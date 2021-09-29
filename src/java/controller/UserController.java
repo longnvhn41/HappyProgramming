@@ -104,7 +104,8 @@ public class UserController extends HttpServlet {
                             user.getPhone(), user.getDob(), user.getGender(), user.getAddress(), user.getRole(), user.getAva());
                     response.sendRedirect("homepage.jsp");
                 } else {
-                    out.println("Incorrect verification code");
+                    request.setAttribute("alert", "The code is incorrect!");
+                    response.sendRedirect("verify.jsp");
                 }
             }
             if (service.equals("login")) {
@@ -124,7 +125,7 @@ public class UserController extends HttpServlet {
             if (service.equals("logout")) {
                 HttpSession session = request.getSession();
                 session.invalidate();
-                response.sendRedirect("homepage.jsp");
+                response.sendRedirect("HomeP.jsp");
             }
             if (service.equals("userProfile")) {
                 String account = request.getParameter("user");
@@ -164,6 +165,11 @@ public class UserController extends HttpServlet {
                 request.setAttribute("thongbao", "Update successful. Please log in again!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
+            if (service.equals("becomeMentor")) {
+                String id=request.getParameter("id");
+                response.sendRedirect("userProfile.jsp");
+            }
+            
         }
     }
 

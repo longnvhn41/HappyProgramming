@@ -45,15 +45,10 @@ public class UserDao {
 
     public static void send(String to, String sub,
             String msg, final String user, final String pass) {
-        //create an instance of Properties Class   
+        //Tạo 1 Properties(key-value)
         Properties props = new Properties();
 
-        /* Specifies the IP address of your default mail server
-     	   for e.g if you are using gmail server as an email sever
-           you will pass smtp.gmail.com as value of mail.smtp host. 
-           As shown here in the code. 
-           Change accordingly, if your email id is not a gmail id
-         */
+       //Thông số kết nối tới Smtp Server--> đăng nhập email
         props.put("mail.smtp.host", "smtp.gmail.com");
         //below mentioned mail.smtp.port is optional
         props.put("mail.smtp.port", "587");
@@ -140,7 +135,8 @@ public class UserDao {
             pre.setString(2, pass);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                User u = new User(rs.getString(3), rs.getString(4), rs.getInt(10), rs.getString(11));
+                User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11));
                 return u;
             }
         } catch (Exception e) {
