@@ -34,11 +34,22 @@
     <body>
         <%
             String thongbao=(String)request.getAttribute("thongbao");
+            String usernameC=null;
+            String passwordC=null;
+            Cookie cookies[] = request.getCookies();
+            for(Cookie c : cookies){
+                if(c.getName().equals("userC")){
+                    usernameC = c.getValue();
+                }
+                if(c.getName().equals("passC")){
+                    passwordC = c.getValue();
+                }
+            }
         %>
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-                    <form action="UserController?service=login" method="POST" class="login100-form validate-form" >
+                    <form action="login" method="POST" class="login100-form validate-form" >
                         <span class="login100-form-title p-b-55">
                             Login
                         </span>
@@ -46,7 +57,7 @@
                             <h4 style="color: #e0a800; margin-bottom: 30px"><%=thongbao%></h4>
                         </c:if>
                         <div class="wrap-input100 validate-input m-b-16" >
-                            <input class="input100" type="text" name="username" placeholder="Username">
+                            ${username}<input class="input100" type="text" name="username" value="<%=usernameC!=null? usernameC : ""%>" placeholder="username">
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">
                                 <span class="lnr lnr-envelope"></span>
@@ -54,7 +65,8 @@
                         </div>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-                            <input class="input100" type="password" name="password" placeholder="Password">
+                            <input class="input100" type="password" name="password" value="<%=passwordC!=null? passwordC : ""%>"
+                                   placeholder="Password">
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">
                                 <span class="lnr lnr-lock"></span>
@@ -74,7 +86,7 @@
                             </button>
                         </div>
                         <div class="text-center w-full p-t-1150">
-                            <a class="txt1 bo1 hov1" href="signup.jsp">
+                            <a class="txt1 bo1 hov1" href="forgetPass.jsp">
                                 <i style="font-size:15px" class="fa">&#xf084;</i>
                                 Forgot your password							
                             </a>
