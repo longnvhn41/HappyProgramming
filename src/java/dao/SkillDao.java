@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 
 public class SkillDao {
-   Connection conn = null;
+   static Connection conn;
 
     DBConnect dbConn = null;
 
@@ -25,9 +25,9 @@ public class SkillDao {
         conn = dbconn.con;
         this.dbConn = dbconn;
     }
-    Connection con;
-    PreparedStatement ps;
-    ResultSet rs;
+     static Connection con;
+     static PreparedStatement ps;
+    static ResultSet rs;
 //----------------------------------------------------------------------SKILL----------------------------------------------------------
     public int getHighestSkillID(){
         String query = "SELECT MAX(id) FROM skill;";
@@ -70,15 +70,15 @@ public class SkillDao {
     }
 
     // Lấy danh sách Skill
-    public ArrayList<Skill> getSkillList() {
+    public static ArrayList<Skill> getSkillList() {
 
         ArrayList<Skill> skillList = new ArrayList<>();
         String query = "select * from skill";
 
 
         try {
-       
-            ps = con.prepareStatement(query);
+            conn = new DBConnect().con;
+            ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -136,5 +136,13 @@ public class SkillDao {
         }
     }
 
+    public static void main(String[] args) {
+        ArrayList<Skill> a = SkillDao.getSkillList();
+        
+        
+        for (Skill skill : a) {
+            System.out.println(skill.toString());
+        }
+    }
      
 }

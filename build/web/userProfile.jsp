@@ -20,7 +20,7 @@
                 <div class="menter-register__heading">
                     <p class="heading-title">Mentor Register</p>
                 </div>
-                <form action="#" method="POST">
+                <form action="RequestController?service=becomeMentor&id=${sessionScope.user.id}" method="POST">
                     <div class="menter-register__body">
                         <div class="menter-register__item">
                             <label for="skill" class="menter-register__label">

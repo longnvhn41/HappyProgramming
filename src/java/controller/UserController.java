@@ -166,7 +166,7 @@ public class UserController extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (service.equals("becomeMentor")) {
-                String id=request.getParameter("id");
+               
                 response.sendRedirect("userProfile.jsp");
             }
             

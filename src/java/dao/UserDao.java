@@ -42,26 +42,6 @@ public class UserDao {
         int number = rnd.nextInt(999999);
         return String.format("%06d", number);
     }
-    
-    
-    
-    public static int randomNumber(int min, int max) {
-        Random rnd = new Random();
-        return rnd.nextInt((max - min) + 1) + min;
-    }
-    public String getRandom2(int numberOfCharactor) {
-        String alpha = "abcdefghijklmnopqrstuvwxyz"; // a-z
-        String alphaUpperCase = alpha.toUpperCase(); // A-Z
-        String digits = "0123456789"; // 0-9
-        String ALPHA_NUMERIC = alpha + alphaUpperCase + digits;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numberOfCharactor; i++) {
-            int number = randomNumber(0, ALPHA_NUMERIC.length() - 1);
-            char ch = ALPHA_NUMERIC.charAt(number);
-            sb.append(ch);
-        }
-        return sb.toString();
-    }
 
     public static void send(String to, String sub,
             String msg, final String user, final String pass) {
@@ -220,18 +200,6 @@ public class UserDao {
 
         } catch (SQLException ex) {
 
-        }
-    }
-    
-    public void updatePassUser(String email, String password){
-        String sql = "Update [User] SET password=? WHERE email=?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, password);
-            pre.setString(2, email);
-            pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -27,7 +27,6 @@ public class RequestDao {
     }
 
     public int addRequest(int menteeID, String mess, int status) {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-YYYY");
         int n = 0;
         //String sql="insert into request(mentee_id, [message],request_date,[status]) values (?,?,?,?)";
         String sql = "insert into request(mentee_id, [message],[status]) values (?,?,?)";
