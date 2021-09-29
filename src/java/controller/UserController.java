@@ -108,20 +108,6 @@ public class UserController extends HttpServlet {
                     response.sendRedirect("verify.jsp");
                 }
             }
-            if (service.equals("login")) {
-                String acc = request.getParameter("username");
-                String password = request.getParameter("password");
-                User u = d.checkUser(acc, password);
-                if (u == null) {
-                    HttpSession session = request.getSession();
-                    session.removeAttribute("user");
-                    response.sendRedirect("login.jsp");
-                } else {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", u);
-                    request.getRequestDispatcher("homepage.jsp").forward(request, response);
-                }
-            }
             if (service.equals("logout")) {
                 HttpSession session = request.getSession();
                 session.invalidate();
