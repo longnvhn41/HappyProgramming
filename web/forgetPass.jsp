@@ -13,14 +13,21 @@
         <title>JSP Page</title>
     </head>
     <style>
+        body{
+            background-image: url(https://anhdephd.com/wp-content/uploads/2018/08/hinh-anh-dep.jpg);
+
+        }
         .container{
-            height: 100px;
+            background-color: #fbe9e9;
+            height: 150px;
+            width: 320px;
             text-align: center;
             position: absolute;
             left: 50%;
             top: 50%;
             padding: 30px;
-            border: 1px solid;
+            border: 1px dashed;
+            border-color: red;
             transform: translate(-50%, -90%);
             .h4{
                 padding-bottom: 10px;
@@ -28,20 +35,13 @@
         }
     </style>
     <body>
-        <%
-            String mess = (String) request.getAttribute("mess");
-            String alert = (String) request.getAttribute("alert");
-        %>
+
         <div class="container">
             <form action="forgetPass" method="POST">
-                <c:if test="${mess!=null}">
-                    <h4 style="color: red; margin-bottom: 30px"><%=mess%></h4>
-                </c:if>
-                <c:if test="${alert!=null}">
-                    <h4 style="color: red; margin-bottom: 30px"><%=alert%></h4>
-                </c:if>
-                    Email: <input type="text" name="email"/><br>
-                    <input style="margin-top: 15px" type="submit" value="submit"/>
+                <h4 style="color: red">${mess}</h4> 
+                <h4 style="color: red">${alert}</h4> 
+                Email: <input type="text" name="email"/><br>
+                <input style="margin-top: 15px" type="submit" value="submit"/>
             </form>
         </div>
 

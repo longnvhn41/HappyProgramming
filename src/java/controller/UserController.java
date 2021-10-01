@@ -49,8 +49,8 @@ public class UserController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
             ServletContext sc = getServletContext();
-            if(service==null){
-                service="logout";
+            if (service == null) {
+                service = "logout";
             }
             if (service.equals("Signup")) {
                 String name = request.getParameter("fullname");
@@ -104,8 +104,8 @@ public class UserController extends HttpServlet {
                             user.getPhone(), user.getDob(), user.getGender(), user.getAddress(), user.getRole(), user.getAva());
                     response.sendRedirect("homepage.jsp");
                 } else {
-                    request.setAttribute("alert", "The code is incorrect!");
-                    response.sendRedirect("verify.jsp");
+                    request.setAttribute("alert1", "The code is incorrect!");
+                    request.getRequestDispatcher("verify.jsp").forward(request, response);
                 }
             }
             if (service.equals("logout")) {
@@ -147,15 +147,15 @@ public class UserController extends HttpServlet {
                 String dob = request.getParameter("dob");
                 String sex = request.getParameter("sex");
                 String address = request.getParameter("address");
-                d.updateUser(id, name, acc, password, email,phone, dob,sex,address);
+                d.updateUser(id, name, acc, password, email, phone, dob, sex, address);
                 request.setAttribute("thongbao", "Update successful. Please log in again!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (service.equals("becomeMentor")) {
-               
+
                 response.sendRedirect("userProfile.jsp");
             }
-            
+
         }
     }
 
