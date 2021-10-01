@@ -40,8 +40,7 @@
                         <c:if test="${sessionScope.user.role==2}">
                             <li><a href="#">Manager User</a></li>
                             <li><a href="#">Request</a></li>
-                            <li><a href="#">Contact</a></li>
-                            
+                            <li><a href="#">Contact</a></li>                            
                         </c:if>
 
                         <li><a href="UserController?service=logout">Logout</a></li>
