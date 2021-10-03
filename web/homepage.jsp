@@ -120,6 +120,7 @@
                         </c:if>
 
                         <li><a href="UserController?service=logout">Logout</a></li>
+                        <li><a href="changePass.jsp">Change Password</a></li>
                         </c:if>
 
                 </ul>

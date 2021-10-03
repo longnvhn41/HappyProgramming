@@ -151,6 +151,24 @@ public class UserController extends HttpServlet {
                 request.setAttribute("thongbao", "Update successful. Please log in again!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
+                        if (service.equals("change_password")) {
+                String oldPassword = request.getParameter("old_password");
+                HttpSession session = request.getSession();
+                User u = (User) session.getAttribute("user");
+                if (!oldPassword.equals(u.getPassword())) {
+                    request.setAttribute("thongbao", "Old Password incorrect");
+                    request.getRequestDispatcher("changePass.jsp").forward(request, response);
+                }
+
+                String password = request.getParameter("password");
+                UserDao dao = new UserDao(dBConnect);
+                if (dao.changePass(u.getAccount(), password)) {
+                    request.setAttribute("thongbao", "Change Password Success");
+                } else {
+                    request.setAttribute("thongbao", "Change Password False");
+                }
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
             if (service.equals("becomeMentor")) {
 
                 response.sendRedirect("userProfile.jsp");
