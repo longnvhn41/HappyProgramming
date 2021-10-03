@@ -93,7 +93,7 @@
                 </div>
                 <div class="row py-2">
                     <div><a href="UserController?service=update&id=${sessionScope.u.id}">Update</a><br>
-                        <a href="UserController?service=changePass&id=${sessionScope.u.id}">Change password</a>
+                        <a href="changePass.jsp">Change password</a>
                     </div>         
                 </div>
             </form>

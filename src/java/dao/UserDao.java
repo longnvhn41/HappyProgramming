@@ -232,6 +232,19 @@ public class UserDao {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+        public boolean changePass(String account, String password) {
+        try {
+            String sql = "  UPDATE [HappyProgramming].[dbo].[user]\n"
+                    + "SET [password] = ? WHERE [account] =?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, password);
+            ps.setString(2, account);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
     
 

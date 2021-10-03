@@ -43,8 +43,9 @@ public class RequestController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
             if (service.equals("becomeMentor")) {
+                String skill= request.getParameter("skill");
                 int id = Integer.parseInt(request.getParameter("id"));
-                String mess = "Become Mentor";
+                String mess = "Become Mentor: "+skill;
                 int status = 0;
                 dao.addRequest(id, mess, status);
                 response.sendRedirect("homepage.jsp");

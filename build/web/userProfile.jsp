@@ -27,7 +27,7 @@
                                 <p class="red-star">*</p>
                                 Chọn kĩ năng:
                             </label>
-                            <input type="text" id="skill" class="mentor-register__input" placeholder="Chọn kĩ năng">
+                            <input type="text" id="skill" class="mentor-register__input" name="skill" placeholder="Chọn kĩ năng">
                         </div>
                         <div class="menter-register__item">
                             <label for="link-cv" class="menter-register__label">

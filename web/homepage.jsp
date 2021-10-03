@@ -120,6 +120,7 @@
                         </c:if>
 
                         <li><a href="UserController?service=logout">Logout</a></li>
+                        
                         </c:if>
 
                 </ul>
