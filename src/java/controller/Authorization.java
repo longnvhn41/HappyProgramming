@@ -99,7 +99,6 @@ public class Authorization implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("filtered");
         HttpServletRequest rq = (HttpServletRequest) request;
         int role;
         if (rq.getSession().getAttribute("user") != null) {
