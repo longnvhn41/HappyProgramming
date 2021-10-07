@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -99,10 +100,12 @@ public class Authorization implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
+        System.out.println("filtered");
         HttpServletRequest rq = (HttpServletRequest) request;
         int role;
-        if (rq.getSession().getAttribute("user") != null) {
-            role = ((User) rq.getSession().getAttribute("user")).getRole();
+        HttpSession session = ((HttpServletRequest) request).getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            role = ((User) rq.getSession(false).getAttribute("user")).getRole();
             switch (role) {
                 case 0://Mentor
                     System.out.println("Mentor");
@@ -120,6 +123,11 @@ public class Authorization implements Filter {
                     rq.getRequestDispatcher("login.jsp").forward(request, response);
                     break;
             }
+            return;
+        }
+        if (rq.getParameter("service") == "logut") {
+            rq.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
         }
         chain.doFilter(request, response);
     }

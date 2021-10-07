@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
@@ -47,6 +48,7 @@ public class UserDao {
         Random rnd = new Random();
         return rnd.nextInt((max - min) + 1) + min;
     }
+
     public String getRandom2(int numberOfCharactor) {
         String alpha = "abcdefghijklmnopqrstuvwxyz"; // a-z
         String alphaUpperCase = alpha.toUpperCase(); // A-Z
@@ -60,13 +62,13 @@ public class UserDao {
         }
         return sb.toString();
     }
-    
+
     public static void send(String to, String sub,
             String msg, final String user, final String pass) {
         //Tạo 1 Properties(key-value)
         Properties props = new Properties();
 
-       //Thông số kết nối tới Smtp Server--> đăng nhập email
+        //Thông số kết nối tới Smtp Server--> đăng nhập email
         props.put("mail.smtp.host", "smtp.gmail.com");
         //below mentioned mail.smtp.port is optional
         props.put("mail.smtp.port", "587");
@@ -198,8 +200,8 @@ public class UserDao {
         return null;
     }
 
-    public void updateUser(String id, String name,  String acc, String pass, String email,
-                                String phone,String dob, String sex, String address) {
+    public void updateUser(String id, String name, String acc, String pass, String email,
+            String phone, String dob, String sex, String address) {
         String sql = "update [user] set full_name=?, account=?, "
                 + "[password]=?,email=?,phone=?, "
                 + "DOB=?, gender=?, [address]=? where id=?";
@@ -220,8 +222,8 @@ public class UserDao {
 
         }
     }
-    
-    public void updatePassUser(String email, String password){
+
+    public void updatePassUser(String email, String password) {
         String sql = "Update [User] SET password=? WHERE email=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -232,7 +234,8 @@ public class UserDao {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        public boolean changePass(String account, String password) {
+
+    public boolean changePass(String account, String password) {
         try {
             String sql = "  UPDATE [HappyProgramming].[dbo].[user]\n"
                     + "SET [password] = ? WHERE [account] =?";
@@ -246,8 +249,27 @@ public class UserDao {
         return true;
     }
 
-    
+    public ArrayList<User> getPaginatedMentors() {
+        try {
+            String sql = "SELECT * FROM [User] WHERE role = 0";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
-    
+            ArrayList<User> mentors = new ArrayList<User>();
+            int i = 0;
+            while (rs.next()) {
+                mentors.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getInt(8), rs.getString(9)));
+            }
+
+            return mentors;
+
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception");
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
 }
