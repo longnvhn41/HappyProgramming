@@ -100,7 +100,6 @@ public class Authorization implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("filtered");
         HttpServletRequest rq = (HttpServletRequest) request;
         int role;
         HttpSession session = ((HttpServletRequest) request).getSession(false);
@@ -125,7 +124,7 @@ public class Authorization implements Filter {
             }
             return;
         }
-        if (rq.getParameter("service") == "logut") {
+        if (rq.getParameter("service") == "logout") {
             rq.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
