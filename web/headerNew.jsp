@@ -52,7 +52,7 @@
                                     <c:when test="${sessionScope.user.role==2}">
                                         <!--Admin-->
                                         <a class="dropdown-item" href="SkillController?action=adminSkillList">Manage Skills</a>
-                                        <a class="dropdown-item" href="MentorList">Manage Mentors</a>
+                                        <a class="dropdown-item" href="AdminMentorList">Manage Mentors</a>
                                     </c:when>
                                 </c:choose>
                                 <!--<div class="dropdown-divider"></div>-->
