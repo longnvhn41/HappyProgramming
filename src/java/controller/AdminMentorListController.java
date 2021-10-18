@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Tri
  */
-@WebServlet(name = "MentorListController", urlPatterns = {"/MentorList"})
-public class MentorListController extends HttpServlet {
+@WebServlet(name = "MentorListController", urlPatterns = {"/AdminMentorList"})
+public class AdminMentorListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,11 +43,11 @@ public class MentorListController extends HttpServlet {
             DBConnect dc = new DBConnect();
             UserDao ud = new UserDao(dc);
             ArrayList<User> mentors = ud.getPaginatedMentors();
-            for (User u : mentors) {
-                System.out.println(u.getAccount());
-            }
+
+            request.setAttribute("mentors", mentors);
+            request.getRequestDispatcher("adminMentorList.jsp").forward(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(MentorListController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminMentorListController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
