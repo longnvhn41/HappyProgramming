@@ -151,7 +151,7 @@ public class UserController extends HttpServlet {
                 request.setAttribute("thongbao", "Update successful. Please log in again!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-                        if (service.equals("change_password")) {
+            if (service.equals("change_password")) {
                 String oldPassword = request.getParameter("old_password");
                 HttpSession session = request.getSession();
                 User u = (User) session.getAttribute("user");
