@@ -34,42 +34,44 @@
             <%@include file="headerNew.jsp" %>
             <!--Thay code vao day-->
             <div class="main-content">
-                <table id="example" class="display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Account</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>DOB</th>
-                            <th>Gender</th>
-                            <th>Address</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${mentors}" var="mentor">
+                <div class="mentor-table-container" style="padding: 40px">
+                    <table id="example" class="display" style="width:100%">
+                        <thead>
                             <tr>
-                                <th>${mentor.id}</th>
-                                <th>${mentor.name}</th>
-                                <th>${mentor.account}</th>
-                                <th>${mentor.email}</th>
-                                <th>${mentor.phone}</th>
-                                <th>${mentor.dob}</th>
-                                <th>
-                                    <c:choose >
-                                        <c:when test="${mentor.gender == 0}">Male</c:when>
-                                        <c:when test="${mentor.gender == 1}">Female</c:when>
-                                    </c:choose>
-                                    
-                                </th>
-                                <th>${mentor.address}</th>
-                                <th><a href="#">Demote</a></th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Account</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>DOB</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Action</th>
                             </tr>
-                        </c:forEach> 
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${mentors}" var="mentor">
+                                <tr>
+                                    <th>${mentor.id}</th>
+                                    <th>${mentor.name}</th>
+                                    <th>${mentor.account}</th>
+                                    <th>${mentor.email}</th>
+                                    <th>${mentor.phone}</th>
+                                    <th>${mentor.dob}</th>
+                                    <th>
+                                        <c:choose >
+                                            <c:when test="${mentor.gender == 0}">Male</c:when>
+                                            <c:when test="${mentor.gender == 1}">Female</c:when>
+                                        </c:choose>
+
+                                    </th>
+                                    <th>${mentor.address}</th>
+                                    <th><a href="AdminMentorList?action=demote&id=${mentor.id}">Demote</a></th>
+                                </tr>
+                            </c:forEach> 
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <%@include file="Footer.jsp" %>
         </div>

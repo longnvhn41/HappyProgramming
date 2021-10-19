@@ -40,8 +40,22 @@ public class AdminMentorListController extends HttpServlet {
             throws ServletException, IOException {
         try {
             response.setContentType("text/html;charset=UTF-8");
+
             DBConnect dc = new DBConnect();
             UserDao ud = new UserDao(dc);
+
+            if (request.getParameter("action") != null) {
+                String action = request.getParameter("action");
+                switch (action) {
+                    case "demote":
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        ud.demoteUser(id);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             ArrayList<User> mentors = ud.getPaginatedMentors();
 
             request.setAttribute("mentors", mentors);

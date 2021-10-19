@@ -272,4 +272,15 @@ public class UserDao {
         return null;
     }
 
+    public void demoteUser(int id) {
+        String sql = "Update [User] SET role=1 WHERE id=?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
