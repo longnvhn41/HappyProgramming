@@ -53,6 +53,7 @@
                                         <!--Admin-->
                                         <a class="dropdown-item" href="SkillController?action=adminSkillList">Manage Skills</a>
                                         <a class="dropdown-item" href="AdminMentorList">Manage Mentors</a>
+                                        <a class="dropdown-item" href="UserController?service=displayMentee_mentor">Manage Become Mentor Request</a>
                                     </c:when>
                                 </c:choose>
                                 <!--<div class="dropdown-divider"></div>-->

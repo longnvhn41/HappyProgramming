@@ -1,3 +1,7 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entity.Skill"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- 
     Document   : userProfile
     Created on : Sep 24, 2021, 4:50:51 PM
@@ -15,34 +19,55 @@
         <link href="css/userprofile_1.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        <form action="UserController?service=addRequestMentor&id=${sessionScope.user.id}" method="POST">
         <div class="container">
             <div class="menter-register" id="menter-register">
                 <div class="menter-register__heading">
-                    <p class="heading-title">Mentor Register</p>
+                    <p class="heading-title">CV Mentor Register</p>
                 </div>
-                <form action="RequestController?service=becomeMentor&id=${sessionScope.user.id}" method="POST">
+                <div class="menter-register__item">
+                    <label for="link-linkedin" class="menter-register__label">Full Name: </label>
+                    <input type="" id="link-linkedin" class="mentor-register__input" value="${sessionScope.user.name}"> 
+                </div>
+                <div class="menter-register__item">
+                    <label for="link-linkedin" class="menter-register__label">Email: </label>
+                    <input type="" id="link-linkedin" class="mentor-register__input" value="${sessionScope.user.email}"> 
+                </div>
+                <div class="menter-register__item">
+                    <label for="link-linkedin" class="menter-register__label">Phone Number: </label>
+                    <input type="" id="link-linkedin" class="mentor-register__input" value="${sessionScope.user.phone}"> 
+                </div>
+                <div class="menter-register__item">
+                    <label for="link-linkedin" class="menter-register__label">Date of birth: </label>
+                    <input type="" id="link-linkedin" class="mentor-register__input" value="${sessionScope.user.dob}"> 
+                </div>
+                <div class="menter-register__item">
+                    <label for="link-linkedin" class="menter-register__label">Address</label>
+                    <input type="" id="link-linkedin" class="mentor-register__input" value="${sessionScope.user.address}"> 
+                </div>
+                <div class="menter-register__item">
+                    <label for="link-linkedin" class="menter-register__label">Introduction: </label>
+                    <input type="" id="link-linkedin" class="mentor-register__input" name="introduce"> 
+                </div>
+                
                     <div class="menter-register__body">
+                        <div class="menter-register__item">
+                            <label for="link-github" class="menter-register__label">Link Github:</label>
+                            <input type="text" id="link-github" class="mentor-register__input"> 
+                        </div>
+
                         <div class="menter-register__item">
                             <label for="skill" class="menter-register__label">
                                 <p class="red-star">*</p>
                                 Chọn kĩ năng:
                             </label>
-                            <input type="text" id="skill" class="mentor-register__input" name="skill" placeholder="Chọn kĩ năng">
-                        </div>
-                        <div class="menter-register__item">
-                            <label for="link-cv" class="menter-register__label">
-                                <p class="red-star">*</p>
-                                Link file CV:
-                            </label>
-                            <input type="text" id="link-cv" class="mentor-register__input"> 
-                        </div>
-                        <div class="menter-register__item">
-                            <label for="link-github" class="menter-register__label">Link Github:</label>
-                            <input type="text" id="link-github" class="mentor-register__input"> 
-                        </div>
-                        <div class="menter-register__item">
-                            <label for="link-linkedin" class="menter-register__label">Linkedin:</label>
-                            <input type="" id="link-linkedin" class="mentor-register__input"> 
+                            <select name="nameSkill" class="mentor-register__input" multiple="true" size="6">
+                                <c:forEach var="o" items="${list}">
+
+                                    <option value="${o.id}">${o.name}</option>
+                                </c:forEach>
+
+                            </select>
                         </div>
                         <div> 
                             <input style="margin-left: 350px" type="submit" value="Register" />

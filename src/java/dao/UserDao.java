@@ -6,6 +6,7 @@
 package dao;
 
 import context.DBConnect;
+import entity.Request_mentor;
 import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +104,7 @@ public class UserDao {
         }
     }
 
-    public int addCustomer(String cname, String account, String password, String email,
+    public int addUser(String cname, String account, String password, String email,
             String phone, String dob, int gender, String address, int role, String ava) {
 
         int n = 0;
@@ -120,7 +121,6 @@ public class UserDao {
             pre.setInt(7, gender);
             pre.setString(8, address);
             pre.setInt(9, role);
-            ava = null;
             pre.setString(10, ava);
 
             n = pre.executeUpdate();
@@ -249,6 +249,63 @@ public class UserDao {
         return true;
     }
 
+    public void addRequestMentor(int userid, int sid, String intro, int status) {
+        String sql = "insert into request_mentor_skill(userid, skillid, introduce, [status]) values (?,?,?,?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, userid);
+            pre.setInt(2, sid);
+            pre.setString(3, intro);
+            pre.setInt(4, status);
+            pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public void changeRoleforUser(int role, int userid) {
+        String sql = "Update [User] SET role=? WHERE id=?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, role);
+            pre.setInt(2, userid);
+            pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public ArrayList<Request_mentor> getAllProduct() {
+        ArrayList<Request_mentor> list = new ArrayList<Request_mentor>();
+        String sql = "select * from Product";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            while (rs.next()) {
+                Request_mentor req = new Request_mentor(rs.getInt(1),
+                        rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+                list.add(req);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public void updateRole(String email) {
+        String sql = "Update [User] SET role=0 WHERE email=?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
+            pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    public void updateRole2(String email) {
+        String sql = "Update [User] SET role=1 WHERE email=?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
+            pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
     public ArrayList<User> getPaginatedMentors() {
         try {
             String sql = "SELECT * FROM [User] WHERE role = 0";
@@ -272,7 +329,8 @@ public class UserDao {
         return null;
     }
 
-    public void demoteUser(int id) {
+
+public void demoteUser(int id) {
         String sql = "Update [User] SET role=1 WHERE id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
