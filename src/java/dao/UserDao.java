@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
@@ -103,7 +102,7 @@ public class UserDao {
         }
     }
 
-    public int addCustomer(String cname, String account, String password, String email,
+    public int addUser(String cname, String account, String password, String email,
             String phone, String dob, int gender, String address, int role, String ava) {
 
         int n = 0;
@@ -120,7 +119,6 @@ public class UserDao {
             pre.setInt(7, gender);
             pre.setString(8, address);
             pre.setInt(9, role);
-            ava = null;
             pre.setString(10, ava);
 
             n = pre.executeUpdate();
@@ -247,40 +245,6 @@ public class UserDao {
             return false;
         }
         return true;
-    }
-
-    public ArrayList<User> getPaginatedMentors() {
-        try {
-            String sql = "SELECT * FROM [User] WHERE role = 0";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            ArrayList<User> mentors = new ArrayList<User>();
-            int i = 0;
-            while (rs.next()) {
-                mentors.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
-                        rs.getInt(8), rs.getString(9)));
-            }
-
-            return mentors;
-
-        } catch (SQLException ex) {
-            System.out.println("SQL Exception");
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public void demoteUser(int id) {
-        String sql = "Update [User] SET role=1 WHERE id=?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, id);
-            pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 }

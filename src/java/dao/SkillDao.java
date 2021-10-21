@@ -70,12 +70,10 @@ public class SkillDao {
     }
 
     // Lấy danh sách Skill
-    public static ArrayList<Skill> getSkillList() {
+    public ArrayList<Skill> getSkillList() {
 
         ArrayList<Skill> skillList = new ArrayList<>();
         String query = "select * from skill";
-
-
         try {
             conn = new DBConnect().con;
             ps = conn.prepareStatement(query);
@@ -84,7 +82,6 @@ public class SkillDao {
             while (rs.next()) {
                 skillList.add(new Skill(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
             }
-
             try{rs.close();} catch(Exception e){}    
             try{ps.close();} catch(Exception e){}   
             try{con.close();} catch(Exception e){}      
@@ -135,14 +132,48 @@ public class SkillDao {
             System.out.println(e);
         }
     }
+    
+    public ArrayList<Skill> getSkillRequest(int id){
+        ArrayList<Skill> skillList = new ArrayList<>();
+        String query = "SELECT s.id, s.name, s.description FROM skill s " 
+                    + "inner join request_skill rs  " 
+                    + "on s.id = rs.skill_id " 
+                    + "inner join request r  " 
+                    + "on rs.request_id = r.id " 
+                    + "where r.id = (?) ";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                skillList.add(new Skill(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+            }
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return skillList;
+    }
 
-    public static void main(String[] args) {
-        ArrayList<Skill> a = SkillDao.getSkillList();
-        
-        
+    /*public static void main(String[] args) throws SQLException {
+        DBConnect dconn = new DBConnect();
+        SkillDao s = new SkillDao(dconn);
+        ArrayList<Skill> a = s.getSkillRequest(25);     
         for (Skill skill : a) {
             System.out.println(skill.toString());
         }
-    }
+    }*/
      
 }

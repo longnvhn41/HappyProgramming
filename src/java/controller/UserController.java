@@ -6,18 +6,23 @@
 package controller;
 
 import context.DBConnect;
+import dao.SkillDao;
 import dao.UserDao;
+import entity.Skill;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,6 +58,7 @@ public class UserController extends HttpServlet {
                 service = "logout";
             }
             if (service.equals("Signup")) {
+                HttpSession session = request.getSession();
                 String name = request.getParameter("fullname");
                 String email = request.getParameter("email");
                 String phone = request.getParameter("phone");
@@ -63,8 +69,9 @@ public class UserController extends HttpServlet {
                 int gender = Integer.parseInt(request.getParameter("gender"));
                 String address = request.getParameter("address");
                 int role = 1;
+                String ava = null;
                 User user = new User(name, account, pass, email, phone, dob, gender, address, role);
-                sc.setAttribute("newuser", user);
+                session.setAttribute("user", user);
                 User u1 = d.checkExitsEmail(email);
                 if (u1 == null) {
                     User u = d.checkUserExitsAccount(account);
@@ -75,15 +82,14 @@ public class UserController extends HttpServlet {
                         } else {
                             String userfrom = "longnvhn41@gmail.com";
                             String passfrom = "nguyenvanlong98";
-                            String code = d.getRandom();
-                            String subject = "User Email Verification";
-                            String message = ("Registered successfully.Please verify your account using this code: " + code);
-                            HttpSession session = request.getSession();
-                            session.setAttribute("check", code);
+                            String code = "http://localhost:8080/HappyProgramming/login.jsp";
+                            String subject = "Welcome to Happy Programming";
+                            String message = ("Registered successfully. Welcome to Happy Programming: " + code);
                             UserDao.send(email, subject, message, userfrom, passfrom);
-                            response.sendRedirect("verify.jsp");
+                            request.setAttribute("thongBao", "Successful registration, welcome to the system.");
+                            d.addUser(name, account, pass, email, phone, dob, gender, address, role, ava);
+                            request.getRequestDispatcher("login.jsp").forward(request, response);
                         }
-
                     } else {
                         request.setAttribute("alert", "Account already exists!");
                         request.getRequestDispatcher("signup.jsp").forward(request, response);
@@ -94,19 +100,30 @@ public class UserController extends HttpServlet {
                 }
 
             }
-            if (service.equals("checkCode")) {
-                HttpSession session = request.getSession();
-                String codeAuth = session.getAttribute("check").toString();
-                User user = (User) sc.getAttribute("newuser");
-                String code = request.getParameter("authcode");
-                if (code.equals(codeAuth)) {
-                    d.addCustomer(user.getName(), user.getAccount(), user.getPassword(), user.getEmail(),
-                            user.getPhone(), user.getDob(), user.getGender(), user.getAddress(), user.getRole(), user.getAva());
-                    response.sendRedirect("homepage.jsp");
-                } else {
-                    request.setAttribute("alert1", "The code is incorrect!");
-                    request.getRequestDispatcher("verify.jsp").forward(request, response);
-                }
+//            
+            if (service.equals("login")) {
+                String acc = request.getParameter("username");
+                String password = request.getParameter("password");
+                User u=d.checkUser(acc, password);
+                if(u==null){
+                    HttpSession session=request.getSession();
+                    request.setAttribute("mess1", "Wrong password! Please enter again");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }else{
+                    Cookie usernameC = new Cookie("userC", acc);
+                    Cookie passwordC = new Cookie("passC", password);
+                    usernameC.setMaxAge(60*60*24);
+                    if(request.getParameter("remember-me") != null){
+                        passwordC.setMaxAge(60*60*24);
+                    }else{
+                        passwordC.setMaxAge(0);
+                    }
+                    response.addCookie(usernameC);
+                    response.addCookie(passwordC);
+                    HttpSession session=request.getSession();
+                    session.setAttribute("user", u);
+                    request.getRequestDispatcher("homepage.jsp").forward(request, response);
+                    }
             }
             if (service.equals("logout")) {
                 HttpSession session = request.getSession();
@@ -151,7 +168,7 @@ public class UserController extends HttpServlet {
                 request.setAttribute("thongbao", "Update successful. Please log in again!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-                        if (service.equals("change_password")) {
+            if (service.equals("change_password")) {
                 String oldPassword = request.getParameter("old_password");
                 HttpSession session = request.getSession();
                 User u = (User) session.getAttribute("user");
@@ -170,10 +187,11 @@ public class UserController extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (service.equals("becomeMentor")) {
-
-                response.sendRedirect("userProfile.jsp");
+                SkillDao dao = new SkillDao(dBConnect);
+                List<Skill> list = dao.getSkillList();
+                request.setAttribute("list", list);
+                request.getRequestDispatcher("userProfile.jsp").forward(request, response);
             }
-
         }
     }
 

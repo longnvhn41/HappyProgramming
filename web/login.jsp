@@ -49,10 +49,12 @@
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-                    <form action="login" method="POST" class="login100-form validate-form" >
+                    <form action="UserController?service=login" method="POST" class="login100-form validate-form" >
                         <span class="login100-form-title p-b-55">
                             Login
                         </span>
+                        <h4 style="color: #34eb61">${thongBao}</h4>
+                        <p style="color: #e0a800; margin-bottom: 25px"><b>${mess1}</b></p>
                         <c:if test="${thongbao!=null}">
                             <h4 style="color: #e0a800; margin-bottom: 30px"><%=thongbao%></h4>
                         </c:if>

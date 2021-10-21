@@ -67,7 +67,7 @@ public class SkillController extends HttpServlet {
                 break;
 
             case "adminCreateSkill":
-                request.getRequestDispatcher("adminCreateSkillNew.jsp").forward(request, response);
+                request.getRequestDispatcher("adminCreateSkill.jsp").forward(request, response);
                 break;
         }
     }
@@ -121,7 +121,7 @@ public class SkillController extends HttpServlet {
         List<Skill> all = d.getSkillList();
 
         request.setAttribute("all", all);
-        request.getRequestDispatcher("adminAllSkillNew.jsp").forward(request, response);
+        request.getRequestDispatcher("adminAllSkill.jsp").forward(request, response);
     }
 
     // TÌM KỸ NĂNG THEO ID VÀ CHUYỂN TỚI TRANG UPDATE ĐỂ CẬP NHẬT
@@ -136,7 +136,7 @@ public class SkillController extends HttpServlet {
         Skill s = d.getSkill(id);
 
         request.setAttribute("skill", s);
-        request.getRequestDispatcher("adminUpdateSkillNew.jsp").forward(request, response);
+        request.getRequestDispatcher("adminUpdateSkill.jsp").forward(request, response);
     }
 
     // CẬP NHẬT KỸ NĂNG
@@ -182,7 +182,7 @@ public class SkillController extends HttpServlet {
             response.sendRedirect("SkillController?action=adminSkillList");
         } else {
             request.setAttribute("skillNameExisted", " Tên kỹ năng đã tồn tại");
-            request.getRequestDispatcher("adminCreateSkillNew.jsp").forward(request, response);
+            request.getRequestDispatcher("adminCreateSkill.jsp").forward(request, response);
         }
 
     }
