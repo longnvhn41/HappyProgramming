@@ -175,6 +175,7 @@ public class UserController extends HttpServlet {
                 d.changeRoleforUser(role, userid);
                 d.addRequestMentor(userid, sid, intro, status);
                 response.sendRedirect("homepage.jsp");
+
             }
 
             if (service.equals("displayMentee_mentor")) {
@@ -189,9 +190,11 @@ public class UserController extends HttpServlet {
             if (service.equals("handleMentor")) {
                 String email = request.getParameter("email");
                 d.updateRole(email);
-                response.sendRedirect("UserController?service=displayMentee_mentor");
+                int id=d.getMaxRequest_BecomeMentorId();
+                d.deleteRequestBecomeMentor(id);
+                request.getRequestDispatcher("UserController?service=displayMentee_mentor").forward(request, response);
             }
-            if (service.equals("handleMentor2")) {                
+            if (service.equals("handleMentor2")) {
                 String email = request.getParameter("email");
                 d.updateRole2(email);
                 String userfrom = "longnvhn41@gmail.com";
@@ -200,18 +203,12 @@ public class UserController extends HttpServlet {
                 String subject = "Message from Happy Programming!";
                 String message = ("You are refused to become a teacher of the system. Thank you for your interest in Happy Programming. " + code);
                 UserDao.send(email, subject, message, userfrom, passfrom);
+                int id=d.getMaxRequest_BecomeMentorId();
+                d.deleteRequestBecomeMentor(id);
                 request.getRequestDispatcher("UserController?service=displayMentee_mentor").forward(request, response);
 
             }
-            if (service.equals("displayMentee_mentor2")) {
-
-                String sql = "select rm.id, u.full_name, u.email, u.phone, u.address, skill.[name], "
-                        + "rm.introduce, u.role from [user] as u join request_mentor_skill as rm on "
-                        + "u.id=rm.userid join skill on skill.id=rm.skillid where role=3";
-                ResultSet rs = dBConnect.getData(sql);
-                request.setAttribute("ketQua", rs);
-                request.getRequestDispatcher("mentee_Mentor2.jsp").forward(request, response);
-            }
+            
         }
     }
 

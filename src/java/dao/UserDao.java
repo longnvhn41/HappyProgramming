@@ -297,6 +297,7 @@ public class UserDao {
         } catch (Exception e) {
         }
     }
+
     public void updateRole2(String email) {
         String sql = "Update [User] SET role=1 WHERE email=?";
         try {
@@ -306,6 +307,7 @@ public class UserDao {
         } catch (Exception e) {
         }
     }
+
     public ArrayList<User> getPaginatedMentors() {
         try {
             String sql = "SELECT * FROM [User] WHERE role = 0";
@@ -329,8 +331,7 @@ public class UserDao {
         return null;
     }
 
-
-public void demoteUser(int id) {
+    public void demoteUser(int id) {
         String sql = "Update [User] SET role=1 WHERE id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -339,6 +340,34 @@ public void demoteUser(int id) {
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public int getMaxRequest_BecomeMentorId() {
+        String query = "SELECT MAX(id) FROM request_mentor_skill";
+        int output = 0;
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                output = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return output;
+    }
+
+    public void deleteRequestBecomeMentor(int id) {
+
+        String delsql = "delete from request_mentor_skill where id=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(delsql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
