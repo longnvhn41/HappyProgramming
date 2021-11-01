@@ -1,0 +1,87 @@
+
+
+
+
+CREATE TABLE Persons (
+    id int NOT NULL AUTO_INCREMENT,
+    full_name varchar(255) NOT NULL,
+    account varchar(255),
+     password varchar(255),
+      email varchar(255),
+       phone varchar(255),
+        gender bit,
+        address varchar(255),
+    role int,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE cv (
+    id int NOT NULL AUTO_INCREMENT,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    user_id int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+
+CREATE TABLE skill (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+     description varchar(500),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE cv_skill (
+    id int NOT NULL AUTO_INCREMENT,
+    cv_id int NOT NULL,
+    skill_id int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (cv_id) REFERENCES cv(id)
+);
+
+CREATE TABLE request (
+    id int NOT NULL AUTO_INCREMENT,
+    mentee_id int NOT NULL,
+    mentor_id int,
+    message varchar(500),
+    request_date varchar(500),
+    status int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (mentee_id) REFERENCES cv(id),
+     FOREIGN KEY (mentor_id) REFERENCES cv(id)
+);
+
+CREATE TABLE request_skill (
+    id int NOT NULL AUTO_INCREMENT,
+    request_id int,
+    skill_id int,
+    PRIMARY KEY (id),
+     FOREIGN KEY (skill_id) REFERENCES skill(id)
+);
+
+CREATE TABLE rating (
+    id int NOT NULL AUTO_INCREMENT,
+    mentee_id int,
+    mentor_id int,
+     rate int,
+     comment  varchar(500),
+    PRIMARY KEY (id),
+    FOREIGN KEY (mentee_id) REFERENCES user(id),
+     FOREIGN KEY (mentor_id) REFERENCES user(id)
+);
+
+ALTER TABLE user
+ADD ava varchar(500);
+
+INSERT INTO mentor (name, img, description, rate)
+VALUES ('Test', 'aaahttps://upload.wikimedia.org/wikipedia/commons/thumb/6/63/IMG_%28business%29.svg/1200px-IMG_%28business%29.svg.png', 'aaa', 5);
+
+
+
+UPDATE mentor
+SET img = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/IMG_%28business%29.svg/1200px-IMG_%28business%29.svg.png'
+WHERE  id >= 1;
+
+select * from mentor where name like '%Test%'
+

@@ -20,27 +20,22 @@ import java.util.logging.Logger;
  */
 public class DBConnect {
 
+    private static String DB_URL = "jdbc:mysql://localhost:3306/happyprogramming";
+    private static String USER_NAME = "root";
+    private static String PASSWORD = "123456789";
     //class này quản lý các kết nối đến cơ sở dữ liệu
     public Connection con = null;//cho bằng null để tránh ngoại lệ
 
-    public DBConnect(String URL, String username, String pass) throws SQLException {
+    public DBConnect() throws SQLException {
         //để kết nối đến cơ sở dữ liệu
         try {
             //get driver
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            con = DriverManager.getConnection(URL, username, pass);
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(DB_URL, USER_NAME, PASSWORD);
             System.out.println("Connected");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }
-
-    public DBConnect() throws SQLException {
-        this("jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming", "sa", "sa");
 
     }
 

@@ -1,17 +1,12 @@
-<%-- 
-    Document   : homepage
-    Created on : Sep 24, 2021, 2:21:52 AM
-    Author     : Administrator
---%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <title>Happy Programming</title>
-
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Mentor List</title>
+        <link rel="stylesheet" href="./css/myStyle.css" type="text/css" />
     </head>
     <style>
         *{
@@ -87,8 +82,7 @@
         }
     </style>
     <body>
-
-        <div id="main">
+        <div class="container">
             <div id="header">
                 <ul id=nav>
                     <li><a href="#">Happy Programming</a></li>
@@ -96,8 +90,7 @@
                         <li><a href="login.jsp">Login</a></li>
                         <li><a href="signup.jsp">Signup</a></li>
                         </c:if>
-
-                    <c:if test="${sessionScope.user!=null}">
+                        <c:if test="${sessionScope.user!=null}">
                         <li><a href="#" style="padding-right:0">Hello: ${sessionScope.user.account}                              
                             </a></li>
                         <li><a href="UserController?service=userProfile&user=${sessionScope.user.account}"
@@ -105,47 +98,69 @@
                         <!-- Phân quyền cho mentee-->
                         <c:if test="${sessionScope.user.role==1}">
                             <li><a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Become Mentor</a></li>
-                        </c:if>
+                            </c:if>
                         <!-- Phân quyền cho mentor-->
                         <c:if test="${sessionScope.user.role==0}">
                             <li><a href="#">Request of student</a></li>
                             <li><a href="#">Request</a></li>
-                        </c:if>
+                            </c:if>
                         <!-- Phân quyền cho admin--> 
                         <c:if test="${sessionScope.user.role==2}">
                             <li><a href="#">Manager User</a></li>
                             <li><a href="#">Request</a></li>
                             <li><a href="#">Contact</a></li>
                             <li><a href="SkillController?action=adminSkillList">Skill list</a></li>
-                        </c:if>
+                            </c:if>
 
                         <li><a href="UserController?service=logout">Logout</a></li>
                         <li><a href="changePass.jsp">Change Password</a></li>
                         <li><a href="MentorController">List Mentor</a></li>
-                         <li><a href="createMentor.jsp">Create Mentor</a></li>
                         </c:if>
-
                 </ul>
             </div>
 
-            <div id=slider>
-                <div class="text-content">
-                    <h2 class="text-heading">C#</h2>
-                    <div class="text-description">C# (C-Sharp) is a programming language developed by Microsoft that runs on the .NET Framework.
-                        C# is used to develop web apps, desktop apps, mobile apps, games and much more.</div>
+            <div class="my-gallery">
+                <div class="search-container">
+                    <form action="MentorController">
+                        <input type="text" placeholder="Enter Name.." name="name">
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
-
-            </div>
-
-            <div id="content">
-
-            </div>
-
-            <div id="footer">
-                <div>©2021 Web học lập trình uy tín hàng đầu Việt Nam - Được tài trợ bởi SWP291</div>
-
+                <c:forEach items="${mentors}" var="l">
+                    <div class="gallery-item">
+                        <div class="gallery-img_preview">
+                            <img  src="${l.img}">
+                        </div>
+                        <div class="gallery-item_content">
+                            <h4 style="margin: 5px">${l.name}</h4>
+                            <p style="margin: 5px 0 0 0"><i class="fa fa-map-marker"></i> ${l.description}</p>
+                            <div style="display: flex">
+                                <span>(${l.rate % 1 == 0 ? fn:substring(l.rate,0,1) : fn:substring(l.rate,0,3)}/5)</span>
+                                <div class="rate">
+                                    <c:forEach varStatus="loop" begin="0" end="4">
+                                        <c:if test="${l.rate - loop.count >= 0}">
+                                            <span style="color: gold"></span>
+                                        </c:if>
+                                        <c:if test="${l.rate lt loop.count}">
+                                            <c:if test="${loop.count - l.rate <= 0.5 and loop.count - l.rate > 0}" >
+                                                <span class="half"></span>
+                                            </c:if>
+                                            <c:if test="${loop.count - l.rate >0.5}">
+                                                <span></span>
+                                            </c:if>
+                                        </c:if>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>   
+                <c:if test="${mentors.size() == 0}">
+                    <h1>Not found</h1>
+                </c:if>
             </div>
         </div>
 
-    </body>
+    </div>
+</body>
 </html>
