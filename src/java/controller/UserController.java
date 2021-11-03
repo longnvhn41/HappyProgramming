@@ -169,6 +169,9 @@ public class UserController extends HttpServlet {
             if (service.equals("addRequestMentor")) {
                 int userid = Integer.parseInt(request.getParameter("id"));
                 int sid = Integer.parseInt(request.getParameter("nameSkill"));
+                Skill skill = d.nameSkill(sid);
+                String nameSkill = skill.getName();
+                d.updateFramework(nameSkill, userid);
                 String intro = request.getParameter("introduce");
                 int status = 0;
                 int role = 3;
@@ -190,7 +193,7 @@ public class UserController extends HttpServlet {
             if (service.equals("handleMentor")) {
                 String email = request.getParameter("email");
                 d.updateRole(email);
-                int id=d.getMaxRequest_BecomeMentorId();
+                int id = d.getMaxRequest_BecomeMentorId();
                 d.deleteRequestBecomeMentor(id);
                 request.getRequestDispatcher("UserController?service=displayMentee_mentor").forward(request, response);
             }
@@ -203,12 +206,20 @@ public class UserController extends HttpServlet {
                 String subject = "Message from Happy Programming!";
                 String message = ("You are refused to become a teacher of the system. Thank you for your interest in Happy Programming. " + code);
                 UserDao.send(email, subject, message, userfrom, passfrom);
-                int id=d.getMaxRequest_BecomeMentorId();
+                int id = d.getMaxRequest_BecomeMentorId();
                 d.deleteRequestBecomeMentor(id);
                 request.getRequestDispatcher("UserController?service=displayMentee_mentor").forward(request, response);
 
             }
-            
+            if(service.equals("mentorByList")){
+                String sql = "select u.id, u.full_name, u.email, u.phone,cv.description from [user] as u join cv on u.id=cv.[user_id] join cv_skill as"
+                        + " cvs on cv.id=cvs.cv_id join skill as s on cvs.skill_id=s.id \n" +
+                            "join request_skill as rs on s.id=rs.skill_id where u.role=0 and cvs.skill_id=rs.skill_id";
+                ResultSet rs = dBConnect.getData(sql);
+                request.setAttribute("ketQua", rs);
+                request.getRequestDispatcher("mentorBySkill.jsp").forward(request, response);
+            }
+
         }
     }
 

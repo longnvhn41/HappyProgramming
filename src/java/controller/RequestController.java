@@ -7,9 +7,11 @@ package controller;
 
 import context.DBConnect;
 import dao.RequestDao;
+import entity.Request_Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -43,13 +45,14 @@ public class RequestController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
             if (service.equals("becomeMentor")) {
-                String skill= request.getParameter("skill");
+                String skill = request.getParameter("skill");
                 int id = Integer.parseInt(request.getParameter("id"));
-                String mess = "Become Mentor: "+skill;
+                String mess = "Become Mentor: " + skill;
                 int status = 0;
                 dao.addRequest(id, mess, status);
                 response.sendRedirect("homepage.jsp");
             }
+            
         }
     }
 
