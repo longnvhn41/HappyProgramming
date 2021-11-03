@@ -95,6 +95,28 @@ public class RatingDAO {
         }
     }
 
+    public int getAverageRating(int id) {
+        try {
+            String sql = "select AVG(r.rate)\n"
+                    + "from rating r "
+                    + "left join [user] u "
+                    + "on r.mentee_id = u.id "
+                    + "where mentor_id=?";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+
+            ResultSet rs = pre.executeQuery();
+
+            ArrayList<Rating> ratings = new ArrayList<Rating>();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
     public void deleteRating(int id) {
         try {
             String sql = "delete from rating where id = ?";
