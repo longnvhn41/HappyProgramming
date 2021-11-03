@@ -22,6 +22,31 @@ public class User {
     String address;
     int role;
     String ava;
+    String framework;
+
+    public String getFramework() {
+        return framework;
+    }
+
+    public void setFramework(String framework) {
+        this.framework = framework;
+    }
+
+    public User(int id, String name, String account, String password, String email, String phone, String dob, int gender, String address, int role, String ava, String framework) {
+        this.id = id;
+        this.name = name;
+        this.account = account;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+        this.gender = gender;
+        this.address = address;
+        this.role = role;
+        this.ava = ava;
+        this.framework = framework;
+    }
+    
     public User() {
     }
 
@@ -62,7 +87,7 @@ public class User {
         this.dob = dob;
         this.gender = gender;
         this.address = address;
-        this.role = role;
+        
     }
     public User(String name, String account, String password, String email, String phone, 
             String dob, int gender, String address, int role) {

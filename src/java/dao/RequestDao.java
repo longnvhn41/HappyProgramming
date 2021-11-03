@@ -6,10 +6,13 @@
 package dao;
 
 import context.DBConnect;
+import entity.Request_Skill;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  *
@@ -39,5 +42,39 @@ public class RequestDao {
         } catch (Exception e) {
         }
         return n;
+    }
+
+    public ArrayList<Request_Skill> getRequestSkillListByRequest(int requestID) {
+        ArrayList<Request_Skill> requestSkillList = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM request_skill where request_id = ? ";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, requestID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                requestSkillList.add(new Request_Skill(rs.getInt(1), rs.getInt(2)));
+            }
+            return requestSkillList;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public int countRequestByMentor(int mentorID) {
+
+        int num = 0;
+        String query = "SELECT COUNT(*) FROM request WHERE mentor_id=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, mentorID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            
+        }
+
+        return num;
     }
 }

@@ -7,6 +7,7 @@ package dao;
 
 import context.DBConnect;
 import entity.Request_mentor;
+import entity.Skill;
 import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -273,21 +274,6 @@ public class UserDao {
         }
     }
 
-    public ArrayList<Request_mentor> getAllProduct() {
-        ArrayList<Request_mentor> list = new ArrayList<Request_mentor>();
-        String sql = "select * from Product";
-        ResultSet rs = dbConn.getData(sql);
-        try {
-            while (rs.next()) {
-                Request_mentor req = new Request_mentor(rs.getInt(1),
-                        rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
-                list.add(req);
-            }
-        } catch (Exception e) {
-        }
-        return list;
-    }
-
     public void updateRole(String email) {
         String sql = "Update [User] SET role=0 WHERE email=?";
         try {
@@ -387,5 +373,44 @@ public class UserDao {
         }
         return null;
     }
+
+    public ArrayList<User> mentorBySkills(int id) {
+        ArrayList<User> list = new ArrayList<>();
+        try {
+            String sql = "";
+        } catch (Exception e) {
+        }
+        return null;
+
+    }
+
+    public void updateFramework(String frame, int IdUSer) {
+        String sql = "UPDATE [user] SET framework =? WHERE id=?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, frame);
+            pre.setInt(1, IdUSer);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        
+    }
+
+    public Skill nameSkill(int IDSkill) {
+        try {
+            String sql = "select * from skill where id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, IDSkill);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Skill(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+        } catch (Exception e) {
+        }
+        
+        return null;
+    }
+
 
 }
