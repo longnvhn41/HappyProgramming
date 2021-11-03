@@ -79,11 +79,7 @@ public class RateMentorController extends HttpServlet {
             }
             request.setAttribute("hasRated", hasRated);
 
-            int totalStars = 0;
-            for (Rating r : ratings) {
-                totalStars += r.getStars();
-            }
-            int averageStars = totalStars/ratings.size();
+            int averageStars = rd.getAverageRating(mentorId);
 
             request.setAttribute("averageStars", averageStars);
         } catch (Exception e) {
