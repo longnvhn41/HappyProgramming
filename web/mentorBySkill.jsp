@@ -3,10 +3,12 @@
     Created on : Oct 13, 2021, 11:16:31 PM
     Author     : Tri
 --%>
+<%@page import="entity.Invitation"%>
+<%@page import="dao.RatingDAO"%>
 <%@page import="entity.User"%>
 <%@page import="dao.InvitationDao"%>
 <%@page import="context.DBConnect"%>
-<%@page import="dao.RequestDao"%>
+<%@page import="dao.RequestHandleDao"%>
 <%@page import="java.sql.ResultSet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -36,7 +38,10 @@
     </head>
     <body>
         <%
+            DBConnect dBConnect = new DBConnect();
             ResultSet rs = (ResultSet) request.getAttribute("ketQua");
+            RatingDAO dao = new RatingDAO(dBConnect);
+            
         %>
         <div class="body-container">
             <%@include file="headerNew.jsp" %>
@@ -53,32 +58,59 @@
                                 <th>Description</th>
                                 <th>Rate</th>
                                 <th>Sum Request</th>
-                                <th>Invi</th>
-                                
+                                <th>Invitation</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <%while (rs.next()) {%>
                             <tr>
+
                                 <td><%=rs.getInt(1)%></td>
                                 <td><%=rs.getString(2)%></td>
                                 <td><%=rs.getString(3)%></td>
                                 <td><%=rs.getString(4)%></td>
                                 <td><%=rs.getString(5)%></td>
-                                <td>5</td>
+                                <%
+                                    int countRate = dao.getAverageRating(rs.getInt(1));
+                                    request.setAttribute("rate", countRate);
+                                %>
+                                <td>${rate}&#9733;</td>
                                 <c:set var="mentorID" value="<%=rs.getString(3)%>"/>
+                                <c:set var="rqID" value="${ID}"/>
                                 <%
                                     String mentorEmail = (String) pageContext.getAttribute("mentorID");
-                                    InvitationDao invi=new InvitationDao();
-                                    int id=invi.getUserByEmail(mentorEmail);
-                                    int count=invi.countRequestByMentor(id);
+                                    InvitationDao invi = new InvitationDao(dBConnect);
+                                    int id = invi.getUserByEmail(mentorEmail);
+                                    int count = invi.countRequestByMentor(id);
                                     request.setAttribute("countRq", count);
-                                    
+
                                 %>
                                 <td>${countRq}</td>
-                                
-                                <td>0</td>
-                                
+
+                                <td>
+                                    <%
+                                        String rq=request.getAttribute("ID").toString();
+                                        int idrq=Integer.parseInt(rq);
+                                        Invitation invitation=invi.getInvitationByMentorRequest(id, idrq);
+                                        if(invitation==null){
+                                    %>
+                                    <form action="UserController" method="POST">
+                                        <input type="hidden" value="<%=rs.getInt(1)%>" name="mentorID">
+                                        <input type="hidden" value="${ID}" name="requestID">
+                                        <input type="hidden" name="service" value="addInvitation">
+                                        <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Invite" id="submit">
+                                    </form>
+                                            <%
+                                                }else{
+                                            %>
+                                            Invited
+                                            <%
+                                            }
+                                            %>
+
+                                </td>
+
                             </tr>
                             <%}%>
                         </tbody>
