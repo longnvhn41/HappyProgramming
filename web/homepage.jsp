@@ -106,8 +106,8 @@
                                style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>-->
                         <!-- Phân quyền cho mentee = 1-->
                         <c:if test="${sessionScope.user.role==1}">
-                            <li><a href="UserController?service=mentorByList">Mentor List Suggestion</a></li>
-                            <li><a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Become Mentor</a></li>
+                            <li><a href="UserController?service=mentorByList">Mentee Dashboard</a></li>
+<!--                            <li><a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Become Mentor</a></li>-->
                             <li><a href="UserController?service=logout">Logout</a>
                             </c:if>
                         <!-- Phân quyền cho mentor = 0-->

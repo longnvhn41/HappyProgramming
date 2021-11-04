@@ -5,7 +5,8 @@
  */
 package dao;
 
-import entity.User;
+import context.DBConnect;
+import entity.Invitation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,18 +19,22 @@ import java.sql.SQLException;
 public class InvitationDao {
 
     Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+
+    DBConnect dbConn = null;
+
+    public InvitationDao(DBConnect dbconn) {
+        conn = dbconn.con;
+        this.dbConn = dbconn;
+    }
 
     public int countRequestByMentor(int mentorID) {
 
         int num = 0;
         String query = "SELECT COUNT(*) FROM request WHERE mentor_id=?";
         try {
-            conn = new testDao().getConnection();
-            ps = conn.prepareStatement(query);
+            PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, mentorID);
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -38,34 +43,70 @@ public class InvitationDao {
         }
         return num;
     }
+
     public int getUserByEmail(String email) {
-        int n=0;
+        int n = 0;
         String sql = "select id from [user] where email=?";
         try {
-            conn = new testDao().getConnection();
-            ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                n=rs.getInt(1);
+                n = rs.getInt(1);
             }
         } catch (Exception e) {
         }
         return n;
     }
-    public int getHighestRequestID() {
+
+    public int maxRequestID() {
         String query = "SELECT MAX(id) FROM request";
         try {
-            conn = new testDao().getConnection();
-            ps = conn.prepareStatement(query);
-            rs = ps.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return rs.getInt(1);
             }
-          
+
         } catch (Exception e) {
             System.out.println(e);
         }
         return 0;
     }
+
+    public void createInvitation(Invitation invitation) throws Exception {
+        String query = "insert into invitation values (?,?,?)";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, invitation.getRequest_id());
+            ps.setInt(2, invitation.getMentor_id());
+            ps.setString(3, invitation.getStatus());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public Invitation getInvitationByMentorRequest(int mentorID, int requestID) {
+
+       
+        String query = "select * from invitation where mentor_id=? and request_id=?";
+
+        try {
+            
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, mentorID);
+            ps.setInt(2, requestID);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return new Invitation(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4));
+            }
+           
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 }
