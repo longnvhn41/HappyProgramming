@@ -6,6 +6,7 @@
 package controller;
 
 import context.DBConnect;
+import dao.InvitationDao;
 import dao.RequestDao;
 import dao.RequestHandleDao;
 import dao.RequestSkillDao;
@@ -16,6 +17,7 @@ import entity.Skill;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -161,11 +163,33 @@ public class RequestController extends HttpServlet {
                 }
             }
             if (service.equals("statisticRequestAfter")) {
-                HttpSession session = request.getSession();
+                 HttpSession session = request.getSession();
                 User user = (User) session.getAttribute("user");
                 int menteeId = user.getId();
-
+                double hours = 0;
+                int totalMentor = dao.getMentorNumberById(menteeId);
                 List<Request> lists = dao.getListRequestById(menteeId);
+                int totalRequest = lists.size();
+                for (Request request1 : lists) {
+                    if(request1.getStatus() == 0){
+                        hours += request1.getDeadlineHour();
+                    }
+                }
+                String sql="select DISTINCT u.id, u.full_name, u.framework, u.email from [user] "
+                        + "as u join rating as r on u.id=r.mentor_id ";
+                ResultSet rs = dBConnect.getData(sql);
+                request.setAttribute("ketQua", rs);
+                InvitationDao invi=new InvitationDao(dBConnect);
+                int skills=invi.skillsInSystem();
+                int menteeCount=invi.menteeInSystem();
+                int mentorCount=invi.mentorInSystem();
+                request.setAttribute("skills", skills);
+                request.setAttribute("mentee", menteeCount);
+                request.setAttribute("mentor", mentorCount);
+                request.setAttribute("total", totalRequest);
+                request.setAttribute("totalMentor", totalMentor);
+                request.setAttribute("totalHour", hours);
+                request.getRequestDispatcher("menteeDashBoard.jsp").forward(request, response); 
 
             }
 
