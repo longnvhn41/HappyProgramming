@@ -17,6 +17,7 @@ import entity.Skill;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -152,7 +153,7 @@ public class RequestController extends HttpServlet {
                     request.getRequestDispatcher("menteeUpdateRequest.jsp").forward(request, response);
                 } else {
                     RequestSkillDao rSDao = new RequestSkillDao(dBConnect);
-                    dao.updateRequestByMentee(requestId, content, 1, deadlineHour, title, deadline, null);
+                    dao.updateRequestByMentee(requestId, content, 1, deadlineHour, title, (Date) deadline, null);
                     request.getRequestDispatcher("homepage.jsp").forward(request, response);
                     rSDao.deleteSkillByRequestId(requestId);
                     for (String s : skill) {
@@ -163,7 +164,7 @@ public class RequestController extends HttpServlet {
                 }
             }
             if (service.equals("statisticRequestAfter")) {
-                 HttpSession session = request.getSession();
+                HttpSession session = request.getSession();
                 User user = (User) session.getAttribute("user");
                 int menteeId = user.getId();
                 double hours = 0;
@@ -171,25 +172,25 @@ public class RequestController extends HttpServlet {
                 List<Request> lists = dao.getListRequestById(menteeId);
                 int totalRequest = lists.size();
                 for (Request request1 : lists) {
-                    if(request1.getStatus() == 0){
+                    if (request1.getStatus() == 0) {
                         hours += request1.getDeadlineHour();
                     }
                 }
-                String sql="select DISTINCT u.id, u.full_name, u.framework, u.email from [user] "
+                String sql = "select DISTINCT u.id, u.full_name, u.framework, u.email from [user] "
                         + "as u join rating as r on u.id=r.mentor_id ";
                 ResultSet rs = dBConnect.getData(sql);
                 request.setAttribute("ketQua", rs);
-                InvitationDao invi=new InvitationDao(dBConnect);
-                int skills=invi.skillsInSystem();
-                int menteeCount=invi.menteeInSystem();
-                int mentorCount=invi.mentorInSystem();
+                InvitationDao invi = new InvitationDao(dBConnect);
+                int skills = invi.skillsInSystem();
+                int menteeCount = invi.menteeInSystem();
+                int mentorCount = invi.mentorInSystem();
                 request.setAttribute("skills", skills);
                 request.setAttribute("mentee", menteeCount);
                 request.setAttribute("mentor", mentorCount);
                 request.setAttribute("total", totalRequest);
                 request.setAttribute("totalMentor", totalMentor);
                 request.setAttribute("totalHour", hours);
-                request.getRequestDispatcher("menteeDashBoard.jsp").forward(request, response); 
+                request.getRequestDispatcher("menteeDashBoard.jsp").forward(request, response);
 
             }
 

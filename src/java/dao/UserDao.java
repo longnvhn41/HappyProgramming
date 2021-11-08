@@ -109,7 +109,7 @@ public class UserDao {
             String phone, String dob, int gender, String address, int role, String ava) {
 
         int n = 0;
-        String sql = "insert into [user] values(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into user values(?,?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -133,7 +133,7 @@ public class UserDao {
 
     public User checkUserExitsAccount(String user) {
         try {
-            String sql = "select * from [User] where account=?";
+            String sql = "select * from User where account=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, user);
 
@@ -150,7 +150,7 @@ public class UserDao {
 
     public User checkUser(String user, String pass) {
         try {
-            String sql = "select * from [user] where account=? and password=?";
+            String sql = "select * from user where account=? and password=?";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, user);
             pre.setString(2, pass);
@@ -160,15 +160,15 @@ public class UserDao {
                         rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11));
                 return u;
             }
-        } catch (Exception e) {
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public User checkExitsEmail(String email) {
         try {
-            String sql = "select * from [User] where email=?";
+            String sql = "select * from User where email=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
 
@@ -185,7 +185,7 @@ public class UserDao {
 
     public User showUserProfile(String account) {
         try {
-            String sql = "select * from [User] where account=?";
+            String sql = "select * from User where account=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, account);
             ResultSet rs = ps.executeQuery();
@@ -203,9 +203,9 @@ public class UserDao {
 
     public void updateUser(String id, String name, String acc, String pass, String email,
             String phone, String dob, String sex, String address) {
-        String sql = "update [user] set full_name=?, account=?, "
-                + "[password]=?,email=?,phone=?, "
-                + "DOB=?, gender=?, [address]=? where id=?";
+        String sql = "update user set full_name=?, account=?, "
+                + "password=?,email=?,phone=?, "
+                + "DOB=?, gender=?, address=? where id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, name);
@@ -225,7 +225,7 @@ public class UserDao {
     }
 
     public void updatePassUser(String email, String password) {
-        String sql = "Update [User] SET password=? WHERE email=?";
+        String sql = "Update User SET password=? WHERE email=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, password);
@@ -238,8 +238,8 @@ public class UserDao {
 
     public boolean changePass(String account, String password) {
         try {
-            String sql = "  UPDATE [HappyProgramming].[dbo].[user]\n"
-                    + "SET [password] = ? WHERE [account] =?";
+            String sql = "  UPDATE user\n"
+                    + "SET password = ? WHERE account =?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, password);
             ps.setString(2, account);
@@ -411,6 +411,5 @@ public class UserDao {
         
         return null;
     }
-
 
 }
