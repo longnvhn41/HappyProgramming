@@ -10,6 +10,7 @@ package entity;
  * @author Nguyen Van Long
  */
 public class Skill {
+
     private int id;
     private String name;
     private String status;
@@ -50,7 +51,7 @@ public class Skill {
     }
 
     @Override
-    public boolean equals(Object o){
-        return ((Skill)o).getId() == this.id;
+    public boolean equals(Object o) {
+        return ((Skill) o).getId() == this.id;
     }
 }

@@ -38,7 +38,6 @@ public class DBConnect {
         }
 
     }
-
     public ResultSet getData(String sql) {
         ResultSet rs = null;
         try {

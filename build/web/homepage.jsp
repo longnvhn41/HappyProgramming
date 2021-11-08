@@ -28,7 +28,7 @@
             left: 0;
             right: 0;
             height: 50px;
-            background-color: #5993a6;
+            background-color: #21130d;
         }
         #nav{
 
@@ -55,7 +55,7 @@
             position: relative;
             margin-top: 50px;
             padding-top: 65%;
-            background: url(images/1.jpg) top center / cover no-repeat;
+            background: url(images/background.jpg) top center / cover no-repeat;
         }
         #slider .text-content{
             position: absolute;
@@ -67,7 +67,7 @@
             text-align: center;
         }
         #slider .text-heading{
-            font-weight: 500;
+            font-weight: 400;
             font-size: 30px;
         }
         #slider .text-description{
@@ -76,7 +76,7 @@
         #footer{
             padding: 60px 20px;
             text-align: center;
-            background-color: #5993a6;
+            background-color: #21130d;
             color: #fff;
         }
         .avatar {
@@ -95,44 +95,57 @@
                         <c:if test="${sessionScope.user==null}">
                         <li><a href="login.jsp">Login</a></li>
                         <li><a href="signup.jsp">Signup</a></li>
+                        <li><a href="#">Contact</a></li>                        
                         </c:if>
 
                     <c:if test="${sessionScope.user!=null}">
                         <li><a href="#" style="padding-right:0">Hello: ${sessionScope.user.account}                              
                             </a></li>
-                        <li><a href="UserController?service=userProfile&user=${sessionScope.user.account}"
-                               style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>
-                        <!-- Phân quyền cho mentee-->
+                        <li><a href="#">Contact</a></li>
+<!--                        <li><a href="UserController?service=userProfile&user=${sessionScope.user.account}"
+                           style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>-->
+                        
+                        <!-- Phân quyền cho mentee = 1-->
                         <c:if test="${sessionScope.user.role==1}">
-                            <li><a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Become Mentor</a></li>
-                        </c:if>
-                        <!-- Phân quyền cho mentor-->
-                        <c:if test="${sessionScope.user.role==0}">
+                            <li><a href="RequestController?service=statisticRequestAfter">Mentee Dashboard</a></li>
+<!--                            <li><a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Become Mentor</a></li>-->
+                            <li><a href="UserController?service=logout">Logout</a>
+                            </c:if>
+                            
+                                <!-- Phân quyền cho mentor = 0-->
+                            <c:if test="${sessionScope.user.role==0}">
                             <li><a href="#">Request of student</a></li>
                             <li><a href="#">Request</a></li>
-                        </c:if>
-                        <!-- Phân quyền cho admin--> 
-                        <c:if test="${sessionScope.user.role==2}">
-                            <li><a href="#">Manager User</a></li>
-                            <li><a href="#">Request</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="SkillController?action=adminSkillList">Skill list</a></li>
-                        </c:if>
+                            <li><a href="UserController?service=logout">Logout</a>
+                            </c:if>
+                            
+                                <!-- Phân quyền cho admin = 2--> 
+                            <c:if test="${sessionScope.user.role==2}">
+                                <!--                            <li><a href="#">Manager User</a></li>
+                                                            <li><a href="#">Request</a></li>-->
+                                <!--                            <li><a href="#">Contact</a></li>-->
+                            <li><a href="template.jsp">Admin Dasboard</a></li>
+                            <!--                            <li><a href="SkillController?action=adminSkillList">Skill list</a></li>-->
 
                         <li><a href="UserController?service=logout">Logout</a></li>
                         <li><a href="changePass.jsp">Change Password</a></li>
                         <li><a href="MentorController">List Mentor</a></li>
                          <li><a href="createMentor.jsp">Create Mentor</a></li>
                         </c:if>
+                        <!--                        <li><a href="UserController?service=logout">Logout</a></li>-->
+                    </c:if>
 
                 </ul>
             </div>
 
             <div id=slider>
                 <div class="text-content">
-                    <h2 class="text-heading">C#</h2>
-                    <div class="text-description">C# (C-Sharp) is a programming language developed by Microsoft that runs on the .NET Framework.
-                        C# is used to develop web apps, desktop apps, mobile apps, games and much more.</div>
+                    <h2 class="text-heading">What Are The Advantages Of Online Learning?</h2>
+                    <div class="text-description">1. Efficiency
+                        Online learning offers teachers an efficient way to deliver lessons to students. Online learning has a number of tools such as videos, PDFs, podcasts, and teachers can use all these tools as part of their lesson plans. By extending the lesson plan beyond traditional textbooks to include online resources, teachers are able to become more efficient educators.
+
+                    </div>
+
                 </div>
 
             </div>
