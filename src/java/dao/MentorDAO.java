@@ -63,7 +63,7 @@ public class MentorDAO {
         String sql = "insert into happyprogramming.mentor(name, img, description, "
                 + "rate, dateOfBird,email, phone, accountName, sex ,address, "
                 + "profession, serviceDescription,achievementDescition,frameWork, skill)\n"
-                + "values (?,?,?,0,?,?,?,?,?,?,?,?,?,?,?);";
+                + "values (?,?,?,3,?,?,?,?,?,?,?,?,?,?,?);";
         try {
             DBConnect connect = new DBConnect();
             conn = connect.con;
