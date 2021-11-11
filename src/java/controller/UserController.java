@@ -113,6 +113,39 @@ public class UserController extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("u", u);
                 response.sendRedirect("showUser.jsp");
+            }if(service.equals("forgetPass")) {
+                String email = request.getParameter("email");
+                User u = d.checkExitsEmail(email);
+                if(u != null){
+                    String userfrom = "longnvhn41@gmail.com";
+                    String passfrom = "nguyenvanlong98";
+                    String code = d.getRandom2(6);
+                    String subject = "Change Your Password";
+                    String message = ("Your authentic code to change your password: " + code);
+                    UserDao.send(email, subject, message, userfrom, passfrom);
+                    HttpSession session = request.getSession();
+                    session.setMaxInactiveInterval(120);
+                    session.setAttribute("otp", code);
+                    session.setAttribute("account", u.getAccount());
+                    request.getRequestDispatcher("forgetPassAfter.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("thongbao", "Email not existed!!");
+                    request.getRequestDispatcher("forgetPass.jsp").forward(request, response);
+                }       
+            }if(service.equals("forgetPassAfter")){
+                HttpSession session = request.getSession();
+                String otp = (String)session.getAttribute("otp");
+                String account = (String)session.getAttribute("account");
+                String pass = request.getParameter("password");
+                String code = request.getParameter("otp");
+                if(code.equals(otp)){
+                    d.changePass(account, pass);
+                    request.setAttribute("thongbao", "Change success!");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("thongbao", "Wrong authentic code");
+                    request.getRequestDispatcher("forgetPassAfter.jsp").forward(request, response);
+                }
             }
             if (service.equals("update")) {
                 int id = Integer.parseInt(request.getParameter("id"));

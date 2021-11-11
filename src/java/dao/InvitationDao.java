@@ -189,5 +189,120 @@ public class InvitationDao {
         }
         return null;
     }
+    
+    public List<Invitation> getInvitationListByMentorId(int id){
+        List<Invitation> ls = new ArrayList<Invitation>();
+        String query = "SELECT * From Invitation where mentor_id = (?)";
+        try {
+            conn = new DBConnect().con;
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                 ls.add(new Invitation(rs.getInt("id"), rs.getInt("request_id"), rs.getInt("mentor_id"), rs.getString("status")));
+            }
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                conn.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return ls;
+    }
+    
+    public void updateInvitationStatus(String status, int inv_id){
+        String query = "UPDATE Invitation SET status = (?) WHERE id = (?)";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, status);
+            ps.setInt(2, inv_id);
+            ps.executeUpdate();
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                conn.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void updateInvitationCancelStatus(String status, int request_id){
+        String query = "UPDATE Invitation SET status = (?) where request_id = (?) and status = 'Processing'";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, status);
+            ps.setInt(2, request_id);
+            ps.executeUpdate();
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                conn.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public Invitation getDeclineInvitationListByRequest(int requestID) {
+
+       
+        String query = "select * from invitation where request_id = (?) and status = 'Processing'";
+
+        try {       
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, requestID);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return new Invitation(rs.getInt("id"), rs.getInt("request_id"), rs.getInt("mentor_id"), rs.getString("status"));
+            }
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                conn.close();
+            } catch (Exception e) {
+            }
+           
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        DBConnect dbconn = new DBConnect();
+        InvitationDao idao = new InvitationDao(dbconn);
+        idao.updateInvitationStatus("Accept", 8);
+        System.out.println("ahihi");
+        Invitation i1 = idao.getDeclineInvitationListByRequest(12);
+        System.out.println(i1.getId());
+
+    }
 
 }

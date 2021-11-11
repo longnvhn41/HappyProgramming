@@ -5,6 +5,7 @@
  */
 package controller;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DateTimeDV;
 import context.DBConnect;
 import dao.InvitationDao;
 import dao.RequestDao;
@@ -163,7 +164,7 @@ public class RequestController extends HttpServlet {
                 }
             }
             if (service.equals("statisticRequestAfter")) {
-                 HttpSession session = request.getSession();
+                HttpSession session = request.getSession();
                 User user = (User) session.getAttribute("user");
                 int menteeId = user.getId();
                 double hours = 0;
@@ -191,6 +192,18 @@ public class RequestController extends HttpServlet {
                 request.setAttribute("totalHour", hours);
                 request.getRequestDispatcher("menteeDashBoard.jsp").forward(request, response); 
 
+            }if(service.equals("mentorRequestList")){
+                response.sendRedirect("mentorRequestList.jsp");
+            }if(service.equals("mentorFinish")){
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                java.util.Date currentDate = new java.util.Date();
+                dao.updateRequestStatusAndDateById(0, requestId, currentDate);
+                response.sendRedirect("mentorRequestList.jsp");
+            }if(service.equals("mentorCancel")){
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                java.util.Date currentDate = new java.util.Date();
+                dao.updateRequestStatusAndDateById(3, requestId, currentDate);
+                response.sendRedirect("mentorRequestList.jsp");
             }
 
         }

@@ -3,7 +3,17 @@
     Created on : Oct 13, 2021, 11:16:31 PM
     Author     : Tri
 --%>
+<%@page import="dao.SkillDao"%>
+<%@page import="entity.Skill"%>
+<%@page import="entity.Request"%>
+<%@page import="dao.RequestDao"%>
+<%@page import="java.util.List"%>
+<%@page import="entity.Invitation"%>
+<%@page import="entity.User"%>
+<%@page import="dao.InvitationDao"%>
+<%@page import="context.DBConnect"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,6 +40,13 @@
 
     </head>
     <body>
+        <%
+            DBConnect dBConnect = new DBConnect();
+            User user = (User) session.getAttribute("user");
+            InvitationDao dao = new InvitationDao(dBConnect);
+            List<Invitation> invitations = dao.getInvitationListByMentorId(user.getId());
+            
+        %>
         <div class="body-container">
             <%@include file="headerNew.jsp" %>
             <!--Thay code vao day-->
@@ -39,36 +56,68 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Account</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Action</th>
+                                <th>Title</th>
+                                <th>Deadline</th>
+                                <th>Content</th>
+                                <th>Hour</th>
+                                <th>Skills</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${mentors}" var="mentor">
-                                <tr>
-                                    <th>${mentor.id}</th>
-                                    <th>${mentor.name}</th>
-                                    <th>${mentor.account}</th>
-                                    <th>${mentor.email}</th>
-                                    <th>${mentor.phone}</th>
-                                    <th>${mentor.dob}</th>
-                                    <th>
-                                        <c:choose >
-                                            <c:when test="${mentor.gender == 0}">Male</c:when>
-                                            <c:when test="${mentor.gender == 1}">Female</c:when>
-                                        </c:choose>
+                            <% 
+                                for (Invitation inv : invitations) {
+                             %>
+                            <tr>
+                                <%
+                                    RequestDao rDAO = new RequestDao(dBConnect);
+                                    Request req = rDAO.getRequestById(inv.getRequest_id());
+                                    request.setAttribute("b", req);
+                                %>
+                                <td>${b.id}</td>
+                                <td>${b.title}</td>
+                                <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${b.deadline}"/></td>
+                                <td style="white-space: pre-wrap;">${b.mess}</td>
+                                <td>${b.deadlineHour}</td>
+                                <%
+                                    SkillDao skillDAO = new SkillDao(dBConnect);
+                                    List<Skill> skillList = skillDAO.getSkillListByRequestId(req.getId());
+                                    request.setAttribute("skillList", skillList);
+                                %>
+                                <td>
+                                    <c:forEach items="${skillList}" var="c">
+                                        ${c.name}<br>
+                                    </c:forEach>
+                                </td>
+                                <%
+                                    request.setAttribute("d", inv);
+                                %>
+                                <td>
+                                    <c:if test="${d.status == 'Processing'}">
+                                        <form action="InvitationController?service=mentorAccept" method="post">
+                                            <input type="hidden" value="${d.request_id}" name="requestId">
 
-                                    </th>
-                                    <th>${mentor.address}</th>
-                                    <th><a href="AdminMentorList?action=demote&id=${mentor.id}">Demote</a></th>
-                                </tr>
-                            </c:forEach> 
+                                            <input style="width: 100px;" class="mb-1 btn btn-success" type="submit" value="Accept" id="submit">
+                                        </form>
+                                        <form action="InvitationController?service=mentorDecline" method="post">
+                                            <input type="hidden" value="${d.request_id}" name="requestId">
+                                            <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Decline" id="submit">
+                                        </form>
+                                    </c:if>
+                                    <c:if test="${d.status == 'Accept'}">
+                                        Accepted
+                                    </c:if>
+                                    <c:if test="${d.status == 'Cancel'}">
+                                        Cancelled
+                                    </c:if>
+                                    <c:if test="${d.status == 'Decline'}">
+                                        Declined
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                            %>
                         </tbody>
                     </table>
                 </div>

@@ -6,6 +6,7 @@
 package dao;
 
 import context.DBConnect;
+import entity.Invitation;
 import entity.Request;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -159,6 +160,38 @@ public class RequestDao {
         return ls;
     }
     
+    public List<Request> getListRequestByMentorId(int id){
+        List<Request> ls = new ArrayList<Request>();
+        String query = "SELECT * From Request where mentor_id = (?) and status != 1";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                 ls.add(new Request(rs.getInt("id"), rs.getInt("mentee_id"), 
+                        rs.getInt("mentor_id"), rs.getString("message"),rs.getString("title"), 
+                        rs.getDate("deadline_date"), rs.getDate("creation_date"), rs.getDate("finish_date"), 
+                        rs.getInt("status"), rs.getFloat("hours")));
+            }
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return ls;
+    }
+    
     public void updateRequestByMentee(int requestId, String message, int status, float hours, String title, Date deadline_date, Date finish_date){
         String query = "Update request set [message]=(?), [status]=(?), [hours]=(?) , title =(?) , deadline_date=(?), finish_date=(?) where id =(?);";
         try {
@@ -188,6 +221,58 @@ public class RequestDao {
             System.out.println(e);
         }
     }
+    
+    public void updateRequestStatusById(int status, int request_id){
+        String query = "update request set status = (?) where id=(?)";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setInt(2, request_id);
+            ps.executeUpdate();
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void updateRequestStatusAndDateById(int status, int request_id, Date finish_date){
+        String query = "update request set status = (?), finish_date=(?) where id=(?)";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setInt(3, request_id);
+            ps.setDate(2, new java.sql.Date(finish_date.getTime()));
+            ps.executeUpdate();
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                conn.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
     public int getMentorNumberById(int id){
         String query = "SELECT COUNT(distinct mentor_id) FROM request WHERE mentee_id = (?)";
         try {
@@ -216,10 +301,36 @@ public class RequestDao {
         return -1;
     }
     
-    /*public static void main(String[] args) throws SQLException {
+    public void updateRequestMentorById(int mentor_id, int request_id){
+        String query = "update request set mentor_id = (?) where id=(?)";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, mentor_id);
+            ps.setInt(2, request_id);
+            ps.executeUpdate();
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public static void main(String[] args) throws SQLException {
         DBConnect dconn = new DBConnect();
-        RequestDao r =new RequestDao(dconn);
-        List<Request> r1 = r.getListRequestById(1);
-        System.out.println(r1.get(1).getMess());
-    }*/
+        RequestDao Rdao =new RequestDao(dconn);
+        java.util.Date currentDate = new java.util.Date();
+        
+        Rdao.updateRequestStatusAndDateById(0, 8, currentDate);
+    }
 }

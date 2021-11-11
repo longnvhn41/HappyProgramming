@@ -238,8 +238,8 @@ public class UserDao {
 
     public boolean changePass(String account, String password) {
         try {
-            String sql = "  UPDATE [HappyProgramming].[dbo].[user]\n"
-                    + "SET [password] = ? WHERE [account] =?";
+            String sql = "  UPDATE [User]\n"
+                    + "SET [password] = (?) WHERE [account] =(?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, password);
             ps.setString(2, account);
@@ -411,6 +411,11 @@ public class UserDao {
         
         return null;
     }
-
+    
+    public static void main(String[] args) throws SQLException {
+        DBConnect dbconn = new DBConnect();
+        UserDao udao = new UserDao(dbconn);
+        udao.changePass("Duong123", "112233424");
+    }
 
 }

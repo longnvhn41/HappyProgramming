@@ -3,7 +3,15 @@
     Created on : Oct 13, 2021, 11:16:31 PM
     Author     : Tri
 --%>
+<%@page import="dao.SkillDao"%>
+<%@page import="entity.Skill"%>
+<%@page import="entity.Request"%>
+<%@page import="dao.RequestDao"%>
+<%@page import="java.util.List"%>
+<%@page import="entity.User"%>
+<%@page import="context.DBConnect"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,6 +38,12 @@
 
     </head>
     <body>
+        <%
+            DBConnect dBConnect = new DBConnect();
+            RequestDao dao = new RequestDao(dBConnect);
+            User user = (User) session.getAttribute("user");   
+            List<Request> requestsByMentor = dao.getListRequestByMentorId(user.getId());
+        %>
         <div class="body-container">
             <%@include file="headerNew.jsp" %>
             <!--Thay code vao day-->
@@ -39,36 +53,60 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Account</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Action</th>
+                                <th>Title</th>
+                                <th>Deadline</th>
+                                <th>Content</th>
+                                <th>Hour</th>
+                                <th>Skills</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${mentors}" var="mentor">
+                            <% 
+                                for (Request req : requestsByMentor) {
+                             %>
                                 <tr>
-                                    <th>${mentor.id}</th>
-                                    <th>${mentor.name}</th>
-                                    <th>${mentor.account}</th>
-                                    <th>${mentor.email}</th>
-                                    <th>${mentor.phone}</th>
-                                    <th>${mentor.dob}</th>
-                                    <th>
-                                        <c:choose >
-                                            <c:when test="${mentor.gender == 0}">Male</c:when>
-                                            <c:when test="${mentor.gender == 1}">Female</c:when>
-                                        </c:choose>
+                                    <%
+                                        request.setAttribute("o", req);
+                                    %>
+                                    <td>${o.id}</td>
+                                    <td>${o.title}</td>
+                                    <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${o.deadline}"/></td>
+                                    <td style="white-space: pre-wrap;">${o.mess}</td>
+                                    <td>${o.deadlineHour}</td>
+                                    <td>
+                                        <%
+                                            SkillDao skillDAO = new SkillDao(dBConnect);
+                                            List<Skill> listSkill = skillDAO.getSkillListByRequestId(req.getId());
+                                            request.setAttribute("listSkill", listSkill);
+                                        %>
+                                        <c:forEach items="${listSkill}" var="i">
+                                            ${i.name}<br/>
+                                        </c:forEach>
+                                    </td>
+                                    <td>
+                                        <c:if test="${o.status == 2}">
+                                            <form action="RequestController?service=mentorFinish" method="post">
+                                                <input type="hidden" value="${o.id}" name="requestId">
 
-                                    </th>
-                                    <th>${mentor.address}</th>
-                                    <th><a href="AdminMentorList?action=demote&id=${mentor.id}">Demote</a></th>
+                                                <input style="width: 100px;" class="mb-1 btn btn-success" type="submit" value="Finish" id="submit">
+                                            </form>
+                                            <form action="RequestController?service=mentorCancel" method="post">
+                                                <input type="hidden" value="${o.id}" name="requestId">
+                                                <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Cancel" id="submit">
+                                            </form>
+                                        </c:if>
+                                        <c:if test="${o.status == 0}">
+                                            Finish Date: <fmt:formatDate pattern = "dd/MM/yyyy" value = "${o.finishDate}"/>
+                                        </c:if>
+                                        <c:if test="${o.status == 3}">
+                                            Cancelled Date: <fmt:formatDate pattern = "dd/MM/yyyy" value = "${o.finishDate}"/>
+                                        </c:if>
+                                    </td>
                                 </tr>
-                            </c:forEach> 
+                            <%
+                                 }
+                             %>
                         </tbody>
                     </table>
                 </div>

@@ -114,8 +114,8 @@
                             
                                 <!-- Phân quyền cho mentor = 0-->
                             <c:if test="${sessionScope.user.role==0}">
-                            <li><a href="#">Request of student</a></li>
-                            <li><a href="#">Request</a></li>
+                            <li><a href="InvitationController?service=mentorInvitationList&id=${sessionScope.user.id}">List of invitations</a></li>
+                            <li><a href="RequestController?service=mentorRequestList&id=${sessionScope.user.id}">List of requests</a></li>
                             <li><a href="UserController?service=logout">Logout</a>
                             </c:if>
                             

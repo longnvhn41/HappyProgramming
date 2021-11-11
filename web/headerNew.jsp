@@ -41,7 +41,8 @@
                                 <c:choose>
                                     <c:when test="${sessionScope.user.role==0}">
                                         <!--Mentor-->
-                                        <a class="dropdown-item" href="#">Mentor Stuff</a>
+                                        <a class="dropdown-item" href="InvitationController?service=mentorInvitationList&id=${sessionScope.user.id}">Invitation List</a>
+                                        
                                     </c:when>
 
                                     <c:when test="${sessionScope.user.role==1}">

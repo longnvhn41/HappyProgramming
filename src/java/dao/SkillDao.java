@@ -169,14 +169,51 @@ public class SkillDao {
         }
         return skillList;
     }
+    
+    public ArrayList<Skill> getSkillListByRequestId(int id){
+        ArrayList<Skill> skillList = new ArrayList<>();
+        String query = "select * "
+                + "from skill s "
+                + "inner join request_skill rs "
+                + "on rs.skill_id = s.id "
+                + "inner join request r "
+                + "on r.id = rs.request_id "
+                + "where r.id = ?";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                skillList.add(new Skill(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+            }
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return skillList;
+    }
+    
+    
 
-    /*public static void main(String[] args) {
-        ArrayList<Skill> a = SkillDao.getSkillList();
-        
-        
+    public static void main(String[] args) throws SQLException {
+        DBConnect dbconn = new DBConnect();
+        SkillDao sdao = new SkillDao(dbconn);
+        ArrayList<Skill> a = sdao.getSkillListByRequestId(8);
         for (Skill skill : a) {
             System.out.println(skill.toString());
         }
-    }*/
+    }
      
 }
