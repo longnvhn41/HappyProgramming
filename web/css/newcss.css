@@ -62,7 +62,8 @@ html {
     min-width: 120px;
     text-align: right;
     margin-right: 8px;
-    color: #fff;
+    color: #333;
+    
 }
 
 .mentor-register__input {

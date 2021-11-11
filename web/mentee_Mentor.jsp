@@ -67,8 +67,8 @@
                                 <td><%=rs.getString(7)%></td>
                                 <td><%=rs.getInt(8) == 3 ? "Register to become Mentor" : "Mentor"%></td>
                                 <td>
-                                    <a style="text-decoration: none; color: #007bff" href="UserController?service=handleMentor&email=<%=rs.getString(3)%>"> Accept |</a>
-                                    <a style="text-decoration: none; color: red" href="UserController?service=handleMentor2&email=<%=rs.getString(3)%>"> Reject</a>
+                                    <a style="text-decoration: none; color: #007bff" href="UserController?service=handleMentor&email=<%=rs.getString(3)%>" onclick ="return confirm('Do you want Accept?')"> Accept |</a>
+                                    <a style="text-decoration: none; color: red" href="UserController?service=handleMentor2&email=<%=rs.getString(3)%>" onclick ="return confirm('Do you want Reject?')"> Reject</a>
                                 </td>
                             </tr>
                             <%}%>

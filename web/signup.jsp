@@ -33,7 +33,7 @@
         <link href="css/signup.css" rel="stylesheet" media="all">
     </head>
     <body>
-
+         
         <%
             String mess = (String) request.getAttribute("mess");
             String alert = (String) request.getAttribute("alert");
@@ -52,11 +52,11 @@
                         <c:if test="${alert!=null}">
                             <h4 style="color: red; margin-bottom: 30px"><%=alert%></h4>
                         </c:if>
-                            
-                         <c:if test="${alert1!=null}">
+
+                        <c:if test="${alert1!=null}">
                             <h4 style="color: red; margin-bottom: 30px"><%=alert1%></h4>
                         </c:if>
-                            
+
                         <form action="UserController?service=Signup" method="POST">
                             <div class="input-group">
                                 <label class="label">Full name</label>
@@ -68,9 +68,9 @@
 
                             <div class="row row-space">
                                 <div class="col-2">
-                                    <div class="input-group">
+                                    <div class="input-group" data-validate="Email is not exitesd">
                                         <label class="label">Email</label>
-                                        <input class="input--style-4" type="email" value="${sessionScope.user.email}" name="email">
+                                        <input class="input--style-4" type="email" value="${sessionScope.user.email}" name="email" required>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -83,7 +83,7 @@
                             <div class="input-group">
                                 <label class="label">Username</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
-                                    <input class="input--style-4" type="text" value="${sessionScope.user.account}" name="username">
+                                    <input class="input--style-4" type="text" value="${sessionScope.user.account}" name="username" required>
 
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                 <div class="col-2">
                                     <div class="input-group">
                                         <label class="label">Password</label>
-                                        <input class="input--style-4" type="password" value="${sessionScope.user.password}" name="password">
+                                        <input class="input--style-4" type="password" value="${sessionScope.user.password}" name="password" required>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -104,14 +104,14 @@
 
                             <div class="row row-space">
                                 <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Birthday</label>
-                                    <div class="input-group-icon">
-                                        <input class="input--style-4 js-datepicker" type="text" value="${sessionScope.user.dob}" name="birthday">
-                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    <div class="input-group">
+                                        <label class="label">Birthday</label>
+                                        <div class="input-group-icon">
+                                            <input class="input--style-4 js-datepicker" type="text" value="${sessionScope.user.dob}" name="birthday">
+                                            <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                                 <div class="col-2">
                                     <div class="input-group">
                                         <label class="label">Gender</label>
@@ -136,13 +136,16 @@
 
                                 </div>
                             </div>
-                           
+
                             <div class="p-t-15">
                                 <button class="btn btn--radius-2 btn--blue" type="submit">Sign up</button>
+                                  
                             </div>
+                                    
                         </form>
+                                    
                     </div>
-                </div>
+                </div><a href="HomeP.jsp" style="color: black">Happy Programming</a>
             </div>
         </div>
 

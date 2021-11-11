@@ -175,8 +175,7 @@ public class RequestController extends HttpServlet {
                         hours += request1.getDeadlineHour();
                     }
                 }
-                String sql="select DISTINCT u.id, u.full_name, u.framework, u.email from [user] "
-                        + "as u join rating as r on u.id=r.mentor_id ";
+                String sql="select u.id, u.full_name, u.framework, u.email from [user] as u where role=0";
                 ResultSet rs = dBConnect.getData(sql);
                 request.setAttribute("ketQua", rs);
                 InvitationDao invi=new InvitationDao(dBConnect);

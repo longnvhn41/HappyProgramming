@@ -44,8 +44,7 @@
             
         %>
         <div class="body-container">
-            <%@include file="headerNew.jsp" %>
-            <!--Thay code vao day-->
+            <%@include file="headerNew.jsp" %>           
             <div class="main-content">
                 <div class="mentor-table-container" style="padding: 40px">
                     <table id="example" class="display" style="width:100%">
@@ -53,8 +52,8 @@
                             <tr>
                                 <th>ID Mentor</th>
                                 <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
+                                <th>Skills</th>
+                                <th>Address</th>
                                 <th>Description</th>
                                 <th>Rate</th>
                                 <th>Sum Request</th>

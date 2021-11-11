@@ -13,7 +13,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Director | Dashboard</title>
+        <title>Mentee | Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <meta name="description" content="Developed By M Abdur Rokib Promy">
         <meta name="keywords" content="Admin, Bootstrap 3, Template, Theme, Responsive">
@@ -52,105 +52,11 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
           <![endif]-->
 
-        <style type="text/css">
-
-        </style>
-        <script>
-            window.onload = function () {
-
-                var chart = new CanvasJS.Chart("chartContainer", {
-                    animationEnabled: true,
-                    theme: "light2",
-                    title: {
-                        text: "Site Traffic"
-                    },
-                    axisX: {
-                        valueFormatString: "DD MMM",
-                        crosshair: {
-                            enabled: true,
-                            snapToDataPoint: true
-                        }
-                    },
-                    axisY: {
-                        title: "Number of Visits",
-                        includeZero: true,
-                        crosshair: {
-                            enabled: true
-                        }
-                    },
-                    toolTip: {
-                        shared: true
-                    },
-                    legend: {
-                        cursor: "pointer",
-                        verticalAlign: "bottom",
-                        horizontalAlign: "left",
-                        dockInsidePlotArea: true,
-                        itemclick: toogleDataSeries
-                    },
-                    data: [{
-                            type: "line",
-                            showInLegend: true,
-                            name: "Total Visit",
-                            markerType: "square",
-                            xValueFormatString: "DD MMM, YYYY",
-                            color: "#F08080",
-                            dataPoints: [
-                                {x: new Date(2017, 0, 3), y: 650},
-                                {x: new Date(2017, 0, 4), y: 700},
-                                {x: new Date(2017, 0, 5), y: 710},
-                                {x: new Date(2017, 0, 6), y: 658},
-                                {x: new Date(2017, 0, 7), y: 734},
-                                {x: new Date(2017, 0, 8), y: 963},
-                                {x: new Date(2017, 0, 9), y: 847},
-                                {x: new Date(2017, 0, 10), y: 853},
-                                {x: new Date(2017, 0, 11), y: 869},
-                                {x: new Date(2017, 0, 12), y: 943},
-                                {x: new Date(2017, 0, 13), y: 970},
-                                {x: new Date(2017, 0, 14), y: 869},
-                                {x: new Date(2017, 0, 15), y: 890},
-                                {x: new Date(2017, 0, 16), y: 930}
-                            ]
-                        },
-                        {
-                            type: "line",
-                            showInLegend: true,
-                            name: "Unique Visit",
-                            lineDashType: "dash",
-                            dataPoints: [
-                                {x: new Date(2017, 0, 3), y: 510},
-                                {x: new Date(2017, 0, 4), y: 560},
-                                {x: new Date(2017, 0, 5), y: 540},
-                                {x: new Date(2017, 0, 6), y: 558},
-                                {x: new Date(2017, 0, 7), y: 544},
-                                {x: new Date(2017, 0, 8), y: 693},
-                                {x: new Date(2017, 0, 9), y: 657},
-                                {x: new Date(2017, 0, 10), y: 663},
-                                {x: new Date(2017, 0, 11), y: 639},
-                                {x: new Date(2017, 0, 12), y: 673},
-                                {x: new Date(2017, 0, 13), y: 660},
-                                {x: new Date(2017, 0, 14), y: 562},
-                                {x: new Date(2017, 0, 15), y: 643},
-                                {x: new Date(2017, 0, 16), y: 570}
-                            ]
-                        }]
-                });
-                chart.render();
-
-                function toogleDataSeries(e) {
-                    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                        e.dataSeries.visible = false;
-                    } else {
-                        e.dataSeries.visible = true;
-                    }
-                    chart.render();
-                }
-
-            }
-        </script>
+        
     </head>
     <body class="skin-black">
-        <%            ResultSet rs = (ResultSet) request.getAttribute("ketQua");
+        <%
+            ResultSet rs = (ResultSet) request.getAttribute("ketQua");
         %>
         <!-- header logo: style can be found in header.less -->
         <header class="header">
@@ -227,7 +133,7 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li class="active">
-                            <a href="menteeDashBoard.jsp">
+                            <a href="RequestController?service=statisticRequestAfter">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
@@ -291,15 +197,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="sm-st clearfix">
-                                    <span class="sm-st-icon st-green"><i class="fa fa-paperclip"></i></span>
-                                    <div class="sm-st-info">
-                                        <span>1922</span>
-                                        Total Documents
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
 
                     </form>
@@ -310,15 +208,47 @@
                         <div class="col-md-8">
                             <!--earning graph start-->
                             <section class="panel">
-                                <header class="panel-heading">
-                                    Earning Graph
+                               <header class="panel-heading">
+                                    List of Mentors
                                 </header>
-                                <div class="panel-body">
-                                    <!--                                    <canvas id="linechart" width="600" height="330"></canvas>-->
-<!--                                    <div id="chartContainer" style="height: 400; width: 600;"></div>
-                                    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
-                                    <div id="chartContainer" style="height: 100%; width: 100%;"></div>
-                                    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                                <div class="panel-body table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Mentor</th>
+                                                <th>Mentor Name</th>
+                                                <th>Framework</th>                                               
+                                                <th>Email</th>                                                
+                                                <th>Rate</th>
+                                                <th>Comment</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%while (rs.next()) {%>
+                                            <tr>
+                                                <td><%=rs.getInt(1)%></td>
+                                                <td><%=rs.getString(2)%></td>
+                                                <td><%=rs.getString(3)%></td>                                               
+                                                <td><%=rs.getString(4)%></td>
+                                                <%
+                                                    DBConnect dBConnect = new DBConnect();
+                                                    RatingDAO dao = new RatingDAO(dBConnect);
+                                                    int countRate = dao.getAverageRating(rs.getInt(1));
+                                                    request.setAttribute("rate", countRate);
+                                                %>                                                
+                                                <td>${rate}&#9733;</td>
+                                                <%
+                                                    InvitationDao invi = new InvitationDao(dBConnect);
+                                                    double menteeComment = invi.countComment(rs.getInt(1));
+                                                    double comment = invi.rateting(rs.getInt(1));
+                                                    double result = Math.round((comment / menteeComment) * 100);
+                                                    request.setAttribute("result", result);
+                                                %>
+                                                <td><span class="badge badge-info">${result}%</span></td>
+                                            </tr>
+                                            <%}%>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </section>
                             <!--earning graph end-->
@@ -329,7 +259,7 @@
                             <!--chat start-->
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Notifications
+                                    System Statistic
                                 </header>
                                 <div class="panel-body" id="noti-box">
 
@@ -397,55 +327,8 @@
                     </div>
                     <div class="row">
 
-                        <div class="col-md-8">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    List of Mentors
-                                </header>
-                                <div class="panel-body table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>ID Mentor</th>
-                                                <th>Mentor Name</th>
-                                                <th>Framework</th>                                               
-                                                <th>Email</th>                                                
-                                                <th>Rate</th>
-                                                <th>Comment</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%while (rs.next()) {%>
-                                            <tr>
-                                                <td><%=rs.getInt(1)%></td>
-                                                <td><%=rs.getString(2)%></td>
-                                                <td><%=rs.getString(3)%></td>                                               
-                                                <td><%=rs.getString(4)%></td>
-                                                <%
-                                                    DBConnect dBConnect = new DBConnect();
-                                                    RatingDAO dao = new RatingDAO(dBConnect);
-                                                    int countRate = dao.getAverageRating(rs.getInt(1));
-                                                    request.setAttribute("rate", countRate);
-                                                %>                                                
-                                                <td>${rate}&#9733;</td>
-                                                <%
-                                                    InvitationDao invi = new InvitationDao(dBConnect);
-                                                    double menteeComment = invi.countComment(rs.getInt(1));
-                                                    double comment = invi.rateting(rs.getInt(1));
-                                                    double result = Math.round((comment / menteeComment) * 100);
-                                                    request.setAttribute("result", result);
-                                                %>
-                                                <td><span class="badge badge-info">${result}%</span></td>
-                                            </tr>
-                                            <%}%>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </section>
-
-
-                        </div><!--end col-6 -->
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-4" style=">
                             <section class="panel">
                                 <header class="panel-heading">
                                     Twitter Feed

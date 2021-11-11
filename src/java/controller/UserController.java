@@ -7,7 +7,6 @@ package controller;
 
 import context.DBConnect;
 import dao.InvitationDao;
-import dao.RatingDAO;
 import dao.SkillDao;
 import dao.UserDao;
 import entity.Invitation;
@@ -217,8 +216,8 @@ public class UserController extends HttpServlet {
             if (service.equals("mentorByList")) {
                 InvitationDao invi = new InvitationDao(dBConnect);
                 int requestID = invi.maxRequestID();
-                String sql = "select u.id, u.full_name, u.email, u.phone,cv.description from [user] as u join cv on u.id=cv.[user_id] join cv_skill as cvs on cv.id=cvs.cv_id join skill as s on cvs.skill_id=s.id\n"
-                        + "join request_skill as rs on s.id=rs.skill_id join request on request.id=rs.request_id where u.role=0 and cvs.skill_id=rs.skill_id and request.id=" + requestID + "";
+                String sql = "select u.id, u.full_name, u.framework, u.address,cv.description from [user] as u join cv on u.id=cv.[user_id] join cv_skill as cvs on cv.id=cvs.cv_id join skill as s on cvs.skill_id=s.id\n" +
+"                        join request_skill as rs on s.id=rs.skill_id join request on request.id=rs.request_id where u.role=0 and cvs.skill_id=rs.skill_id and request.id=" + requestID + "";
                 ResultSet rs = dBConnect.getData(sql);
                 request.setAttribute("ketQua", rs);
                 request.setAttribute("ID", requestID);
