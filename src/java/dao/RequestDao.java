@@ -160,7 +160,7 @@ public class RequestDao {
     }
     
     public void updateRequestByMentee(int requestId, String message, int status, float hours, String title, Date deadline_date, Date finish_date){
-        String query = "Update request set [message]=(?), [status]=(?), [hours]=(?) , title =(?) , deadline_date=(?), finish_date=(?) where id =(?);";
+        String query = "Update request set message=(?), status=(?), hours=(?) , title =(?) , deadline_date=(?), finish_date=(?) where id =(?);";
         try {
             conn = new DBConnect().con;
             PreparedStatement ps = conn.prepareStatement(query);

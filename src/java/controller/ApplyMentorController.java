@@ -5,15 +5,10 @@
  */
 package controller;
 
-import context.DBConnect;
-import dao.UserDao;
+import dao.MentorDAO;
 import entity.User;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +16,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author GHC
+ * @author Dao Van Do
  */
-public class LoginController extends HttpServlet {
+public class ApplyMentorController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,7 +31,16 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        MentorDAO mentorDAO = new MentorDAO();
+        user = mentorDAO.getMentorById(user.getId());
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("createMentor.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -65,34 +69,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            DBConnect dBConnect = new DBConnect();
-            UserDao d = new UserDao(dBConnect);
-            String acc = request.getParameter("username");
-            String password = request.getParameter("password");
-            User u=d.checkUser(acc, password);
-            if(u==null){
-                HttpSession session=request.getSession();
-                response.sendRedirect("login.jsp");
-            }else{
-                Cookie usernameC = new Cookie("userC", acc);
-                Cookie passwordC = new Cookie("passC", password);
-                usernameC.setMaxAge(60);
-                if(request.getParameter("remember-me") != null){
-                    passwordC.setMaxAge(60);
-                }else{
-                    passwordC.setMaxAge(0);
-                }
-                response.addCookie(usernameC);
-                response.addCookie(passwordC);
-                HttpSession session=request.getSession();
-                session.setAttribute("user", u);
-                 session.setAttribute("user", u);
-                request.getRequestDispatcher("homepage.jsp").forward(request, response);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -46,14 +46,14 @@
                             <h4 style="color: #e0a800; margin-bottom: 30px"><%=thongbao%></h4>
                         </c:if>
                         <div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-                            <input class="input100" type="password" id="old_password" name="old_password" placeholder="Old Password">
+                            <input class="input100" type="password" id="old_password" value="${old_password}" name="old_password" placeholder="Old Password">
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">
                                 <span class="lnr lnr-lock"></span>
                             </span>
                         </div>
                         <div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-                            <input class="input100" type="password" id="password"  name="password" placeholder="New Password">
+                            <input class="input100" type="password" id="password" value="${new_password}"  name="password" placeholder="New Password">
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">
                                 <span class="lnr lnr-lock"></span>
@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-                            <input class="input100" type="password" id="confirm_password"  onChange="onChange()" name="confirm" placeholder="Confirm Password">
+                            <input class="input100" type="password" id="confirm_password" value="${new_password}"  onChange="onChange()" name="confirm" placeholder="Confirm Password">
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">
                                 <span class="lnr lnr-lock"></span>

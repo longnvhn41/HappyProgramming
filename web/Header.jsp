@@ -13,7 +13,7 @@
         <section class="ftco-section">
             <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
                 <div class="container">
-                    <img src="https://www.w3schools.com/images/w3lynx_200.png" alt="alternatetext">
+                    <img src="https://cdn.dribbble.com/users/86597/screenshots/4405710/media/66f5c424876c0a6e7f15e675ce8d276b.jpg?compress=1&resize=400x300" style="width: 120px; height: 100px; margin-right: 40px" alt="alternatetext">
                     <form action="#" class="searchform order-sm-start order-lg-last">
                         <div class="form-group d-flex">
                             <input type="text" class="form-control pl-3" placeholder="Search">
@@ -26,15 +26,6 @@
                     <div class="collapse navbar-collapse" id="ftco-nav">
                         <ul class="navbar-nav m-auto">
                             <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Page</a>
-                                <div class="dropdown-menu" aria-labelledby="dropdown04">
-                                    <a class="dropdown-item" href="#">Page 1</a>
-                                    <a class="dropdown-item" href="#">Page 2</a>
-                                    <a class="dropdown-item" href="#">Page 3</a>
-                                    <a class="dropdown-item" href="#">Page 4</a>
-                                </div>
-                            </li>
                             <li class="nav-item"><a href="signup.jsp" class="nav-link">Sign up</a></li>
                             <li class="nav-item"><a href="login.jsp" class="nav-link">Login</a></li>
                             <li class="nav-item"><a href="#" class="nav-link"></a></li>

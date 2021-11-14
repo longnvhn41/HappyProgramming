@@ -133,7 +133,7 @@ public class UserDao {
 
     public User checkUserExitsAccount(String user) {
         try {
-            String sql = "select * from [User] where account=?";
+            String sql = "select * from User where account=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, user);
 
@@ -150,25 +150,30 @@ public class UserDao {
 
     public User checkUser(String user, String pass) {
         try {
-            String sql = "select * from [user] where account=? and password=?";
+            DBConnect connect = new DBConnect();
+            conn = connect.con;
+            String sql = "select * from happyprogramming.user where account=? and password=?";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, user);
             pre.setString(2, pass);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11));
+                        rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11),
+                        rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15),
+                        rs.getString(16), rs.getString(17), rs.getInt(18));
                 return u;
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return null;
     }
 
     public User checkExitsEmail(String email) {
         try {
-            String sql = "select * from [User] where email=?";
+            String sql = "select * from happyprogramming.User where email=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
 
@@ -185,7 +190,7 @@ public class UserDao {
 
     public User showUserProfile(String account) {
         try {
-            String sql = "select * from [User] where account=?";
+            String sql = "select * from happyprogramming.User where account=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, account);
             ResultSet rs = ps.executeQuery();
@@ -203,9 +208,9 @@ public class UserDao {
 
     public void updateUser(String id, String name, String acc, String pass, String email,
             String phone, String dob, String sex, String address) {
-        String sql = "update [user] set full_name=?, account=?, "
+        String sql = "update happyprogramming.user set full_name=?, account=?, "
                 + "[password]=?,email=?,phone=?, "
-                + "DOB=?, gender=?, [address]=? where id=?";
+                + "DOB=?, gender=?, address =? where id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, name);
@@ -225,7 +230,7 @@ public class UserDao {
     }
 
     public void updatePassUser(String email, String password) {
-        String sql = "Update [User] SET password=? WHERE email=?";
+        String sql = "Update happyprogramming.User SET password=? WHERE email=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, password);
@@ -238,8 +243,8 @@ public class UserDao {
 
     public boolean changePass(String account, String password) {
         try {
-            String sql = "  UPDATE [HappyProgramming].[dbo].[user]\n"
-                    + "SET [password] = ? WHERE [account] =?";
+            String sql = "  UPDATE happyprogramming.user\n"
+                    + "SET password = ? WHERE account =?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, password);
             ps.setString(2, account);
@@ -251,7 +256,7 @@ public class UserDao {
     }
 
     public void addRequestMentor(int userid, int sid, String intro, int status) {
-        String sql = "insert into request_mentor_skill(userid, skillid, introduce, [status]) values (?,?,?,?)";
+        String sql = "insert into request_mentor_skill(userid, skillid, introduce, status) values (?,?,?,?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, userid);
@@ -264,7 +269,7 @@ public class UserDao {
     }
 
     public void changeRoleforUser(int role, int userid) {
-        String sql = "Update [User] SET role=? WHERE id=?";
+        String sql = "Update User SET role=? WHERE id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, role);
@@ -275,7 +280,7 @@ public class UserDao {
     }
 
     public void updateRole(String email) {
-        String sql = "Update [User] SET role=0 WHERE email=?";
+        String sql = "Update User SET role=0 WHERE email=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, email);
@@ -296,7 +301,7 @@ public class UserDao {
 
     public ArrayList<User> getPaginatedMentors() {
         try {
-            String sql = "SELECT * FROM [User] WHERE role = 0";
+            String sql = "SELECT * FROM User WHERE role = 0";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -318,7 +323,7 @@ public class UserDao {
     }
 
     public void demoteUser(int id) {
-        String sql = "Update [User] SET role=1 WHERE id=?";
+        String sql = "Update User SET role=1 WHERE id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
@@ -355,10 +360,10 @@ public class UserDao {
         }
 
     }
-    
-        public User getUserById(int id) {
+
+    public User getUserById(int id) {
         try {
-            String sql = "select * from [User] where id=?";
+            String sql = "select * from User where id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -385,7 +390,7 @@ public class UserDao {
     }
 
     public void updateFramework(String frame, int IdUSer) {
-        String sql = "UPDATE [user] SET framework =? WHERE id=?";
+        String sql = "UPDATE user SET framework =? WHERE id=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, frame);
@@ -408,9 +413,8 @@ public class UserDao {
             }
         } catch (Exception e) {
         }
-        
+
         return null;
     }
-
 
 }

@@ -49,7 +49,7 @@ public class InvitationDao {
     
     public int getUserByEmail(String email) {
         int n = 0;
-        String sql = "select id from [user] where email=?";
+        String sql = "select id from user where email=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
@@ -77,7 +77,7 @@ public class InvitationDao {
         return 0;
     }
     public int menteeInSystem() {
-        String query = "SELECT COUNT(id) FROM [user]where role=1";
+        String query = "SELECT COUNT(id) FROM user where role=1";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -128,7 +128,7 @@ public class InvitationDao {
         return count;
     }
     public int mentorInSystem() {
-        String query = "SELECT COUNT(id) FROM [user]where role=0";
+        String query = "SELECT COUNT(id) FROM user where role=0";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();

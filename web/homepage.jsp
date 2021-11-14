@@ -104,33 +104,28 @@
                         <li><a href="#">Contact</a></li>
 <!--                        <li><a href="UserController?service=userProfile&user=${sessionScope.user.account}"
                            style="padding: 0 8px"><img src="${sessionScope.user.ava}" alt="Avatar" class="avatar"></a></li>-->
-                        
+
                         <!-- Phân quyền cho mentee = 1-->
                         <c:if test="${sessionScope.user.role==1}">
                             <li><a href="RequestController?service=statisticRequestAfter">Mentee Dashboard</a></li>
 <!--                            <li><a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Become Mentor</a></li>-->
                             <li><a href="UserController?service=logout">Logout</a>
                             </c:if>
-                            
-                                <!-- Phân quyền cho mentor = 0-->
+
+                            <!-- Phân quyền cho mentor = 0-->
                             <c:if test="${sessionScope.user.role==0}">
                             <li><a href="#">Request of student</a></li>
                             <li><a href="#">Request</a></li>
                             <li><a href="UserController?service=logout">Logout</a>
                             </c:if>
-                            
-                                <!-- Phân quyền cho admin = 2--> 
+                            <!-- Phân quyền cho admin = 2--> 
                             <c:if test="${sessionScope.user.role==2}">
-                                <!--                            <li><a href="#">Manager User</a></li>
-                                                            <li><a href="#">Request</a></li>-->
-                                <!--                            <li><a href="#">Contact</a></li>-->
                             <li><a href="template.jsp">Admin Dasboard</a></li>
-                            <!--                            <li><a href="SkillController?action=adminSkillList">Skill list</a></li>-->
+                            </c:if>
+                        <li><a href="ApplyMentorController">Create Mentor</a></li>
+                        <li><a href="changePass.jsp">Change Password</a></li>
+                        <li><a href="MentorController">List Mentor</a></li>
                         </c:if>
-
-                        <!--                        <li><a href="UserController?service=logout">Logout</a></li>-->
-
-                    </c:if>
 
                 </ul>
             </div>

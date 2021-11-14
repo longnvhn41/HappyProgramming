@@ -146,21 +146,24 @@ public class UserController extends HttpServlet {
             }
             if (service.equals("change_password")) {
                 String oldPassword = request.getParameter("old_password");
+                String password = request.getParameter("password");
                 HttpSession session = request.getSession();
                 User u = (User) session.getAttribute("user");
                 if (!oldPassword.equals(u.getPassword())) {
+                    request.setAttribute("old_password", oldPassword);
+                    request.setAttribute("new_password", password);
                     request.setAttribute("thongbao", "Old Password incorrect");
                     request.getRequestDispatcher("changePass.jsp").forward(request, response);
+                } else {
+                    UserDao dao = new UserDao(dBConnect);
+                    if (dao.changePass(u.getAccount(), password)) {
+                        request.setAttribute("thongbao", "Change Password Success");
+                    } else {
+                        request.setAttribute("thongbao", "Change Password False");
+                    }
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
 
-                String password = request.getParameter("password");
-                UserDao dao = new UserDao(dBConnect);
-                if (dao.changePass(u.getAccount(), password)) {
-                    request.setAttribute("thongbao", "Change Password Success");
-                } else {
-                    request.setAttribute("thongbao", "Change Password False");
-                }
-                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (service.equals("becomeMentor")) {
                 SkillDao dao = new SkillDao(dBConnect);
@@ -216,13 +219,13 @@ public class UserController extends HttpServlet {
             if (service.equals("mentorByList")) {
                 InvitationDao invi = new InvitationDao(dBConnect);
                 int requestID = invi.maxRequestID();
-                String sql = "select u.id, u.full_name, u.framework, u.address,cv.description from [user] as u join cv on u.id=cv.[user_id] join cv_skill as cvs on cv.id=cvs.cv_id join skill as s on cvs.skill_id=s.id\n" +
-"                        join request_skill as rs on s.id=rs.skill_id join request on request.id=rs.request_id where u.role=0 and cvs.skill_id=rs.skill_id and request.id=" + requestID + "";
+                String sql = "select u.id, u.full_name, u.framework, u.address,cv.description from [user] as u join cv on u.id=cv.[user_id] join cv_skill as cvs on cv.id=cvs.cv_id join skill as s on cvs.skill_id=s.id\n"
+                        + "                        join request_skill as rs on s.id=rs.skill_id join request on request.id=rs.request_id where u.role=0 and cvs.skill_id=rs.skill_id and request.id=" + requestID + "";
                 ResultSet rs = dBConnect.getData(sql);
                 request.setAttribute("ketQua", rs);
                 request.setAttribute("ID", requestID);
                 request.getRequestDispatcher("mentorBySkill.jsp").forward(request, response);
-            }           
+            }
             if (service.equals("addInvitation")) {
                 int requestId = Integer.parseInt(request.getParameter("requestID"));
                 int mentorID = Integer.parseInt(request.getParameter("mentorID"));

@@ -3,7 +3,8 @@
     Created on : Sep 29, 2021, 7:51:12 PM
     Author     : Admin
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,67 +36,66 @@
             }
 
         </style>
-          <jsp:include page="Header.jsp"></jsp:include>
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src="images/HomeP/pexels-roberto-nickson-2559941.jpg" alt="First slide">
-                    <div class="text" style="font-size: 80px">Happy Programming</div>
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="images/HomeP/pexels-james-wheeler-417074.jpg" alt="Second slide">
-                    <div class="text" style="font-size: 40px">“Chúng ta tạo nên máy tính (hệ thống) như xây một thành phố vậy: trải qua thời gian, không có kế hoạch cụ thể, bắt đầu từ các phế tích”</div>
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="images/HomeP/pexels-roberto-nickson-2775196.jpg"  alt="Third slide">
-                    <div class="text" style="font-size: 40px">Một lập trình viên mất một tháng để làm xong việc thì với 2 lập trình viên sẽ là 2 tháng</div>
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-
-        <div class="content d-flex">
-            <div
-                style="height: 500px;border: 5px solid white; background-color: #c1c9d6"
-                class="left col-lg-9"
-                >
-                <div class="item active">
-                    <img src="images/HomeP/pexels-james-wheeler-417074.jpg" alt="Los Angeles" style="width:100%; height: 300px">
-                </div>
-            </div>
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <!-- Indicators -->
+        <jsp:include page="Header.jsp"></jsp:include>
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol>
-
-                <!-- Wrapper for slides -->
                 <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="images/HomeP/pexels-roberto-nickson-2559941.jpg" alt="First slide">
+                        <div class="text" style="font-size: 80px">Happy Programming</div>
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="images/HomeP/pexels-james-wheeler-417074.jpg" alt="Second slide">
+                        <div class="text" style="font-size: 40px">“Chúng ta tạo nên máy tính (hệ thống) như xây một thành phố vậy: trải qua thời gian, không có kế hoạch cụ thể, bắt đầu từ các phế tích”</div>
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="images/HomeP/pexels-roberto-nickson-2775196.jpg"  alt="Third slide">
+                        <div class="text" style="font-size: 40px">Một lập trình viên mất một tháng để làm xong việc thì với 2 lập trình viên sẽ là 2 tháng</div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <div class="content d-flex">
+                <div
+                    style="height: 320px;border: 5px solid white; background-color: #c1c9d6"
+                    class="left col-lg-9"
+                    >
                     <div class="item active">
-                        <img src="images/HomeP/pexels-james-wheeler-417074.jpg" alt="Los Angeles" style="width:100%;">
+                        <img src="https://studentsuccess.ucsc.edu/what-we-do/images/slug-mentor-program-wcms-banner-022.png" alt="Los Angeles" style="width:100%; height: 300px">
                     </div>
+                </div>
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
 
-                    <div class="item">
-                        <img src="images/HomeP/pexels-roberto-nickson-2559941.jpg" alt="Chicago" style="width:100%;">
-                    </div>
-
-                    <div class="item">
-                        <img src="images/HomeP/pexels-roberto-nickson-2775196.jpg" alt="New york" style="width:100%;">
-                    </div>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="images/HomeP/pexels-james-wheeler-417074.jpg" alt="Los Angeles" style="width:100%;">
+                        </div>
+                    <c:forEach items="${news}" var="l">
+                        <div class="item">
+                            <a href="${l.address}">
+                                <img src="${l.url}" alt="Los Angeles" style="width:100%;">
+                            </a>
+                        </div>
+                    </c:forEach>
                 </div>
 
                 <!-- Left and right controls -->

@@ -35,7 +35,7 @@ public class RatingDAO {
         try {
             String sql = "select r.id, r.mentee_id, r.mentor_id, r.rate, r.comment, u.full_name\n"
                     + "from rating r "
-                    + "left join [user] u "
+                    + "left join user u "
                     + "on r.mentee_id = u.id "
                     + "where mentor_id=?";
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -99,7 +99,7 @@ public class RatingDAO {
         try {
             String sql = "select AVG(r.rate)\n"
                     + "from rating r "
-                    + "left join [user] u "
+                    + "left join user u "
                     + "on r.mentee_id = u.id "
                     + "where mentor_id=?";
             PreparedStatement pre = conn.prepareStatement(sql);
