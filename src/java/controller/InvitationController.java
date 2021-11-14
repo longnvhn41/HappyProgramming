@@ -85,9 +85,15 @@ public class InvitationController extends HttpServlet {
                     String subject = "Notification about you request: \"" + req.getTitle() + "\"";
                     String message = "All the mentors declined the request: \"" + req.getTitle() + "\", your request will be cancelled .";
                     UserDao.send(mentee.getEmail(), subject, message, userfrom, passfrom);
-                    Rdao.updateRequestStatusById(3, requestId);
+                    java.util.Date finish_date = new java.util.Date();
+                    Rdao.updateRequestStatusAndDateById(3, requestId, finish_date);
                 }
                  response.sendRedirect("mentorInvitationList.jsp");
+            }if (service.equals("mentorCallBackAccept")){
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                Idao.updateAllInvitationlStatusByReqId("Processing", requestId);
+                Rdao.updateRequestStatusById(1, requestId);
+                response.sendRedirect("mentorInvitationList.jsp");
             }
         }
     }

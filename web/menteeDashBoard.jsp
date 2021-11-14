@@ -238,6 +238,12 @@
                         </li>
 
                         <li>
+                            <a href="RequestController?service=menteeListRequest&id=${sessionScope.user.id}">
+                                <i class="fa fa-glass"></i> <span>List of requests</span>
+                            </a>
+                        </li>
+                        
+                        <li>
                             <a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">
                                 <i class="fa fa-globe"></i> <span>Register as a Mentor</span>
                             </a>

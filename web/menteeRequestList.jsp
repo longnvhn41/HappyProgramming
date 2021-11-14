@@ -1,8 +1,9 @@
 <%-- 
-    Document   : NebtirRequestList
-    Created on : Oct 13, 2021, 11:16:31 PM
+    Document   : menteeRequestList
+    Created on : Nov 14, 2021, 3:08:32 PM
     Author     : GHC
 --%>
+
 <%@page import="dao.SkillDao"%>
 <%@page import="entity.Skill"%>
 <%@page import="entity.Request"%>
@@ -42,7 +43,7 @@
             DBConnect dBConnect = new DBConnect();
             RequestDao dao = new RequestDao(dBConnect);
             User user = (User) session.getAttribute("user");   
-            List<Request> requestsByMentor = dao.getListRequestByMentorId(user.getId());
+            List<Request> requestsByMentee = dao.getListRequestById(user.getId());
         %>
         <div class="body-container">
             <%@include file="headerNew.jsp" %>
@@ -63,7 +64,7 @@
                         </thead>
                         <tbody>
                             <% 
-                                for (Request req : requestsByMentor) {
+                                for (Request req : requestsByMentee) {
                              %>
                                 <tr>
                                     <%
@@ -85,13 +86,12 @@
                                         </c:forEach>
                                     </td>
                                     <td>
-                                        <c:if test="${o.status == 2}">
-                                            <form action="RequestController?service=mentorFinish" method="post">
+                                        <c:if test="${o.status == 1}">
+                                            <form action="RequestController?service=updateRequest" method="post">
                                                 <input type="hidden" value="${o.id}" name="requestId">
-
-                                                <input style="width: 100px;" class="mb-1 btn btn-success" type="submit" value="Finish" id="submit">
+                                                <input style="width: 100px;" class="mb-1 btn btn-success" type="submit" value="Update" id="submit">
                                             </form>
-                                            <form action="RequestController?service=mentorCancel" method="post">
+                                            <form action="RequestController?service=cancelRequest" method="post">
                                                 <input type="hidden" value="${o.id}" name="requestId">
                                                 <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Cancel" id="submit">
                                             </form>
@@ -120,3 +120,4 @@
         </script>
     </body>
 </html>
+

@@ -262,6 +262,27 @@ public class InvitationDao {
         }
     }
     
+    public void updateAllInvitationlStatusByReqId(String status, int request_id){
+        String query = "UPDATE Invitation SET status = (?) where request_id = (?)";
+        try {
+            conn = new DBConnect().con;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, status);
+            ps.setInt(2, request_id);
+            ps.executeUpdate();
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                conn.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
     public Invitation getDeclineInvitationListByRequest(int requestID) {
 
        

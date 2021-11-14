@@ -54,6 +54,7 @@ public class RequestController extends HttpServlet {
         RequestHandleDao dao1 = new RequestHandleDao(dBConnect);
         RequestDao dao = new RequestDao(dBConnect);
         SkillDao Sdao = new SkillDao(dBConnect);
+        InvitationDao Idao = new InvitationDao(dBConnect);
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
@@ -160,7 +161,7 @@ public class RequestController extends HttpServlet {
                         RequestSkill rs = new RequestSkill(requestId, Integer.parseInt(s));
                         rSDao.createRequestSkill(rs);
                     }
-                    request.getRequestDispatcher("UserController").forward(request, response);
+                    request.getRequestDispatcher("menteeRequestList.jsp").forward(request, response);
                 }
             }
             if (service.equals("statisticRequestAfter")) {
@@ -204,6 +205,16 @@ public class RequestController extends HttpServlet {
                 java.util.Date currentDate = new java.util.Date();
                 dao.updateRequestStatusAndDateById(3, requestId, currentDate);
                 response.sendRedirect("mentorRequestList.jsp");
+            }if(service.equals("menteeListRequest")){
+                response.sendRedirect("menteeRequestList.jsp");
+            }if(service.equals("cancelRequest")){
+                HttpSession session = request.getSession();
+                User user = (User)session.getAttribute("user");
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                java.util.Date finish_date = new java.util.Date();
+                dao.updateRequestStatusAndDateById(3, requestId, finish_date);
+                Idao.updateInvitationCancelStatus("Cancel", requestId);
+                response.sendRedirect("menteeRequestList.jsp");
             }
 
         }

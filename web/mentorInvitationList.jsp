@@ -62,6 +62,7 @@
                                 <th>Hour</th>
                                 <th>Skills</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,15 +95,7 @@
                                 %>
                                 <td>
                                     <c:if test="${d.status == 'Processing'}">
-                                        <form action="InvitationController?service=mentorAccept" method="post">
-                                            <input type="hidden" value="${d.request_id}" name="requestId">
-
-                                            <input style="width: 100px;" class="mb-1 btn btn-success" type="submit" value="Accept" id="submit">
-                                        </form>
-                                        <form action="InvitationController?service=mentorDecline" method="post">
-                                            <input type="hidden" value="${d.request_id}" name="requestId">
-                                            <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Decline" id="submit">
-                                        </form>
+                                        Processing
                                     </c:if>
                                     <c:if test="${d.status == 'Accept'}">
                                         Accepted
@@ -112,6 +105,26 @@
                                     </c:if>
                                     <c:if test="${d.status == 'Decline'}">
                                         Declined
+                                    </c:if>
+                                </td>
+                                <td>
+                                    <c:if test="${d.status == 'Processing'}">
+                                        <form action="InvitationController?service=mentorAccept" method="post">
+                                            <input type="hidden" value="${d.request_id}" name="requestId">
+
+                                            <input style="width: 100px;" class="mb-1 btn btn-success" type="submit" value="Accept" id="submit">
+                                        </form>
+                                        <form action="InvitationController?service=mentorDecline" method="post">
+                                            <input type="hidden" value="${d.request_id}" name="requestId">
+                                            <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Decline" id="submit">
+                                        </form>
+                                     </c:if>
+                                    <c:if test="${d.status == 'Accept'}">
+                                        <form action="InvitationController?service=mentorCallBackAccept" method="post">
+                                            <input type="hidden" value="${d.request_id}" name="requestId">
+
+                                            <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Call back" id="submit">
+                                        </form> 
                                     </c:if>
                                 </td>
                             </tr>
