@@ -45,15 +45,15 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img class="d-block w-100" src="images/HomeP/pexels-roberto-nickson-2559941.jpg" alt="First slide">
+                        <img class="d-block w-100" src="https://cdn.cmc.com.vn/media/Service%20Block/banner1.jpg" alt="First slide">
                         <div class="text" style="font-size: 80px">Happy Programming</div>
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="images/HomeP/pexels-james-wheeler-417074.jpg" alt="Second slide">
+                        <img class="d-block w-100" src="https://www.globalfocusmagazine.com/wp-content/uploads/2020/02/Engaging_with_technology-scaled.jpg" alt="Second slide">
                         <div class="text" style="font-size: 40px">“Chúng ta tạo nên máy tính (hệ thống) như xây một thành phố vậy: trải qua thời gian, không có kế hoạch cụ thể, bắt đầu từ các phế tích”</div>
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="images/HomeP/pexels-roberto-nickson-2775196.jpg"  alt="Third slide">
+                        <img class="d-block w-100" src="https://www.investopedia.com/thmb/ooWnJKzULBikIcMgNqZdiRvHHBY=/2121x1414/filters:fill(auto,1)/GettyImages-964033964-ca3290057ccc4024b57e755423572264.jpg"  alt="Third slide">
                         <div class="text" style="font-size: 40px">Một lập trình viên mất một tháng để làm xong việc thì với 2 lập trình viên sẽ là 2 tháng</div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                     class="left col-lg-9"
                     >
                     <div class="item active">
-                        <img src="https://studentsuccess.ucsc.edu/what-we-do/images/slug-mentor-program-wcms-banner-022.png" alt="Los Angeles" style="width:100%; height: 300px">
+                        <img src="https://www.accurics.com/wp-content/uploads/2021/02/tech-news-world-card.jpg" alt="Los Angeles" style="width:100%; height: 400px">
                     </div>
                 </div>
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -87,7 +87,7 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="images/HomeP/News.jpg" alt="Los Angeles" style="width:100%; height: 545px">
+                            <img src="images/HomeP/pexels-roberto-nickson-2775196.jpg" alt="Los Angeles" style="width:100%; height: 545px">
                         </div>
                     <c:forEach items="${news}" var="l">
                         <div class="item">
