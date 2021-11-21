@@ -35,6 +35,7 @@
             <!--Thay code vao day-->
             <div class="main-content">
                 <div class="mentor-table-container" style="padding: 40px">
+                    <h2>Mentor List</h2>
                     <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
@@ -60,13 +61,13 @@
                                     <th>${mentor.dob}</th>
                                     <th>
                                         <c:choose >
-                                            <c:when test="${mentor.gender == 0}">Male</c:when>
-                                            <c:when test="${mentor.gender == 1}">Female</c:when>
+                                            <c:when test="${mentor.gender == 1}">Male</c:when>
+                                            <c:when test="${mentor.gender == 0}">Female</c:when>
                                         </c:choose>
 
                                     </th>
                                     <th>${mentor.address}</th>
-                                    <th><a href="AdminMentorList?action=demote&id=${mentor.id}">Demote</a></th>
+                                    <th><a style="color: red; cursor: pointer" onclick="setConfirmModal(${mentor.id},'${mentor.name}')">Demote</a></th>
                                 </tr>
                             </c:forEach> 
                         </tbody>
@@ -75,7 +76,37 @@
             </div>
             <%@include file="Footer.jsp" %>
         </div>
+        <!-- Modal -->
+        <!-- Delete Confirm Modal -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Confirm Demotion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="demoteForm" method="POST">
+                            <div class="modal-body">
+                                Are you sure want demote mentor to mentee?
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-danger" value="Demote">
+                                <button type="button" class="btn btn-link" style="color: #272727" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
+            function setConfirmModal(id, name) {
+                $('#demoteForm').attr('action', 'AdminMentorList?action=demote&id=' + id);
+                $('#deleteConfirmModal').find('.modal-body').html(`<p>Are you sure want demote mentor <b>` + name + `</b> to mentee?</p>`);
+                $('#deleteConfirmModal').modal('show');
+            }
             $(document).ready(function () {
                 $('#example').DataTable();
             });

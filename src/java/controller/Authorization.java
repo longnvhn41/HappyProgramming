@@ -32,8 +32,8 @@ public class Authorization implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    private final String[] AdminPermissions = {"/AdminMentorList","/SkillController"};
-    private final String[] MentorPermissions = {};
+    private final String[] AdminPermissions = {"/AdminMentorList", "/SkillController"};
+    private final String[] MentorPermissions = {"/MentorRequestList", "/ApplyMentorController"};
     private final String[] MenteePermissions = {};
 
     public Authorization() {
@@ -109,31 +109,6 @@ public class Authorization implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession(false);
         String requestAction = rq.getRequestURI().replaceFirst(rq.getContextPath(), "").toLowerCase();
         System.out.println(requestAction);
-        //        if (session != null && session.getAttribute("user") != null) {
-        //            role = ((User) rq.getSession(false).getAttribute("user")).getRole();
-        //            switch (role) {
-        //                case 0://Mentor
-        //                    System.out.println("Mentor");
-        //                    chain.doFilter(request, response);
-        //                    break;
-        //                case 1://Mentee
-        //                    System.out.println("Mentee");
-        //                    chain.doFilter(request, response);
-        //                    break;
-        //                case 2://Admin
-        //                    System.out.println("Admin");
-        //                    for (int i = 0; i < AdminPermissions.length; i++) {
-        //                        if (requestAction == AdminPermissions[i]) {
-        //                            chain.doFilter(request, response);
-        //                        }
-        //                    }
-        //                    break;
-        //                default:
-        //                    rq.getRequestDispatcher("login.jsp").forward(request, response);
-        //                    break;
-        //            }
-        //            return;
-        //        }
 
         //Makeshift Authorization since teammates cant adapt 
         if (session != null && session.getAttribute("user") != null) {
@@ -145,7 +120,7 @@ public class Authorization implements Filter {
                         chain.doFilter(request, response);
                         return;
                     } else {
-                        rq.getRequestDispatcher("login.jsp").forward(request, response);
+                        rq.getRequestDispatcher("forbidden.jsp").forward(request, response);
                         return;
                     }
                 }
@@ -157,7 +132,7 @@ public class Authorization implements Filter {
                         chain.doFilter(request, response);
                         return;
                     } else {
-                        rq.getRequestDispatcher("login.jsp").forward(request, response);
+                        rq.getRequestDispatcher("forbidden.jsp").forward(request, response);
                         return;
                     }
                 }
@@ -168,7 +143,7 @@ public class Authorization implements Filter {
                         chain.doFilter(request, response);
                         return;
                     } else {
-                        rq.getRequestDispatcher("login.jsp").forward(request, response);
+                        rq.getRequestDispatcher("forbidden.jsp").forward(request, response);
                         return;
                     }
                 }
@@ -177,21 +152,21 @@ public class Authorization implements Filter {
             for (int i = 0; i < AdminPermissions.length; i++) {
                 if (requestAction.equals(AdminPermissions[i].toLowerCase())
                         && AdminPermissions.length != 0) {
-                    rq.getRequestDispatcher("login.jsp").forward(request, response);
+                    rq.getRequestDispatcher("forbidden.jsp").forward(request, response);
                     return;
                 }
             }
             for (int i = 0; i < MentorPermissions.length; i++) {
                 if (requestAction.equals(MentorPermissions[i].toLowerCase())
                         && MentorPermissions.length != 0) {
-                    rq.getRequestDispatcher("login.jsp").forward(request, response);
+                    rq.getRequestDispatcher("forbidden.jsp").forward(request, response);
                     return;
                 }
             }
             for (int i = 0; i < MenteePermissions.length; i++) {
                 if (requestAction.equals(MenteePermissions[i].toLowerCase())
                         && MenteePermissions.length != 0) {
-                    rq.getRequestDispatcher("login.jsp").forward(request, response);
+                    rq.getRequestDispatcher("forbidden.jsp").forward(request, response);
                     return;
                 }
             }

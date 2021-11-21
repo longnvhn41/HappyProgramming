@@ -6,6 +6,7 @@
 package dao;
 
 import context.DBConnect;
+import entity.MentorStatistic;
 import entity.Request;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -222,4 +223,84 @@ public class RequestDao {
         List<Request> r1 = r.getListRequestById(1);
         System.out.println(r1.get(1).getMess());
     }*/
+    
+    public ArrayList<Request> getRequestsByMentorId(int mentorId) {
+        try {
+            String sql = "select r.id, u.full_name, r.title, r.message, r.status, r.creation_date \n"
+                    + "from request r \n"
+                    + "left join user u on r.mentee_id = u.id\n"
+                    + "where r.mentor_id = ?\n"
+                    + "order by r.creation_date DESC";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+
+            ResultSet rs = pre.executeQuery();
+
+            ArrayList<Request> requests = new ArrayList<>();
+            while (rs.next()) {
+                Request rq = new Request();
+                rq.setId(rs.getInt("id"));
+                rq.setMenteeName(rs.getString("full_name"));
+                rq.setTitle(rs.getString("title"));
+                rq.setMess(rs.getString("message"));
+                rq.setStatus(rs.getInt("status"));
+                rq.setCreationDate(rs.getDate("creation_date"));
+
+                requests.add(rq);
+            }
+            return requests;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public MentorStatistic getRequestStatistic(int mentorId) {
+        try {
+            String sql = "select t.totalRequest, p.pendingRequest, a.acceptedRequest, r.rejectedRequest \n"
+                    + "from (\n"
+                    + "	select COUNT(id) as totalRequest\n"
+                    + "	from request \n"
+                    + "	where mentor_id = ?\n"
+                    + ") as t\n"
+                    + ", (\n"
+                    + "	select COUNT(id) as pendingRequest\n"
+                    + "	from request\n"
+                    + "	where mentor_id =? and status = 0\n"
+                    + ") as p\n"
+                    + ", (\n"
+                    + "	select COUNT(id) as acceptedRequest\n"
+                    + "	from request\n"
+                    + "	where mentor_id =? and status = 1\n"
+                    + ") as a\n"
+                    + ", (\n"
+                    + "	select COUNT(id) as rejectedRequest\n"
+                    + "	from request\n"
+                    + "	where mentor_id =? and status = 2\n"
+                    + ") as r";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+            pre.setInt(2, mentorId);
+            pre.setInt(3, mentorId);
+            pre.setInt(4, mentorId);
+
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {
+                int totalRequest = rs.getInt("totalRequest");
+                int pendingRequest = rs.getInt("pendingRequest");
+                int acceptedRequest = rs.getInt("acceptedRequest");
+                int rejectedRequest = rs.getInt("rejectedRequest");
+
+                MentorStatistic ms = new MentorStatistic(totalRequest, pendingRequest, acceptedRequest, rejectedRequest);
+                
+                System.out.println(ms.getAcceptedRequest());
+                return ms;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

@@ -42,7 +42,7 @@ public class RateMentorController extends HttpServlet {
             DBConnect dBConnect = new DBConnect();
             UserDao ud = new UserDao(dBConnect);
             RatingDAO rd = new RatingDAO(dBConnect);
-
+            
             if (request.getParameter("mentorId") == null) {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -50,7 +50,7 @@ public class RateMentorController extends HttpServlet {
             //check logged in & permission
             User user = new User();
             boolean hasPermisson = false;
-
+            
             if (request.getSession().getAttribute("user") != null) {
                 user = (User) request.getSession().getAttribute("user");
                 if (user.getRole() == 1) {
@@ -78,9 +78,9 @@ public class RateMentorController extends HttpServlet {
                 }
             }
             request.setAttribute("hasRated", hasRated);
-
+            
             int averageStars = rd.getAverageRating(mentorId);
-
+            
             request.setAttribute("averageStars", averageStars);
         } catch (Exception e) {
             System.out.println(e);
@@ -119,7 +119,7 @@ public class RateMentorController extends HttpServlet {
             DBConnect dBConnect = new DBConnect();
             UserDao ud = new UserDao(dBConnect);
             RatingDAO rd = new RatingDAO(dBConnect);
-
+            
             if (request.getParameter("mentorId") == null) {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -127,7 +127,7 @@ public class RateMentorController extends HttpServlet {
             //check logged in & permission
             User user = new User();
             boolean hasPermisson = false;
-
+            
             if (request.getSession().getAttribute("user") != null) {
                 user = (User) request.getSession().getAttribute("user");
                 if (user.getRole() == 1) {
@@ -176,7 +176,9 @@ public class RateMentorController extends HttpServlet {
                         }
                         int editId = currentUserRating.getId();
                         int editRate = Integer.parseInt(request.getParameter("stars"));
+                        request.setCharacterEncoding("UTF-8");
                         String editComment = request.getParameter("yourComment");
+                        System.out.println(editComment);
                         rd.updateRating(editId, editRate, editComment);
                         break;
                     case "deleteRating":
@@ -189,7 +191,7 @@ public class RateMentorController extends HttpServlet {
                         break;
                 }
             }
-
+            
         } catch (Exception e) {
             System.out.println(e);
         }

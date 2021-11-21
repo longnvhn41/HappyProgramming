@@ -33,17 +33,18 @@ public class RatingDAO {
 
     public ArrayList<Rating> getRatingOfMentor(int id) {
         try {
-            String sql = "select r.id, r.mentee_id, r.mentor_id, r.rate, r.comment, u.full_name\n"
+            String sql = "select r.id, r.mentee_id, r.mentor_id, r.rate, r.comment, u.full_name, r.created_date\n"
                     + "from rating r "
                     + "left join user u "
                     + "on r.mentee_id = u.id "
-                    + "where mentor_id=?";
+                    + "where mentor_id=? "
+                    + "order by r.created_date DESC";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
 
             ResultSet rs = pre.executeQuery();
 
-            ArrayList<Rating> ratings = new ArrayList<Rating>();
+            ArrayList<Rating> ratings = new ArrayList<>();
             while (rs.next()) {
                 int ratingId = rs.getInt(1);
                 int menteeId = rs.getInt(2);
@@ -82,6 +83,7 @@ public class RatingDAO {
 
     public void updateRating(int id, int rate, String comment) {
         try {
+            System.out.println(comment);
             String sql = "update rating set rate = ?, comment = ? where id = ?";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, rate);

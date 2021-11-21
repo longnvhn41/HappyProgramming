@@ -23,6 +23,20 @@ public class Request {
     int status;
     float deadlineHour;
 
+    //extra
+    String menteeName;
+
+    public String getMenteeName() {
+        return menteeName;
+    }
+
+    public void setMenteeName(String menteeName) {
+        this.menteeName = menteeName;
+    }
+    
+    public Request() {
+    }
+
     public Request(int mentee_id, String mess, String title, Date deadline, Date creationDate, int status, float deadlineHour) {
         this.mentee_id = mentee_id;
         this.mess = mess;

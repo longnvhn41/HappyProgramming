@@ -132,7 +132,7 @@
                             <img  src="${l.ava}">
                         </div>
                         <div class="gallery-item_content">
-                            <h4 style="margin: 5px">${l.name}</h4>
+                            <a href="RateMentor?mentorId=${l.id}"><h4 style="margin: 5px">${l.name}</h4></a>
                             <p style="margin: 5px 0 0 0"><i class="fa fa-map-marker"></i> ${l.description}</p>
                             <div style="display: flex">
                                 <span>(${l.rate % 1 == 0 ? fn:substring(l.rate,0,1) : fn:substring(l.rate,0,3)}/5)</span>

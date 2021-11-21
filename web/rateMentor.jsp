@@ -6,6 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<meta charset=UTF-8>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -122,7 +123,7 @@
                                             </div>
                                         </div>
                                         <label for="yourComment">Comment:</label>
-                                        <textarea id="yourComment" name="yourComment" rows="4" cols="50" style="width: 100%; height: 100px"></textarea>
+                                        <textarea accept-charset="utf-8" id="yourComment" name="yourComment" rows="4" cols="50" style="width: 100%; height: 100px"></textarea>
                                         <div class="rating-button-group">
                                             <input type="submit" class="btn btn-dark" value="Add Rating">
                                             <button type="button" class="btn btn-link" style="color: #272727" data-dismiss="modal">Cancel</button>
@@ -232,7 +233,7 @@
                                             </div>
                                         </div>
                                         <label for="yourComment">Comment:</label>
-                                        <textarea id="yourComment" name="yourComment" rows="4" cols="50" style="width: 100%; height: 300px">${currentUserRating.comment}</textarea>
+                                        <textarea accept-charset="utf-8" id="yourComment" name="yourComment" rows="4" cols="50" style="width: 100%; height: 300px">${currentUserRating.comment}</textarea>
                                     </div>
                                     <div class="modal-footer">
                                         <input type="submit" class="btn btn-dark" value="Save">

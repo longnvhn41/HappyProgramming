@@ -41,7 +41,7 @@
                                 <c:choose>
                                     <c:when test="${sessionScope.user.role==0}">
                                         <!--Mentor-->
-                                        <a class="dropdown-item" href="#">Mentor Stuff</a>
+                                        <a class="dropdown-item" href="MentorRequestList">Requests Statistic</a>
                                     </c:when>
 
                                     <c:when test="${sessionScope.user.role==1}">
