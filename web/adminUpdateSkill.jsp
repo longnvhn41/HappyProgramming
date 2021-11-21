@@ -57,7 +57,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">ID</label>
                                             <div class="col-sm-6">
-                                                <input type="text" readonly class="form-control form-control-user" name="editID" value="${skill.id}">
+                                                <input type="text" readonly class="form-control form-control-user" name="editID" value="${id}">
                                             </div>
                                         </div>
                                         <div class="form-group row">

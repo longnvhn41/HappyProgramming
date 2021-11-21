@@ -6,7 +6,6 @@
 
 <%@page import="dao.InvitationDao"%>
 <%@page import="dao.RatingDAO"%>
-<%@page import="context.DBConnect"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -143,6 +142,11 @@
                             </a>
                         </li>
 
+                         <li>
+                            <a href="RequestController?service=menteeListRequest&id=${sessionScope.user.id}">
+                                <i class="fa fa-glass"></i> <span>List of requests</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="UserController?service=becomeMentor&id=${sessionScope.user.id}">
                                 <i class="fa fa-globe"></i> <span>Register as a Mentor</span>
@@ -231,14 +235,14 @@
                                                 <td><%=rs.getString(3)%></td>                                               
                                                 <td><%=rs.getString(4)%></td>
                                                 <%
-                                                    DBConnect dBConnect = new DBConnect();
-                                                    RatingDAO dao = new RatingDAO(dBConnect);
+                                                    
+                                                    RatingDAO dao = new RatingDAO();
                                                     int countRate = dao.getAverageRating(rs.getInt(1));
                                                     request.setAttribute("rate", countRate);
                                                 %>                                                
                                                 <td>${rate}&#9733;</td>
                                                 <%
-                                                    InvitationDao invi = new InvitationDao(dBConnect);
+                                                    InvitationDao invi = new InvitationDao();
                                                     double menteeComment = invi.countComment(rs.getInt(1));
                                                     double comment = invi.rateting(rs.getInt(1));
                                                     double result = Math.round((comment / menteeComment) * 100);
@@ -325,39 +329,7 @@
 
 
                     </div>
-                    <div class="row">
-
-                        
-                        <div class="col-md-4" style=">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    Twitter Feed
-                                </header>
-                                <div class="panel-body">
-                                    <div class="twt-area">
-                                        <form action="#" method="post">
-                                            <textarea class="form-control" name="profile-tweet" placeholder="Share something on Twitter.." rows="3"></textarea>
-
-                                            <div class="clearfix">
-                                                <button class="btn btn-sm btn-primary pull-right" type="submit">
-                                                    <i class="fa fa-twitter"></i>
-                                                    Tweet
-                                                </button>
-                                                <a class="btn btn-link btn-icon fa fa-location-arrow" data-original-title="Add Location" data-placement="bottom" data-toggle="tooltip" href=
-                                                   "#" style="text-decoration:none;" title=""></a>
-                                                <a class="btn btn-link btn-icon fa fa-camera" data-original-title="Add Photo" data-placement="bottom" data-toggle="tooltip" href="#"
-                                                   style="text-decoration:none;" title=""></a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <ul class="media-list">
-
-                                    </ul>
-                                </div>
-                            </section>
-                        </div>
-
-                    </div>
+                    
 
                     <!-- row end -->
                 </section><!-- /.content -->
@@ -366,7 +338,7 @@
 
 
 
-                <div class="footer-main">
+                <div class="footer-main" style="margin-top: 290px">
                     Copyright &copy Director, 2014
                 </div>
             </aside><!-- /.right-side -->

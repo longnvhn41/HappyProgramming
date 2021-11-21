@@ -5,7 +5,6 @@
  */
 package controller;
 
-import context.DBConnect;
 import dao.UserDao;
 import entity.User;
 import java.io.IOException;
@@ -38,31 +37,23 @@ public class AdminMentorListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-
-            DBConnect dc = new DBConnect();
-            UserDao ud = new UserDao(dc);
-
-            if (request.getParameter("action") != null) {
-                String action = request.getParameter("action");
-                switch (action) {
-                    case "demote":
-                        int id = Integer.parseInt(request.getParameter("id"));
-                        ud.demoteUser(id);
-                        break;
-                    default:
-                        break;
-                }
+        response.setContentType("text/html;charset=UTF-8");
+        
+        UserDao ud = new UserDao();
+        if (request.getParameter("action") != null) {
+            String action = request.getParameter("action");
+            switch (action) {
+                case "demote":
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    ud.demoteUser(id);
+                    break;
+                default:
+                    break;
             }
-
-            ArrayList<User> mentors = ud.getPaginatedMentors();
-
-            request.setAttribute("mentors", mentors);
-            request.getRequestDispatcher("adminMentorList.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminMentorListController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        ArrayList<User> mentors = ud.getPaginatedMentors();
+        request.setAttribute("mentors", mentors);
+        request.getRequestDispatcher("adminMentorList.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -5,7 +5,7 @@
  */
 package controller;
 
-import context.DBConnect;
+
 import dao.SkillDao;
 import entity.Skill;
 import entity.User;
@@ -114,12 +114,9 @@ public class SkillController extends HttpServlet {
     // HIỂN THỊ TẤT CẢ CÁC KỸ NĂNG
     public void adminSkillList(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        request.setCharacterEncoding("UTF-8");
-        DBConnect dBConnect = new DBConnect();
-        SkillDao d = new SkillDao(dBConnect);
-
+        request.setCharacterEncoding("UTF-8");        
+        SkillDao d = new SkillDao();
         List<Skill> all = d.getSkillList();
-
         request.setAttribute("all", all);
         request.getRequestDispatcher("adminAllSkillNew.jsp").forward(request, response);
     }
@@ -127,14 +124,11 @@ public class SkillController extends HttpServlet {
     // TÌM KỸ NĂNG THEO ID VÀ CHUYỂN TỚI TRANG UPDATE ĐỂ CẬP NHẬT
     public void adminUpdateSkill(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        request.setCharacterEncoding("UTF-8");
-        DBConnect dBConnect = new DBConnect();
-        SkillDao d = new SkillDao(dBConnect);
-
+        request.setCharacterEncoding("UTF-8");        
+        SkillDao d = new SkillDao();
         int id = Integer.parseInt(request.getParameter("skillID"));
-
         Skill s = d.getSkill(id);
-
+        request.setAttribute("id", id);
         request.setAttribute("skill", s);
         request.getRequestDispatcher("adminUpdateSkillNew.jsp").forward(request, response);
     }
@@ -142,9 +136,8 @@ public class SkillController extends HttpServlet {
     // CẬP NHẬT KỸ NĂNG
     public void adminUpdateSkillAfter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        request.setCharacterEncoding("UTF-8");
-        DBConnect dBConnect = new DBConnect();
-        SkillDao d = new SkillDao(dBConnect);
+        request.setCharacterEncoding("UTF-8");       
+        SkillDao d = new SkillDao();
 
         int id = Integer.parseInt(request.getParameter("editID"));
         String skillName = request.getParameter("editSkillName");
@@ -158,10 +151,8 @@ public class SkillController extends HttpServlet {
     // TẠO KỸ NĂNG MỚI
     public void adminCreateSkillAfter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        request.setCharacterEncoding("UTF-8");
-        DBConnect dBConnect = new DBConnect();
-        SkillDao d = new SkillDao(dBConnect);
-
+        request.setCharacterEncoding("UTF-8");       
+        SkillDao d = new SkillDao();
         List<Skill> allSkill = d.getSkillList();
         Skill s = null;
         String skillName = request.getParameter("skillName");

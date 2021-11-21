@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package controller;
-
-import context.DBConnect;
 import dao.UserDao;
 import entity.User;
 import java.io.IOException;
@@ -65,32 +63,27 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            DBConnect dBConnect = new DBConnect();
-            UserDao d = new UserDao(dBConnect);
-            String acc = request.getParameter("username");
-            String password = request.getParameter("password");
-            User u=d.checkUser(acc, password);
-            if(u==null){
-                HttpSession session=request.getSession();
-                response.sendRedirect("login.jsp");
+        UserDao d = new UserDao();
+        String acc = request.getParameter("username");
+        String password = request.getParameter("password");
+        User u=d.checkUser(acc, password);
+        if(u==null){
+            HttpSession session=request.getSession();
+            response.sendRedirect("login.jsp");
+        }else{
+            Cookie usernameC = new Cookie("userC", acc);
+            Cookie passwordC = new Cookie("passC", password);
+            usernameC.setMaxAge(60);
+            if(request.getParameter("remember-me") != null){
+                passwordC.setMaxAge(60);
             }else{
-                Cookie usernameC = new Cookie("userC", acc);
-                Cookie passwordC = new Cookie("passC", password);
-                usernameC.setMaxAge(60);
-                if(request.getParameter("remember-me") != null){
-                    passwordC.setMaxAge(60);
-                }else{
-                    passwordC.setMaxAge(0);
-                }
-                response.addCookie(usernameC);
-                response.addCookie(passwordC);
-                HttpSession session=request.getSession();
-                session.setAttribute("user", u);
-                request.getRequestDispatcher("homepage.jsp").forward(request, response);
+                passwordC.setMaxAge(0);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            response.addCookie(usernameC);
+            response.addCookie(passwordC);
+            HttpSession session=request.getSession();
+            session.setAttribute("user", u);
+            request.getRequestDispatcher("homepage.jsp").forward(request, response);
         }
     }
 

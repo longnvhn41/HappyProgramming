@@ -1,8 +1,9 @@
 <%-- 
-    Document   : forgetPass
-    Created on : Sep 29, 2021, 11:42:33 PM
+    Document   : forgetPassAfter
+    Created on : Nov 9, 2021, 11:32:15 AM
     Author     : GHC
 --%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -34,28 +35,39 @@
         <div class="limiter">
             <div class="container-login100" style="background: url('./images/background.jpg') center / cover no-repeat;">
                 <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-                    <form action="UserController?service=forgetPass" method="POST" class="login100-form validate-form" >
+                    <form action="UserController?service=forgetPassAfter" method="POST" class="login100-form validate-form" >
                         <span class="login100-form-title p-b-55">
-                            Forget Password
+                            Change Password
                         </span>
                         <c:if test="${thongbao!=null}">
-                            <h4 style="color: #e0a800; margin-bottom: 30px"></h4>
+                            <h4 style="color: #e0a800; margin-bottom: 30px">${thongbao}</h4>
                         </c:if>
-                        <div class="wrap-input100 validate-input m-b-16" data-validate = "Email is not existed">
-                            <input class="input100" type="email" name="email" placeholder="Email" required>
+                    
+                        <div class="wrap-input100 validate-input m-b-16">
+                            <input class="input100" type="text" name="otp" value="" placeholder="Authentic Code" required>
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">
-                                <span class="lnr lnr-envelope"></span>
+                                
                             </span>
                         </div>
+                            
+                        <div class="wrap-input100 validate-input m-b-16">
+                            <input class="input100" type="password" name="password" value="" placeholder="Password" required>
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <span class="lnr lnr-lock"></span>
+                            </span>
+                        </div>
+                        
+
 
                         <div class="container-login100-form-btn p-t-25">
                             <button type="submit" class="login100-form-btn" style="background-color: #333;">
                                 Submit
                             </button>
                         </div>
-                        <div class="text-center w-full p-t-115">
-                        </div>
+
+
                     </form>
                 </div>
             </div>
@@ -76,3 +88,4 @@
 
     </body>
 </html>
+

@@ -41,12 +41,14 @@
                                 <c:choose>
                                     <c:when test="${sessionScope.user.role==0}">
                                         <!--Mentor-->
-                                        <a class="dropdown-item" href="#">Mentor Stuff</a>
+                                        <a class="dropdown-item" href="InvitationController?service=mentorInvitationList&id=${sessionScope.user.id}">Invitation List</a>
+                                        <a class="dropdown-item" href="RequestController?service=mentorRequestList&id=${sessionScope.user.id}">Request List</a>
                                     </c:when>
 
                                     <c:when test="${sessionScope.user.role==1}">
                                         <!--Mentee-->
                                        <a class="dropdown-item" href="RequestController?service=createRequest&id=${sessionScope.user.id}">Create a request</a>
+                                       <a class="dropdown-item" href="RequestController?service=menteeListRequest&id=${sessionScope.user.id}">List of requests by me</a>
                                         <a class="dropdown-item" href="UserController?service=becomeMentor&id=${sessionScope.user.id}">Register as a Mentor</a>
                                          <a class="dropdown-item" href="UserController?service=mentorByList">Mentor List Suggestion</a>
                                     </c:when>
@@ -56,6 +58,7 @@
                                         <a class="dropdown-item" href="SkillController?action=adminSkillList">Manage Skills</a>
                                         <a class="dropdown-item" href="AdminMentorList">Manage Mentors</a>
                                         <a class="dropdown-item" href="UserController?service=displayMentee_mentor">Manage Become Mentor Request</a>
+                                        <a class="dropdown-item" href="UserController?service=manageRequestList">Manage Request List</a>
                                     </c:when>
                                 </c:choose>
                                 <!--<div class="dropdown-divider"></div>-->

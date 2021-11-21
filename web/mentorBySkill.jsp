@@ -1,13 +1,8 @@
-<%-- 
-    Document   : adminMentorList
-    Created on : Oct 13, 2021, 11:16:31 PM
-    Author     : Tri
---%>
 <%@page import="entity.Invitation"%>
 <%@page import="dao.RatingDAO"%>
 <%@page import="entity.User"%>
 <%@page import="dao.InvitationDao"%>
-<%@page import="context.DBConnect"%>
+
 <%@page import="dao.RequestHandleDao"%>
 <%@page import="java.sql.ResultSet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -38,9 +33,9 @@
     </head>
     <body>
         <%
-            DBConnect dBConnect = new DBConnect();
+            
             ResultSet rs = (ResultSet) request.getAttribute("ketQua");
-            RatingDAO dao = new RatingDAO(dBConnect);
+            RatingDAO dao = new RatingDAO();
             
         %>
         <div class="body-container">
@@ -75,15 +70,15 @@
                                     request.setAttribute("rate", countRate);
                                 %>
                                 <td>${rate}&#9733;</td>
-                                <c:set var="mentorID" value="<%=rs.getString(3)%>"/>
+                                <c:set var="email" value="<%=rs.getString(6)%>"/>
                                 <c:set var="rqID" value="${ID}"/>
                                 <%
-                                    String mentorEmail = (String) pageContext.getAttribute("mentorID");
-                                    InvitationDao invi = new InvitationDao(dBConnect);
+                                    String mentorEmail = (String) pageContext.getAttribute("email");
+                                    InvitationDao invi = new InvitationDao();
                                     int id = invi.getUserByEmail(mentorEmail);
                                     int count = invi.countRequestByMentor(id);
+                                    request.setAttribute("mentorID", id);
                                     request.setAttribute("countRq", count);
-
                                 %>
                                 <td>${countRq}</td>
 
@@ -95,10 +90,10 @@
                                         if(invitation==null){
                                     %>
                                     <form action="UserController" method="POST">
-                                        <input type="hidden" value="<%=rs.getInt(1)%>" name="mentorID">
+                                        <input type="hidden" value="${mentorID}" name="mentorID">
                                         <input type="hidden" value="${ID}" name="requestID">
                                         <input type="hidden" name="service" value="addInvitation">
-                                        <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Invite" id="submit">
+                                        <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Invite" id="submit" onclick ="return confirm('Do you want invite this Mentor?')">
                                     </form>
                                             <%
                                                 }else{

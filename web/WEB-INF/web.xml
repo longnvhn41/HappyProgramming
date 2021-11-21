@@ -24,6 +24,10 @@
         <servlet-name>ForgetPassController</servlet-name>
         <servlet-class>controller.ForgetPassController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InvitationController</servlet-name>
+        <servlet-class>controller.InvitationController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>signup</servlet-name>
         <url-pattern>/signup</url-pattern>
@@ -43,6 +47,10 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>InvitationController</servlet-name>
+        <url-pattern>/InvitationController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

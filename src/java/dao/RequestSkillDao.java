@@ -5,10 +5,10 @@
  */
 package dao;
 
-import context.DBConnect;
-import static dao.SkillDao.conn;
+
+import context.DBContext;
 import entity.RequestSkill;
-import entity.Skill;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,24 +20,17 @@ import java.sql.SQLException;
  */
 public class RequestSkillDao {
 
-    static Connection conn;
-
-    DBConnect dbConn = null;
-
-    public RequestSkillDao(DBConnect dbconn) {
-        conn = dbconn.con;
-        this.dbConn = dbconn;
-    }
-    static Connection con;
-    static PreparedStatement ps;
-    static ResultSet rs;
+    Connection con;
+    PreparedStatement ps;
+    ResultSet rs;
 //----------------------------------------------------------------------RequestSkill----------------------------------------------------------
 
     public void createRequestSkill(RequestSkill rSkill) {
         String query = "insert into request_skill values (?,?)";
 
         try {
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, rSkill.getRequest_id());
             ps.setInt(2, rSkill.getSkill_id());
             ps.executeUpdate();
@@ -63,7 +56,8 @@ public class RequestSkillDao {
         String query = "DELETE FROM request_skill WHERE request_id = ?";
 
         try {
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, requestId);
             ps.executeUpdate();
 

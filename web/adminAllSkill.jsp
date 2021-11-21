@@ -94,7 +94,7 @@
 
                 </div>
                 <!-- End of Main Content -->
-                <a href="adminCreateSkill.jsp">
+                <a href="adminCreateSkillNew.jsp">
                     Create Skill
                 </a>
                 <!-- Footer -->

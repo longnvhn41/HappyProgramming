@@ -22,7 +22,7 @@
         <div style="background: url('./images/background.jpg') center / cover no-repeat;" class="container">
             <div class="menter-register" id="menter-register">
                 <div class="menter-register__heading">
-                    <p class="heading-title">CREATE REQUEST </p>
+                    <p class="heading-title">CREATE REQUEST</p>
                 </div>
                 <form action="RequestController?service=createRequestAfter" method="POST">
                     <div class="menter-register__body">
@@ -67,7 +67,7 @@
                             <input type="number" min="0" step=".01" name="deadlineHours" class="mentor-register__input" value="${deadlineHours}" required> 
                         </div>
                         <div> 
-                            <input style="margin-left: 350px" type="submit" value="Register" />
+                            <input style="margin-left: 350px" type="submit" value="Create" />
                         </div>
                     </div>
                 </form>

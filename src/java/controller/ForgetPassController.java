@@ -5,7 +5,7 @@
  */
 package controller;
 
-import context.DBConnect;
+
 import dao.UserDao;
 import entity.User;
 import java.io.IOException;
@@ -76,27 +76,22 @@ public class ForgetPassController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            DBConnect dBConnect = new DBConnect();
-            UserDao d = new UserDao(dBConnect);
-            String email = request.getParameter("email");
-            User u = d.checkExitsEmail(email);
-            if(u==null){
-                request.setAttribute("mess", "The email you entered did not exist, please try again!");
-                request.getRequestDispatcher("forgetPass.jsp").forward(request, response);
-            }else{
-                String userfrom = "longnvhn41@gmail.com";
-                String passfrom = "nguyenvanlong98";
-                String subject = "Reset Password";
-                String newPass = d.getRandom2(8);
-                d.updatePassUser(email, newPass);
-                String message = ("This is your new passoward: " + newPass);
-                UserDao.send(email, subject, message, userfrom, passfrom);
-                request.setAttribute("alert", "Password changed! Please check your email.");
-                request.getRequestDispatcher("homepage.jsp").forward(request, response); 
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ForgetPassController.class.getName()).log(Level.SEVERE, null, ex);
+        UserDao d = new UserDao();
+        String email = request.getParameter("email");
+        User u = d.checkExitsEmail(email);
+        if(u==null){
+            request.setAttribute("mess", "The email you entered did not exist, please try again!");
+            request.getRequestDispatcher("forgetPass.jsp").forward(request, response);
+        }else{
+            String userfrom = "longnvhn41@gmail.com";
+            String passfrom = "nguyenvanlong98";
+            String subject = "Reset Password";
+            String newPass = d.getRandom2(8);
+            d.updatePassUser(email, newPass);
+            String message = ("This is your new passoward: " + newPass);
+            UserDao.send(email, subject, message, userfrom, passfrom);
+            request.setAttribute("alert", "Password changed! Please check your email.");
+            request.getRequestDispatcher("homepage.jsp").forward(request, response);
         }
     }
 
