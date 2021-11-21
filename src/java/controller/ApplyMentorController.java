@@ -5,24 +5,20 @@
  */
 package controller;
 
-
-import dao.UserDao;
+import dao.MentorDAO;
 import entity.User;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author GHC
+ * @author Dao Van Do
  */
-public class ForgetPassController extends HttpServlet {
+public class ApplyMentorController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,18 +32,15 @@ public class ForgetPassController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ForgetPassController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ForgetPassController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
+        MentorDAO mentorDAO = new MentorDAO();
+        user = mentorDAO.getMentorById(user.getId());
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("createMentor.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -76,23 +69,7 @@ public class ForgetPassController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDao d = new UserDao();
-        String email = request.getParameter("email");
-        User u = d.checkExitsEmail(email);
-        if(u==null){
-            request.setAttribute("mess", "The email you entered did not exist, please try again!");
-            request.getRequestDispatcher("forgetPass.jsp").forward(request, response);
-        }else{
-            String userfrom = "longnvhn41@gmail.com";
-            String passfrom = "nguyenvanlong98";
-            String subject = "Reset Password";
-            String newPass = d.getRandom2(8);
-            d.updatePassUser(email, newPass);
-            String message = ("This is your new passoward: " + newPass);
-            UserDao.send(email, subject, message, userfrom, passfrom);
-            request.setAttribute("alert", "Password changed! Please check your email.");
-            request.getRequestDispatcher("homepage.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

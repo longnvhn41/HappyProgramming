@@ -7,6 +7,7 @@ package controller;
 
 import dao.MentorDAO;
 import entity.MentorEntity;
+import entity.User;
 import java.io.IOException;
 import java.sql.Date;
 import javax.servlet.ServletException;
@@ -32,45 +33,30 @@ public class CreateMentorController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         MentorEntity entity = new MentorEntity();
-        
-        String firstName = request.getParameter("first-name");
-        String lastName = request.getParameter("last-name");
-        Date date = Date.valueOf(request.getParameter("bdate"));
-        String sex = request.getParameter("sex");
-        String email = request.getParameter("email-address");
-        String img = request.getParameter("img");
-        String phone = request.getParameter("number");
-        String accountName = request.getParameter("account_name");
-        String address = request.getParameter("address");
+        User user = (User) request.getSession().getAttribute("user");
+        if(user == null){
+             request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         String profession = request.getParameter("profession");
         String description = request.getParameter("profession-introduct");
         String serviceDescription = request.getParameter("service-description");
         String achievementDescition = request.getParameter("achievement-descition");
         String frameWork = request.getParameter("frame-work");
         String skill = request.getParameter("skill");
-        
-        entity.setAccountName(accountName);
-        entity.setAchievementDescition(achievementDescition);
-        entity.setAddress(address);
-        entity.setDateOfBird(date);
-        entity.setDescription(description);
-        entity.setEmail(email);
-        entity.setFrameWork(frameWork);
-        entity.setName(firstName + " " + lastName);
-        entity.setPhone(phone);
-        entity.setProfession(profession);
-        entity.setServiceDescription(serviceDescription);
-        entity.setSex(sex);
-        entity.setImg(img);
-        entity.setSkill(skill);
-        
+
+        user.setAchievementDescition(achievementDescition);
+        user.setDescription(description);
+        user.setFramework(frameWork);
+        user.setProfession(profession);
+        user.setServiceDescription(serviceDescription);
+        user.setSkill(skill);
+
         MentorDAO mentorDAO = new MentorDAO();
-        mentorDAO.createMentor(entity);
-           
+        mentorDAO.createMentor(user);
         request.getRequestDispatcher("MentorController").forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

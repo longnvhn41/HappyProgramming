@@ -23,6 +23,12 @@ public class User {
     int role;
     String ava;
     String framework;
+    String profession;
+    String description;
+    String serviceDescription;
+    String achievementDescition;
+    String skill;
+    int rate;
 
     public String getFramework() {
         return framework;
@@ -46,7 +52,7 @@ public class User {
         this.ava = ava;
         this.framework = framework;
     }
-    
+
     public User() {
     }
 
@@ -63,7 +69,29 @@ public class User {
         this.role = role;
         this.ava = ava;
     }
-    
+
+    public User(int id, String name, String account, String password, String email, String phone, String dob, int gender, String address, int role, String ava, String framework,
+            String profession, String description, String serviceDescription, String achievementDescition, String skill, int rate) {
+        this.id = id;
+        this.name = name;
+        this.account = account;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+        this.gender = gender;
+        this.address = address;
+        this.role = role;
+        this.ava = ava;
+        this.framework = framework;
+        this.profession = profession;
+        this.description = description;
+        this.serviceDescription = serviceDescription;
+        this.achievementDescition = achievementDescition;
+        this.skill = skill;
+        this.rate = rate;
+    }
+
     public User(int id, String name, String account, String password, String email,
             String phone, String dob, int gender, String address, int role) {
         this.id = id;
@@ -76,7 +104,9 @@ public class User {
         this.gender = gender;
         this.address = address;
         this.role = role;
-    }public User(int id, String name, String account, String password, String email,
+    }
+
+    public User(int id, String name, String account, String password, String email,
             String phone, String dob, int gender, String address) {
         this.id = id;
         this.name = name;
@@ -87,11 +117,12 @@ public class User {
         this.dob = dob;
         this.gender = gender;
         this.address = address;
-        
+
     }
-    public User(String name, String account, String password, String email, String phone, 
+
+    public User(String name, String account, String password, String email, String phone,
             String dob, int gender, String address, int role) {
-       
+
         this.name = name;
         this.account = account;
         this.password = password;
@@ -102,14 +133,15 @@ public class User {
         this.address = address;
         this.role = role;
     }
-    public User(int id,String account, String password, int role, String ava) {
-       
-        
+
+    public User(int id, String account, String password, int role, String ava) {
+
         this.account = account;
         this.password = password;
         this.role = role;
-        this.ava=ava;
+        this.ava = ava;
     }
+
     public int getId() {
         return id;
     }
@@ -197,5 +229,53 @@ public class User {
     public void setAva(String ava) {
         this.ava = ava;
     }
-    
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
+    }
+
+    public String getAchievementDescition() {
+        return achievementDescition;
+    }
+
+    public void setAchievementDescition(String achievementDescition) {
+        this.achievementDescition = achievementDescition;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
 }

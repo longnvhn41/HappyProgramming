@@ -85,7 +85,7 @@
         <div class="container">
             <div id="header">
                 <ul id=nav>
-                    <li><a href="#">Happy Programming</a></li>
+                    <li><a href="HomePageController">Happy Programming</a></li>
                         <c:if test="${sessionScope.user==null}">
                         <li><a href="login.jsp">Login</a></li>
                         <li><a href="signup.jsp">Signup</a></li>
@@ -122,14 +122,14 @@
             <div class="my-gallery">
                 <div class="search-container">
                     <form action="MentorController">
-                        <input type="text" placeholder="Enter Name.." name="name">
+                        <input type="text" id="search" placeholder="Enter Name.." name="name" value="${searchCode}">
                         <button type="submit">Submit</button>
                     </form>
                 </div>
                 <c:forEach items="${mentors}" var="l">
                     <div class="gallery-item">
                         <div class="gallery-img_preview">
-                            <img  src="${l.img}">
+                            <img  src="${l.ava}">
                         </div>
                         <div class="gallery-item_content">
                             <h4 style="margin: 5px">${l.name}</h4>
@@ -158,9 +158,28 @@
                 <c:if test="${mentors.size() == 0}">
                     <h1>Not found</h1>
                 </c:if>
+
+            </div>
+            <div class="pagination">    
+                <button onclick="pagingHandle(${pageIndex}, '${searchCode}')" class="btn-success rounded-50">Trang trước</button>
+                <span id="pagination-index">${pageIndex +1}</span>
+                <button onclick="pagingHandle(${pageIndex}, '${searchCode}', ${maxPage})" class="btn-success rounded-50"  >Trang sau</button>
             </div>
         </div>
-
-    </div>
-</body>
+        <script>
+            const contextPath = "<%=request.getContextPath()%>";
+            const pageIndex = document.getElementById("pagination-index").textContent;
+            const searchCode = document.getElementById("search").value.trim();
+            function pagingHandle(index, code, max) {
+                console.log(searchCode);
+                if (typeof max === 'undefined') {
+                    index = index - 1;
+                } else {
+                    ++index;
+                }
+                let url = contextPath + "/MentorController?index=" + index + "&name=" + code
+                window.location.href = url.toString();
+            }
+        </script>
+    </body>
 </html>

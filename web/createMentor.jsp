@@ -143,70 +143,31 @@
     </head>
     <body>
         <div class="testbox">
-            <form action="CreateMentorController" method="POST">
+            <form action="CreateMentorController" method="GET">
                 <div class="banner">
                     <h1>Create CV Of Mentor</h1>
                 </div>
                 <div class="item">
-                    <label for="name">Name<span>*</span></label>
                     <div class="name-item">
-                        <input id="first-name" type="text" name="first-name" placeholder="First" required/>
-                        <input id="last-name" type="text" name="last-name" placeholder="Last" required/>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="name-item">
-                        <div>
-                            <label for="bdate">Date of Birth<span>*</span></label>
-                            <input id="bdate" type="date" name="bdate" required/>
-                        </div>
-                        <div>
-                            <label for="img">Image Address<span>*</span></label>
-                            <input id="img" type="text" name="img" required/>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="name-item">
-                        <div>
-                            <label for="email-address">Email Address<span>*</span></label>
-                            <input id="email-address" type="text" name="email-address" required/>
-                        </div>
-                        <div>
-                            <label for="number">Phone Number</label>
-                            <input id="number" type="tel" name="number" />
-                        </div>
-                        <div>
-                            <label for="account_name">Account Name<span>*</span></label>
-                            <input id="account_name" type="text" name="account_name" required />
-                        </div>
-                        <div>
-                            <label for="sex">Sex</label>
-                            <input id="sex" type="text" name="sex" />
-                        </div>
-                        <div>
-                            <label for="address">Address<span>*</span></label>
-                            <input id="address" type="text" name="address" required/>
-                        </div>
                         <div>
                             <label for="profession">Profession<span>*</span></label>
-                            <input id="profession" type="text" name="profession" required/>
+                            <input id="profession" type="text" value="${user.profession}" name="profession" required/>
                         </div>
                         <div>
                             <label for="profession-introduct">Profession Introduct<span>*</span></label>
-                            <input id="profession-introduct" type="text" name="profession-introduct" required/>
+                            <input id="profession-introduct" type="text" value="${user.description}" name="profession-introduct" required/>
                         </div>
                         <div>
                             <label for="service-description">Service Description<span>*</span></label>
-                            <input id="service-description" type="text" name="service-description" required/>
+                            <input id="service-description" type="text" value="${user.serviceDescription}" name="service-description" required/>
                         </div>
                         <div>
                             <label for="achievement-descition">Achievement Descition<span>*</span></label>
-                            <input id="achievement-descition" type="text" name="achievement-descition" required/>
+                            <input id="achievement-descition" type="text" value="${user.achievementDescition}" name="achievement-descition" required/>
                         </div>
                         <div>
                             <label for="frame-work">Frame Work<span>*</span></label>
-                            <input id="frame-work" type="text" name="frame-work" required/>
+                            <input id="frame-work" type="text" value="${user.framework}" name="frame-work" required/>
                         </div>
                     </div>
                 </div>
@@ -219,15 +180,7 @@
                         <option value="Python">Python</option>
                     </select>
                 </div>
-                <!--                <div class="item">
-                                    <label for="period">The period you would like to work in this job?</label>
-                                    <input id="period" type="text" name="text"/>
-                                </div>
-                                <div class="item">
-                                    <label for="cv">Upload CV<span>*</span></label>
-                                    <input  id="cv" type="file" required/>
-                                </div>
-                -->                                <div class="btn-block">
+                <div class="btn-block">
                     <button type="submit" href="/">APPLY</button>
                 </div>
             </form>

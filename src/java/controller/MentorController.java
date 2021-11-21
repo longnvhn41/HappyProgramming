@@ -7,6 +7,7 @@ package controller;
 
 import dao.MentorDAO;
 import entity.MentorEntity;
+import entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,22 +16,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ *
+ * @author Dao Van Do
+ */
 public class MentorController extends HttpServlet {
 
-
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String name = request.getParameter("name");
+        int pageIndex = request.getParameter("index") == null ? 0
+                : Integer.parseInt(request.getParameter("index"));
+        int startIndex = pageIndex * 5;
+        int endIndex = startIndex + 10;
         MentorDAO mentorDAO = new MentorDAO();
-        List<MentorEntity> mentors = new ArrayList<>();
-        if (name != null) {
-            mentors = mentorDAO.getListMentorByName(name);
+        List<User> mentors = new ArrayList<>();
+        if (name != null && !name.equals("")) {
+            mentors = mentorDAO.getListMentorByName(name, startIndex);
         } else {
-            mentors = mentorDAO.getListMentor();
+            mentors = mentorDAO.getListMentor(startIndex);
         }
+        request.setAttribute("searchCode", name);
         request.setAttribute("mentors", mentors);
+        request.setAttribute("pageIndex", pageIndex);
+        request.setAttribute("maxPage", 5);
 
         request.getRequestDispatcher("mentorList.jsp").forward(request, response);
     }

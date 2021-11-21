@@ -5,7 +5,8 @@
  */
 package controller;
 
-import context.DBConnect;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DateTimeDV;
+import context.DBContext;
 import dao.InvitationDao;
 import dao.RequestDao;
 import dao.RequestHandleDao;
@@ -17,7 +18,8 @@ import entity.Skill;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -50,10 +52,11 @@ public class RequestController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        DBConnect dBConnect = new DBConnect();
-        RequestHandleDao dao1 = new RequestHandleDao(dBConnect);
-        RequestDao dao = new RequestDao(dBConnect);
-        SkillDao Sdao = new SkillDao(dBConnect);
+        
+        RequestHandleDao dao1 = new RequestHandleDao();
+        RequestDao dao = new RequestDao();
+        SkillDao Sdao = new SkillDao();
+        InvitationDao Idao = new InvitationDao();
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
@@ -98,7 +101,7 @@ public class RequestController extends HttpServlet {
                     request.setAttribute("alertMess1", "Không được chọn quá 3 kỹ năng");
                     request.getRequestDispatcher("menteeCreateRequest.jsp").forward(request, response);
                 } else {
-                    RequestSkillDao rSDao = new RequestSkillDao(dBConnect);
+                    RequestSkillDao rSDao = new RequestSkillDao();
                     java.util.Date currentDate = new java.util.Date();
                     Request r = new Request(userId, content, title, deadline, currentDate, status, deadlineHour);
                     dao.createRequest(r);
@@ -152,15 +155,15 @@ public class RequestController extends HttpServlet {
                     request.setAttribute("alertMess1", "Không được chọn quá 3 kỹ năng");
                     request.getRequestDispatcher("menteeUpdateRequest.jsp").forward(request, response);
                 } else {
-                    RequestSkillDao rSDao = new RequestSkillDao(dBConnect);
-                    dao.updateRequestByMentee(requestId, content, 1, deadlineHour, title, (Date) deadline, null);
-                    request.getRequestDispatcher("homepage.jsp").forward(request, response);
+                    RequestSkillDao rSDao = new RequestSkillDao();
+                    dao.updateRequestByMentee(requestId, content, 1, deadlineHour, title, deadline, null);
+                    
                     rSDao.deleteSkillByRequestId(requestId);
                     for (String s : skill) {
                         RequestSkill rs = new RequestSkill(requestId, Integer.parseInt(s));
                         rSDao.createRequestSkill(rs);
                     }
-                    request.getRequestDispatcher("UserController").forward(request, response);
+                    response.sendRedirect("menteeRequestList.jsp");
                 }
             }
             if (service.equals("statisticRequestAfter")) {
@@ -172,26 +175,49 @@ public class RequestController extends HttpServlet {
                 List<Request> lists = dao.getListRequestById(menteeId);
                 int totalRequest = lists.size();
                 for (Request request1 : lists) {
-                    if (request1.getStatus() == 0) {
+                    if(request1.getStatus() == 0){
                         hours += request1.getDeadlineHour();
                     }
                 }
-                String sql = "select DISTINCT u.id, u.full_name, u.framework, u.email from [user] "
-                        + "as u join rating as r on u.id=r.mentor_id ";
-                ResultSet rs = dBConnect.getData(sql);
+                String sql="select DISTINCT u.id, u.full_name, u.framework, u.email from happyprogramming.user as u join happyprogramming.rating as r on u.id=r.mentor_id;";
+                Connection con=new DBContext().getConnection();
+                PreparedStatement ps=con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
                 request.setAttribute("ketQua", rs);
-                InvitationDao invi = new InvitationDao(dBConnect);
-                int skills = invi.skillsInSystem();
-                int menteeCount = invi.menteeInSystem();
-                int mentorCount = invi.mentorInSystem();
+                InvitationDao invi=new InvitationDao();
+                int skills=invi.skillsInSystem();
+                int menteeCount=invi.menteeInSystem();
+                int mentorCount=invi.mentorInSystem();
                 request.setAttribute("skills", skills);
                 request.setAttribute("mentee", menteeCount);
                 request.setAttribute("mentor", mentorCount);
                 request.setAttribute("total", totalRequest);
                 request.setAttribute("totalMentor", totalMentor);
                 request.setAttribute("totalHour", hours);
-                request.getRequestDispatcher("menteeDashBoard.jsp").forward(request, response);
+                request.getRequestDispatcher("menteeDashBoard.jsp").forward(request, response); 
 
+            }if(service.equals("mentorRequestList")){
+                response.sendRedirect("mentorRequestList.jsp");
+            }if(service.equals("mentorFinish")){
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                java.util.Date currentDate = new java.util.Date();
+                dao.updateRequestStatusAndDateById(0, requestId, currentDate);
+                response.sendRedirect("mentorRequestList.jsp");
+            }if(service.equals("mentorCancel")){
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                java.util.Date currentDate = new java.util.Date();
+                dao.updateRequestStatusAndDateById(3, requestId, currentDate);
+                response.sendRedirect("mentorRequestList.jsp");
+            }if(service.equals("menteeListRequest")){
+                response.sendRedirect("menteeRequestList.jsp");
+            }if(service.equals("cancelRequest")){
+                HttpSession session = request.getSession();
+                User user = (User)session.getAttribute("user");
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                java.util.Date finish_date = new java.util.Date();
+                dao.updateRequestStatusAndDateById(3, requestId, finish_date);
+                Idao.updateInvitationCancelStatus("Cancel", requestId);
+                response.sendRedirect("menteeRequestList.jsp");
             }
 
         }

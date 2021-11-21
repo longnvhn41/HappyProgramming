@@ -5,86 +5,111 @@
  */
 package dao;
 
-import context.DBConnect;
-import entity.MentorEntity;
+import context.DBContext;
+import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *
+ * @author Dao Van Do
+ */
 public class MentorDAO {
 
     Connection conn = null;
 
-    public List<MentorEntity> getListMentor() {
-        List<MentorEntity> mentors = new ArrayList<>();
+    public List<User> getListMentor(int startIndex) {
+        List<User> users = new ArrayList<>();
         try {
-            DBConnect connect = new DBConnect();
-            conn = connect.con;
-            String sql = "select * from mentor";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                mentors.add(new MentorEntity(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), rs.getInt(5)));
-            }
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return mentors;
-    }
-
-    public List<MentorEntity> getListMentorByName(String name) {
-        List<MentorEntity> mentors = new ArrayList<>();
-        try {
-            DBConnect connect = new DBConnect();
-            conn = connect.con;
-            String sql = "select * from mentor where name like '%" + name + "%'";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                mentors.add(new MentorEntity(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), rs.getInt(5)));
-            }
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return mentors;
-    }
-    
-        public void createMentor(MentorEntity entity) {
-        String sql = "insert into happyprogramming.mentor(name, img, description, "
-                + "rate, dateOfBird,email, phone, accountName, sex ,address, "
-                + "profession, serviceDescription,achievementDescition,frameWork, skill)\n"
-                + "values (?,?,?,3,?,?,?,?,?,?,?,?,?,?,?);";
-        try {
-            DBConnect connect = new DBConnect();
-            conn = connect.con;
+            DBContext connect = new DBContext();
+            conn = connect.getConnection();
+            String sql = "select * from happyprogramming.user where role = 0"
+                    + " LIMIT 5 OFFSET ?";
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, entity.getName());
-            pre.setString(2, entity.getImg());
-            pre.setString(3, entity.getDescription());
-            pre.setDate(4, entity.getDateOfBird());
-            pre.setString(5, entity.getEmail());
-            pre.setString(6, entity.getPhone());
-            pre.setString(7, entity.getAccountName());
-            pre.setString(8, entity.getSex());
-            pre.setString(9, entity.getAddress());
-            pre.setString(10, entity.getProfession());
-            pre.setString(11, entity.getServiceDescription());
-            pre.setString(12, entity.getAchievementDescition());
-            pre.setString(13, entity.getFrameWork());
-            pre.setString(14, entity.getSkill());
+            pre.setInt(1, startIndex);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                users.add((new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11),
+                        rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15),
+                        rs.getString(16), rs.getString(17), rs.getInt(18))));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public List<User> getListMentorByName(String name, int startIndex) {
+        List<User> users = new ArrayList<>();
+        try {
+            DBContext connect = new DBContext();
+            conn = connect.getConnection();
+            String sql = "select * from happyprogramming.user where full_name like '%" + name + "%' and role = 0 or description like '%" + name + "%'"
+                    + " LIMIT 5 OFFSET ?";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, startIndex);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                users.add((new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11),
+                        rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15),
+                        rs.getString(16), rs.getString(17), rs.getInt(18))));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public void createMentor(User user) {
+        String sql = "UPDATE happyprogramming.user\n"
+                + "SET role = ?, framework = ?, profession = ?, description =?, "
+                + "serviceDescription = ?, achievementDescition = ?, skill = ?\n"
+                + "WHERE id = ?;";
+        try {
+            DBContext connect = new DBContext();
+            conn = connect.getConnection();
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, 0);
+            pre.setString(2, user.getFramework());
+            pre.setString(3, user.getProfession());
+            pre.setString(4, user.getDescription());
+            pre.setString(5, user.getServiceDescription());
+            pre.setString(6, user.getAchievementDescition());
+            pre.setString(7, user.getSkill());
+            pre.setInt(8, user.getId());
             pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public User getMentorById(int id) {
+        User user = new User();
+        try {
+            DBContext connect = new DBContext();
+            conn = connect.getConnection();
+            String sql = "select * from happyprogramming.user where id = ?";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11),
+                        rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15),
+                        rs.getString(16), rs.getString(17), rs.getInt(18));
+                return u;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

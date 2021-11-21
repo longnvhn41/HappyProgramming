@@ -5,16 +5,16 @@
  */
 package dao;
 
-import context.DBConnect;
+
+import context.DBContext;
 import entity.Request;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 
 /**
  *
@@ -22,25 +22,16 @@ import java.util.List;
  */
 public class RequestDao {
 
-    Connection conn = null;
-
-    DBConnect dbConn = null;
-
-    public RequestDao(DBConnect dbconn) {
-        conn = dbconn.con;
-        this.dbConn = dbconn;
-    }
-
-    static Connection con;
-    static PreparedStatement ps;
-    static ResultSet rs;
+    Connection con;
+    PreparedStatement ps;
+    ResultSet rs;
 
     public int getMaxRequestId() {
-        String query = "SELECT MAX(id)FROM Request";
+        String query = "SELECT MAX(id)FROM happyprogramming.Request";
         int output = 0;
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
                 output = rs.getInt(1);
@@ -65,11 +56,11 @@ public class RequestDao {
     }
 
     public void createRequest(Request request) {
-        String query = "insert into request values (?, null, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `happyprogramming`.`request` (`mentee_id`, `mentor_id`, `message`, `deadline_date`, `creation_date`, `finish_date`, `status`, `hours`, `title`) VALUES (?, null, ?, ?, ?, ?, ?, ?, ?);";
 
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
+           con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, request.getMentee_id());
             ps.setString(2, request.getMess());
             ps.setDate(3, request.getDeadline() == null ? null : new java.sql.Date(request.getDeadline().getTime()));
@@ -98,10 +89,10 @@ public class RequestDao {
     }
     
     public Request getRequestById(int id){
-        String query = "SELECT * From Request where id = (?)";
+        String query = "SELECT * From happyprogramming.Request where id = (?)";
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -130,10 +121,42 @@ public class RequestDao {
     
     public List<Request> getListRequestById(int id){
         List<Request> ls = new ArrayList<Request>();
-        String query = "SELECT * From Request where mentee_id = (?)";
+        String query = "SELECT * From happyprogramming.Request where mentee_id = (?)";
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                 ls.add(new Request(rs.getInt("id"), rs.getInt("mentee_id"), 
+                        rs.getInt("mentor_id"), rs.getString("message"),rs.getString("title"), 
+                        rs.getDate("deadline_date"), rs.getDate("creation_date"), rs.getDate("finish_date"), 
+                        rs.getInt("status"), rs.getFloat("hours")));
+            }
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return ls;
+    }
+    
+    public List<Request> getListRequestByMentorId(int id){
+        List<Request> ls = new ArrayList<Request>();
+        String query = "SELECT * From happyprogramming.Request where mentor_id = (?) and status != 1";
+        try {
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -161,10 +184,10 @@ public class RequestDao {
     }
     
     public void updateRequestByMentee(int requestId, String message, int status, float hours, String title, Date deadline_date, Date finish_date){
-        String query = "Update request set [message]=(?), [status]=(?), [hours]=(?) , title =(?) , deadline_date=(?), finish_date=(?) where id =(?);";
+        String query = "UPDATE `happyprogramming`.`request` SET `message` = (?), `status`= (?), `hours` = (?) , `title` = (?) , `deadline_date` = (?), `finish_date` = (?) WHERE (`id` = (?))";
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setString(1, message);
             ps.setInt(2, status);
             ps.setFloat(3, hours);
@@ -189,11 +212,63 @@ public class RequestDao {
             System.out.println(e);
         }
     }
-    public int getMentorNumberById(int id){
-        String query = "SELECT COUNT(distinct mentor_id) FROM request WHERE mentee_id = (?)";
+    
+    public void updateRequestStatusById(int status, int request_id){
+        String query = "update happyprogramming.request set status = (?) where id=(?)";
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setInt(2, request_id);
+            ps.executeUpdate();
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void updateRequestStatusAndDateById(int status, int request_id, Date finish_date){
+        String query = "update happyprogramming.request set status = (?), finish_date=(?) where id=(?)";
+        try {
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setInt(3, request_id);
+            ps.setDate(2, new java.sql.Date(finish_date.getTime()));
+            ps.executeUpdate();
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public int getMentorNumberById(int id){
+        String query = "SELECT COUNT(distinct mentor_id) FROM happyprogramming.request WHERE mentee_id = (?)";
+        try {
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -217,10 +292,30 @@ public class RequestDao {
         return -1;
     }
     
-    /*public static void main(String[] args) throws SQLException {
-        DBConnect dconn = new DBConnect();
-        RequestDao r =new RequestDao(dconn);
-        List<Request> r1 = r.getListRequestById(1);
-        System.out.println(r1.get(1).getMess());
-    }*/
+    public void updateRequestMentorById(int mentor_id, int request_id){
+        String query = "update happyprogramming.request set mentor_id = (?) where id=(?)";
+        try {
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, mentor_id);
+            ps.setInt(2, request_id);
+            ps.executeUpdate();
+            try {
+                rs.close();
+            } catch (Exception e) {
+            }
+            try {
+                ps.close();
+            } catch (Exception e) {
+            }
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    
 }

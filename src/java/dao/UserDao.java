@@ -5,8 +5,8 @@
  */
 package dao;
 
-import context.DBConnect;
-import entity.Request_mentor;
+
+import context.DBContext;
 import entity.Skill;
 import entity.User;
 import java.sql.Connection;
@@ -31,14 +31,9 @@ import javax.mail.internet.MimeMessage;
  */
 public class UserDao {
 
-    Connection conn = null;
-
-    DBConnect dbConn = null;
-
-    public UserDao(DBConnect dbconn) {
-        conn = dbconn.con;
-        this.dbConn = dbconn;
-    }
+    Connection con;
+    PreparedStatement ps;
+    ResultSet rs;
 
     public String getRandom() {
         Random rnd = new Random();
@@ -106,25 +101,26 @@ public class UserDao {
     }
 
     public int addUser(String cname, String account, String password, String email,
-            String phone, String dob, int gender, String address, int role, String ava) {
+            String phone, String dob, int gender, String address, int role, String ava, String framework) {
 
         int n = 0;
-        String sql = "insert into user values(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO happyprogramming.`user` (full_name, account, password, email, phone, DOB, gender, address, role) VALUES "
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, cname);
-            pre.setString(2, account);
-            pre.setString(3, password);
-            pre.setString(4, email);
-            pre.setString(5, phone);
-            pre.setString(6, dob);
-            pre.setInt(7, gender);
-            pre.setString(8, address);
-            pre.setInt(9, role);
-            pre.setString(10, ava);
-
-            n = pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cname);
+            ps.setString(2, account);
+            ps.setString(3, password);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.setString(6, dob);
+            ps.setInt(7, gender);
+            ps.setString(8, address);
+            ps.setInt(9, role);
+            
+            n = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -133,11 +129,11 @@ public class UserDao {
 
     public User checkUserExitsAccount(String user) {
         try {
-            String sql = "select * from User where account=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            String sql = "select * from user where account=?";
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setString(1, user);
-
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
                         rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getInt(10));
@@ -151,28 +147,30 @@ public class UserDao {
     public User checkUser(String user, String pass) {
         try {
             String sql = "select * from user where account=? and password=?";
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, user);
-            pre.setString(2, pass);
-            ResultSet rs = pre.executeQuery();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, user);
+            ps.setString(2, pass);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
                         rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getString(11));
                 return u;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+
         }
         return null;
     }
 
     public User checkExitsEmail(String email) {
         try {
-            String sql = "select * from User where email=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            String sql = "select * from user where email=?";
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setString(1, email);
-
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
                         rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getInt(10));
@@ -185,10 +183,11 @@ public class UserDao {
 
     public User showUserProfile(String account) {
         try {
-            String sql = "select * from User where account=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            String sql = "select * from user where account=?";
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setString(1, account);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
@@ -207,17 +206,18 @@ public class UserDao {
                 + "password=?,email=?,phone=?, "
                 + "DOB=?, gender=?, address=? where id=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, name);
-            pre.setString(2, acc);
-            pre.setString(3, pass);
-            pre.setString(4, email);
-            pre.setString(5, phone);
-            pre.setString(6, dob);
-            pre.setString(7, sex);
-            pre.setString(8, address);
-            pre.setString(9, id);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, acc);
+            ps.setString(3, pass);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.setString(6, dob);
+            ps.setString(7, sex);
+            ps.setString(8, address);
+            ps.setString(9, id);
+            ps.executeUpdate();
 
         } catch (SQLException ex) {
 
@@ -225,12 +225,13 @@ public class UserDao {
     }
 
     public void updatePassUser(String email, String password) {
-        String sql = "Update User SET password=? WHERE email=?";
+        String sql = "Update user SET password=? WHERE email=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, password);
-            pre.setString(2, email);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, password);
+            ps.setString(2, email);
+            ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -238,9 +239,10 @@ public class UserDao {
 
     public boolean changePass(String account, String password) {
         try {
-            String sql = "  UPDATE user\n"
-                    + "SET password = ? WHERE account =?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            String sql = "  UPDATE User\n"
+                    + "SET password = (?) WHERE account =(?)";
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setString(1, password);
             ps.setString(2, account);
             ps.executeUpdate();
@@ -251,54 +253,59 @@ public class UserDao {
     }
 
     public void addRequestMentor(int userid, int sid, String intro, int status) {
-        String sql = "insert into request_mentor_skill(userid, skillid, introduce, [status]) values (?,?,?,?)";
+        String sql = "insert into request_mentor_skill(userid, skillid, introduce, status) values (?,?,?,?)";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, userid);
-            pre.setInt(2, sid);
-            pre.setString(3, intro);
-            pre.setInt(4, status);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, userid);
+            ps.setInt(2, sid);
+            ps.setString(3, intro);
+            ps.setInt(4, status);
+            ps.executeUpdate();
         } catch (Exception e) {
         }
     }
 
     public void changeRoleforUser(int role, int userid) {
-        String sql = "Update [User] SET role=? WHERE id=?";
+        String sql = "Update user SET role=? WHERE id=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, role);
-            pre.setInt(2, userid);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, role);
+            ps.setInt(2, userid);
+            ps.executeUpdate();
         } catch (Exception e) {
         }
     }
 
     public void updateRole(String email) {
-        String sql = "Update [User] SET role=0 WHERE email=?";
+        String sql = "Update User SET role=0 WHERE email=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, email);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.executeUpdate();
         } catch (Exception e) {
         }
     }
 
     public void updateRole2(String email) {
-        String sql = "Update [User] SET role=1 WHERE email=?";
+        String sql = "Update User SET role=1 WHERE email=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, email);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.executeUpdate();
         } catch (Exception e) {
         }
     }
 
     public ArrayList<User> getPaginatedMentors() {
         try {
-            String sql = "SELECT * FROM [User] WHERE role = 0";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            String sql = "SELECT * FROM User WHERE role = 0";
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
 
             ArrayList<User> mentors = new ArrayList<User>();
             int i = 0;
@@ -318,23 +325,24 @@ public class UserDao {
     }
 
     public void demoteUser(int id) {
-        String sql = "Update [User] SET role=1 WHERE id=?";
+        String sql = "Update User SET role=1 WHERE id=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, id);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public int getMaxRequest_BecomeMentorId() {
-        String query = "SELECT MAX(id) FROM request_mentor_skill";
+        String sql = "SELECT MAX(id) FROM request_mentor_skill";
         int output = 0;
         try {
-            conn = new DBConnect().con;
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 output = rs.getInt(1);
             }
@@ -345,9 +353,10 @@ public class UserDao {
 
     public void deleteRequestBecomeMentor(int id) {
 
-        String delsql = "delete from request_mentor_skill where id=?";
+        String sql = "delete from request_mentor_skill where id=?";
         try {
-            PreparedStatement ps = conn.prepareStatement(delsql);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -355,13 +364,14 @@ public class UserDao {
         }
 
     }
-    
-        public User getUserById(int id) {
+
+    public User getUserById(int id) {
         try {
-            String sql = "select * from [User] where id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            String sql = "select * from User where id=?";
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
@@ -374,23 +384,14 @@ public class UserDao {
         return null;
     }
 
-    public ArrayList<User> mentorBySkills(int id) {
-        ArrayList<User> list = new ArrayList<>();
-        try {
-            String sql = "";
-        } catch (Exception e) {
-        }
-        return null;
-
-    }
-
     public void updateFramework(String frame, int IdUSer) {
-        String sql = "UPDATE [user] SET framework =? WHERE id=?";
+        String sql = "UPDATE user SET framework =? WHERE id=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, frame);
-            pre.setInt(1, IdUSer);
-            pre.executeUpdate();
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, frame);
+            ps.setInt(1, IdUSer);
+            ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -400,16 +401,19 @@ public class UserDao {
     public Skill nameSkill(int IDSkill) {
         try {
             String sql = "select * from skill where id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
             ps.setInt(1, IDSkill);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 return new Skill(rs.getInt(1), rs.getString(2), rs.getString(3));
             }
         } catch (Exception e) {
         }
-        
+
         return null;
     }
+
+    
 
 }

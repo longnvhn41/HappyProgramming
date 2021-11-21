@@ -5,7 +5,6 @@
  */
 package controller;
 
-import context.DBConnect;
 import dao.RatingDAO;
 import dao.UserDao;
 import entity.Rating;
@@ -38,10 +37,9 @@ public class RateMentorController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            DBConnect dBConnect = new DBConnect();
-            UserDao ud = new UserDao(dBConnect);
-            RatingDAO rd = new RatingDAO(dBConnect);
+        try {            
+            UserDao ud = new UserDao();
+            RatingDAO rd = new RatingDAO();
 
             if (request.getParameter("mentorId") == null) {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -115,10 +113,9 @@ public class RateMentorController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            DBConnect dBConnect = new DBConnect();
-            UserDao ud = new UserDao(dBConnect);
-            RatingDAO rd = new RatingDAO(dBConnect);
+        try {           
+            UserDao ud = new UserDao();
+            RatingDAO rd = new RatingDAO();
 
             if (request.getParameter("mentorId") == null) {
                 request.getRequestDispatcher("login.jsp").forward(request, response);

@@ -1,10 +1,11 @@
 <%-- 
     Document   : adminMentorList
     Created on : Oct 13, 2021, 11:16:31 PM
-    Author     : Tri
+    Author     : LongNV
 --%>
 <%@page import="java.sql.ResultSet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,6 +34,7 @@
     <body>
         <%
             ResultSet rs = (ResultSet) request.getAttribute("ketQua");
+            int count = 0;
         %>
         <div class="body-container">
             <%@include file="headerNew.jsp" %>
@@ -42,33 +44,42 @@
                     <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>ID Request</th>
+                                <th>STT</th>
+                                <th>Mentee ID</th>
                                 <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Skill Name</th>
-                                <th>Introduction</th>
+                                <th>Message</th>
+                                <th>Skill Request</th>
+                                <th>Deadline Hours</th>
+                                <th>Deadline Date</th>
+                                <th>Creation Date</th>
                                 <th>Status</th>
-                                <th>Change Status</th>
+                                <th>Manage</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%while (rs.next()) {%>
-
+                            <%count++;%>
                             <tr>
+                                <td><%=count%></td>
                                 <td><%=rs.getInt(1)%></td>
                                 <td><%=rs.getString(2)%></td>
-
                                 <td><%=rs.getString(3)%></td>
                                 <td><%=rs.getString(4)%></td>
-                                <td><%=rs.getString(5)%></td>
-                                <td><%=rs.getString(6)%></td>
-                                <td><%=rs.getString(7)%></td>
-                                <td><%=rs.getInt(8) == 3 ? "Register to become Mentor" : "Mentor"%></td>
+                                <td><%=rs.getInt(5)%></td>
+                                <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "<%=rs.getDate(6)%>"/></td>
+                                <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "<%=rs.getDate(7)%>"/></td>
+                                <td><%=rs.getInt(8) == 2 ? "Cancle" : "Active"%></td>
                                 <td>
-                                    <a style="text-decoration: none; color: #007bff" href="UserController?service=handleMentor&email=<%=rs.getString(3)%>" onclick ="return confirm('Do you want accept this Mentor?')"> Accept |</a>
-                                    <a style="text-decoration: none; color: red" href="UserController?service=handleMentor2&email=<%=rs.getString(3)%>" onclick ="return confirm('Do you want reject this Mentor?')"> Reject</a>
+                                    <c:if test="<%=rs.getInt(8) != 2%>">
+                                        <form action="UserController?service=adminRequest" method="POST">
+                                            <input type="hidden" value="<%=rs.getInt(9)%>" name="requestId">
+                                            <input style="width: 100px;" class="mb-1 btn btn-danger" type="submit" value="Cancel" id="submit" onclick ="return confirm('Do you want Cancel this request?')">
+                                        </form>
+
+                                    </c:if>
+                                    <c:if test="<%=rs.getInt(8) == 2%>">
+                                        Disable
+                                    </c:if>
                                 </td>
                             </tr>
                             <%}%>

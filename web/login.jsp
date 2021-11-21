@@ -53,6 +53,9 @@
                         <span class="login100-form-title p-b-55">
                             Login
                         </span>
+                        <c:if test="${sucess!=null}">
+                            <h4 style="color: #03fc1c; margin-bottom: 30px">${sucess}</h4>
+                        </c:if>
                         <c:if test="${thongbao!=null}">
                             <h4 style="color: #e0a800; margin-bottom: 30px"><%=thongbao%></h4>
                         </c:if>
